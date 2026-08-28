@@ -7,5 +7,11 @@
     "directory": "./public",
     "binding": "ASSETS",
     "not_found_handling": "single-page-application"
-  }
+  },
+  "kv_namespaces": [
+    {
+      "binding": "STORE",
+      "id": "b43865fff36b42e193da5fdf05f9159b"
+    }
+  ]
 }
