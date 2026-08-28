@@ -185,6 +185,57 @@ function parseGender(text){
   return '';
 }
 
+
+const POKEMON_NATURES_PT = [
+  'Dócil','Quieta','Envergonhada','Ousada','Calma','Maliciosa','Cuidadosa',
+  'Apressada','Mansa','Relaxada','Tímida','Alegre','Modesta','Firme',
+  'Ingênua','Travessa','Séria','Gentil','Distraída','Valente','Solitária',
+  'Suave','Atrevida','Peculiar','Resistente'
+];
+
+function stripAccents(value){
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g,'')
+    .toLowerCase()
+    .replace(/[^a-z]/g,'');
+}
+
+function levenshtein(a,b){
+  a = stripAccents(a);
+  b = stripAccents(b);
+  const dp = Array.from({length:a.length+1},()=>Array(b.length+1).fill(0));
+  for(let i=0;i<=a.length;i++) dp[i][0]=i;
+  for(let j=0;j<=b.length;j++) dp[0][j]=j;
+  for(let i=1;i<=a.length;i++){
+    for(let j=1;j<=b.length;j++){
+      dp[i][j] = Math.min(
+        dp[i-1][j] + 1,
+        dp[i][j-1] + 1,
+        dp[i-1][j-1] + (a[i-1] === b[j-1] ? 0 : 1)
+      );
+    }
+  }
+  return dp[a.length][b.length];
+}
+
+function bestNatureMatch(raw){
+  const cleaned = stripAccents(raw);
+  if(cleaned.length < 3) return '';
+  let best = '';
+  let bestScore = Infinity;
+  for(const nature of POKEMON_NATURES_PT){
+    const n = stripAccents(nature);
+    if(cleaned.includes(n) || n.includes(cleaned)) return nature;
+    const score = levenshtein(cleaned, n) / Math.max(cleaned.length, n.length);
+    if(score < bestScore){
+      bestScore = score;
+      best = nature;
+    }
+  }
+  return bestScore <= 0.38 ? best : '';
+}
+
 function parseSignature(text){
   const t = normalizeOCR(text);
   const m = t.match(/ASSINATURA\s*[:\-]?\s*([0-9A-Za-z@#£]{8,}(?:-[0-9A-Za-z@#£]{3,}){3,})/i);
@@ -330,25 +381,278 @@ $('newRarity')?.addEventListener('change', suggestEpicPrice);
 $('ivTotal')?.addEventListener('input', suggestEpicPrice);
 $('quality')?.addEventListener('input', suggestEpicPrice);
 
-async function preprocessImage(file){
-  const bitmap = await createImageBitmap(file);
-  const scale = 2;
-  const canvas = document.createElement('canvas');
-  canvas.width = bitmap.width * scale;
-  canvas.height = bitmap.height * scale;
-  const ctx = canvas.getContext('2d', {willReadFrequently:true});
-  ctx.imageSmoothingEnabled = true;
-  ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
 
-  const image = ctx.getImageData(0,0,canvas.width,canvas.height);
-  const d = image.data;
-  for(let i=0;i<d.length;i+=4){
-    const gray = Math.round(d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114);
-    const c = Math.max(0, Math.min(255, (gray - 128)*1.45 + 128));
-    d[i]=d[i+1]=d[i+2]=c;
+async function fileToBitmap(file){
+  return await createImageBitmap(file);
+}
+
+function makeRegionCanvas(bitmap, rect, {
+  scale=5,
+  threshold=null,
+  invertToBlackOnWhite=true,
+  padding=8
+}={}){
+  const sx = Math.max(0, Math.round(bitmap.width * rect.x));
+  const sy = Math.max(0, Math.round(bitmap.height * rect.y));
+  const sw = Math.max(1, Math.round(bitmap.width * rect.w));
+  const sh = Math.max(1, Math.round(bitmap.height * rect.h));
+
+  const canvas = document.createElement('canvas');
+  canvas.width = sw * scale + padding*2;
+  canvas.height = sh * scale + padding*2;
+  const ctx = canvas.getContext('2d',{willReadFrequently:true});
+
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(bitmap, sx, sy, sw, sh, padding, padding, sw*scale, sh*scale);
+
+  if(threshold !== null){
+    const image = ctx.getImageData(0,0,canvas.width,canvas.height);
+    const d = image.data;
+    for(let i=0;i<d.length;i+=4){
+      const gray = d[i]*0.299 + d[i+1]*0.587 + d[i+2]*0.114;
+      const isText = gray >= threshold;
+      const out = invertToBlackOnWhite ? (isText ? 0 : 255) : (isText ? 255 : 0);
+      d[i]=d[i+1]=d[i+2]=out;
+      d[i+3]=255;
+    }
+    ctx.putImageData(image,0,0);
   }
-  ctx.putImageData(image,0,0);
   return canvas;
+}
+
+function makeIvComposite(bitmap, threshold=110){
+  // Coordenadas normalizadas medidas diretamente no card do Pokepixel.
+  // Cada recorte contém praticamente apenas "XX/31".
+  const regions = [
+    {x:.315,y:.538,w:.180,h:.034}, // HP
+    {x:.315,y:.568,w:.180,h:.034}, // ATK
+    {x:.315,y:.598,w:.180,h:.034}, // ATK SP
+    {x:.805,y:.538,w:.180,h:.034}, // DEF
+    {x:.805,y:.568,w:.180,h:.034}, // DEF SP
+    {x:.805,y:.598,w:.180,h:.034}, // VEL
+  ];
+
+  const parts = regions.map(r => makeRegionCanvas(bitmap,r,{
+    scale:6,threshold,padding:8
+  }));
+
+  const width = Math.max(...parts.map(c=>c.width));
+  const gap = 30;
+  const height = parts.reduce((s,c)=>s+c.height,0) + gap*(parts.length-1);
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,width,height);
+
+  let y=0;
+  for(const part of parts){
+    ctx.drawImage(part,0,y);
+    y += part.height + gap;
+  }
+  return canvas;
+}
+
+function parseSixIvsFromText(text){
+  const t = String(text || '')
+    .replace(/[|Iil]/g,'1')
+    .replace(/[Oo]/g,'0')
+    .replace(/\s+/g,' ');
+
+  const values = [...t.matchAll(/(\d{1,2})\s*\/\s*31/g)]
+    .map(m=>Number(m[1]))
+    .filter(n=>Number.isFinite(n) && n>=0 && n<=31);
+
+  return values.slice(0,6);
+}
+
+function parseQualityPrecise(text){
+  const t = String(text || '')
+    .replace(/[Oo]/g,'0')
+    .replace(/[Il|]/g,'1')
+    .replace(/,/g,'.');
+  const m = t.match(/1\.(\d{2})/);
+  if(!m) return null;
+  const q = Number(`1.${m[1]}`);
+  return q >= 1.35 && q <= 1.70 ? q : null;
+}
+
+function parseIvTotalPrecise(text){
+  const t = String(text || '')
+    .replace(/[Oo]/g,'0')
+    .replace(/[Il|]/g,'1');
+  const m = t.match(/(\d{2,3})\s*\/\s*186/);
+  if(!m) return null;
+  const n = Number(m[1]);
+  return n>=0 && n<=186 ? n : null;
+}
+
+function chooseIvsByTotal(primary, secondary, ivTotal){
+  if(primary.length !== 6) return secondary.length === 6 ? secondary : primary;
+
+  const sum1 = primary.reduce((a,b)=>a+b,0);
+  if(!Number.isFinite(ivTotal) || sum1 === ivTotal) return primary;
+  if(secondary.length !== 6) return primary;
+
+  const candidates = primary.map((v,i)=>[...new Set([v,secondary[i]])]);
+  let answer = null;
+
+  function walk(i,current,sum){
+    if(answer) return;
+    if(i===6){
+      if(sum===ivTotal) answer=[...current];
+      return;
+    }
+    for(const v of candidates[i]){
+      if(sum+v > ivTotal) continue;
+      current.push(v);
+      walk(i+1,current,sum+v);
+      current.pop();
+    }
+  }
+  walk(0,[],0);
+  return answer || primary;
+}
+
+async function recognizeWithWorker(worker, canvas, params={}){
+  await worker.setParameters(params);
+  const result = await worker.recognize(canvas);
+  return result?.data?.text || '';
+}
+
+async function analyzePokepixelCard(file){
+  const bitmap = await fileToBitmap(file);
+  let worker = null;
+
+  const progress = pct => {
+    ocrProgress.textContent = `Análise precisa do Pokepixel... ${Math.max(1,Math.min(99,Math.round(pct)))}%`;
+  };
+
+  try{
+    progress(5);
+    worker = await Tesseract.createWorker('eng',1,{
+      logger:m=>{
+        if(m.status==='recognizing text' && m.progress){
+          // cada OCR é pequeno; usamos só um avanço visual suave
+        }
+      }
+    });
+
+    // 1. Qualidade (badge ÉPICA x1,xx)
+    const qualityCanvas = makeRegionCanvas(bitmap,{x:.185,y:.100,w:.270,h:.055},{
+      scale:6,threshold:105,padding:10
+    });
+    const qualityText = await recognizeWithWorker(worker,qualityCanvas,{
+      tessedit_char_whitelist:'xX0123456789,.',
+      tessedit_pageseg_mode:'7'
+    });
+    let quality = parseQualityPrecise(qualityText);
+    progress(20);
+
+    // 2. IV TOTAL /186
+    const totalCanvas = makeRegionCanvas(bitmap,{x:.500,y:.245,w:.285,h:.070},{
+      scale:6,threshold:105,padding:10
+    });
+    const totalText = await recognizeWithWorker(worker,totalCanvas,{
+      tessedit_char_whitelist:'0123456789/',
+      tessedit_pageseg_mode:'7'
+    });
+    let ivTotal = parseIvTotalPrecise(totalText);
+    progress(34);
+
+    // 3. Os 6 IVs em uma única leitura, recortando só a fração XX/31.
+    const ivCanvasA = makeIvComposite(bitmap,105);
+    const ivTextA = await recognizeWithWorker(worker,ivCanvasA,{
+      tessedit_char_whitelist:'0123456789/',
+      tessedit_pageseg_mode:'6'
+    });
+    let ivsA = parseSixIvsFromText(ivTextA);
+
+    let ivs = ivsA;
+    if(ivsA.length !== 6 || (Number.isFinite(ivTotal) && ivsA.reduce((a,b)=>a+b,0)!==ivTotal)){
+      // Segunda leitura com limiar diferente; escolhe combinação que fecha o IV TOTAL.
+      const ivCanvasB = makeIvComposite(bitmap,135);
+      const ivTextB = await recognizeWithWorker(worker,ivCanvasB,{
+        tessedit_char_whitelist:'0123456789/',
+        tessedit_pageseg_mode:'6'
+      });
+      const ivsB = parseSixIvsFromText(ivTextB);
+      ivs = chooseIvsByTotal(ivsA,ivsB,ivTotal);
+    }
+    progress(62);
+
+    // 4. Natureza + gênero. Área isolada da genética, sem os atributos.
+    const geneticsCanvas = makeRegionCanvas(bitmap,{x:.035,y:.646,w:.935,h:.120},{
+      scale:4,threshold:95,padding:10
+    });
+    const geneticsText = await recognizeWithWorker(worker,geneticsCanvas,{
+      tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÂÊÔÃÕÇáéíóúâêôãõç♀♂ ',
+      tessedit_pageseg_mode:'6'
+    });
+
+    let nature = bestNatureMatch(geneticsText);
+    let gender = parseGender(geneticsText);
+    progress(76);
+
+    // 5. Assinatura, isolada no rodapé.
+    const signatureCanvas = makeRegionCanvas(bitmap,{x:.025,y:.817,w:.950,h:.055},{
+      scale:5,threshold:105,padding:10
+    });
+    const signatureText = await recognizeWithWorker(worker,signatureCanvas,{
+      tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-',
+      tessedit_pageseg_mode:'6'
+    });
+    let signature = parseSignature(`Assinatura ${signatureText}`);
+    progress(87);
+
+    // 6. Fallback: OCR geral apenas para campos que ainda faltarem.
+    const missingCore = !quality || !ivTotal || ivs.length!==6 || !nature || !gender || !signature;
+    let fallbackText = '';
+    if(missingCore){
+      const whole = makeRegionCanvas(bitmap,{x:0,y:0,w:1,h:1},{scale:2,threshold:null,padding:0});
+      fallbackText = await recognizeWithWorker(worker,whole,{
+        tessedit_char_whitelist:''
+      });
+
+      const fallback = parseTechnical(fallbackText);
+      if(!quality) quality = fallback.quality;
+      if(!ivTotal) ivTotal = fallback.ivTotal;
+      if(ivs.length!==6){
+        const fallbackIvs = [
+          fallback.hpIv,fallback.atkIv,fallback.spatkIv,
+          fallback.defIv,fallback.spdefIv,fallback.speedIv
+        ];
+        if(fallbackIvs.every(Number.isFinite)) ivs = fallbackIvs;
+      }
+      if(!nature) nature = fallback.nature;
+      if(!gender) gender = fallback.gender;
+      if(!signature) signature = fallback.signature;
+    }
+
+    progress(96);
+
+    const parsed = {
+      quality,
+      ivTotal,
+      hpIv: ivs.length===6 ? ivs[0] : null,
+      atkIv: ivs.length===6 ? ivs[1] : null,
+      spatkIv: ivs.length===6 ? ivs[2] : null,
+      defIv: ivs.length===6 ? ivs[3] : null,
+      spdefIv: ivs.length===6 ? ivs[4] : null,
+      speedIv: ivs.length===6 ? ivs[5] : null,
+      nature,
+      gender,
+      signature
+    };
+
+    return validateAndInferIvs(parsed);
+  }finally{
+    if(worker) await worker.terminate();
+    bitmap.close?.();
+  }
 }
 
 analyzeBtn.addEventListener('click', async () => {
@@ -360,21 +664,11 @@ analyzeBtn.addEventListener('click', async () => {
 
   analyzeBtn.disabled = true;
   addProductError.textContent = '';
-  ocrProgress.textContent = 'Preparando imagem...';
+  ocrProgress.textContent = 'Preparando análise precisa do card...';
 
   try{
-    const canvas = await preprocessImage(file);
-    ocrProgress.textContent = 'Lendo o print...';
+    const parsed = await analyzePokepixelCard(file);
 
-    const result = await Tesseract.recognize(canvas, 'eng', {
-      logger: m => {
-        if(m.status === 'recognizing text'){
-          ocrProgress.textContent = `Lendo o print... ${Math.round((m.progress || 0)*100)}%`;
-        }
-      }
-    });
-
-    const parsed = parseTechnical(result.data.text || '');
     setIf('quality', parsed.quality);
     setIf('ivTotal', parsed.ivTotal);
     setIf('hpIv', parsed.hpIv);
@@ -386,24 +680,33 @@ analyzeBtn.addEventListener('click', async () => {
     setIf('nature', parsed.nature);
     setIf('gender', parsed.gender);
     setIf('signature', parsed.signature);
+
     recomputeAutoScore();
     suggestEpicPrice();
 
-    const mainFields = ['quality','ivTotal','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv','nature','gender','signature'];
-    const found = mainFields.filter(k => parsed[k] !== null && parsed[k] !== undefined && parsed[k] !== '').length;
+    const fields = [
+      parsed.quality,parsed.ivTotal,
+      parsed.hpIv,parsed.atkIv,parsed.defIv,
+      parsed.spatkIv,parsed.spdefIv,parsed.speedIv,
+      parsed.nature,parsed.gender,parsed.signature
+    ];
+    const found = fields.filter(v=>v!==null && v!==undefined && v!=='').length;
 
     if(parsed.ivValidated){
-      const inferredNote = parsed.inferredField ? ' 1 IV foi inferido pela soma do IV total.' : '';
-      ocrProgress.textContent = `Análise concluída: ${found}/10 campos. IVs validados pela soma (${parsed.ivSum}/${parsed.ivTotal}).${inferredNote} Confira antes de publicar.`;
+      ocrProgress.textContent =
+        `✓ Análise precisa: ${found}/11 campos. IVs CONFIRMADOS pela soma ${parsed.ivSum}/${parsed.ivTotal}. Confira Natureza/Assinatura e publique.`;
     }else if(Number.isFinite(parsed.ivTotal) && Number.isFinite(parsed.ivSum)){
-      ocrProgress.textContent = `ATENÇÃO: os IVs lidos somam ${parsed.ivSum}, mas o IV Total é ${parsed.ivTotal}. Confira os IVs antes de publicar.`;
+      ocrProgress.textContent =
+        `⚠ Os IVs lidos somam ${parsed.ivSum}, mas o IV Total é ${parsed.ivTotal}. Não publique sem conferir os IVs destacados.`;
     }else{
-      ocrProgress.textContent = `Análise concluída: ${found}/10 campos. Confira os campos não identificados antes de publicar.`;
+      ocrProgress.textContent =
+        `Análise concluída: ${found}/11 campos. Os campos vazios precisam ser conferidos manualmente.`;
     }
   }catch(e){
     console.error(e);
-    ocrProgress.textContent = 'Não consegui analisar automaticamente este print.';
-    addProductError.textContent = 'A análise automática falhou, mas você pode preencher/corrigir os campos manualmente.';
+    ocrProgress.textContent = 'Não consegui concluir a análise precisa deste print.';
+    addProductError.textContent =
+      'O analisador não publicou nada. Confira a imagem e preencha manualmente somente se necessário.';
   }finally{
     analyzeBtn.disabled = false;
   }

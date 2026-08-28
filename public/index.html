@@ -238,7 +238,8 @@ function renderCards(){
     const inCart = cart.includes(item.id);
     const tech = item.technical || {};
     const card = document.createElement('article');
-    card.className = 'poke-card' + (item.sold ? ' is-sold' : '') + (inCart ? ' in-cart' : '');
+    const rarityKey = normalizeText(item.rarity).replace(/[^a-z]/g,'');
+    card.className = 'poke-card rarity-' + rarityKey + (item.sold ? ' is-sold' : '') + (inCart ? ' in-cart' : '');
 
     card.innerHTML = `
       <div class="card-head">
@@ -269,7 +270,9 @@ function renderCards(){
     `;
 
     card.querySelector('.card-head strong').textContent = item.name.toUpperCase();
-    card.querySelector('.rarity-badge').textContent = item.rarity || 'ÉPICO';
+    const rarityBadge = card.querySelector('.rarity-badge');
+    rarityBadge.textContent = item.rarity || 'ÉPICO';
+    rarityBadge.classList.add('rarity-' + normalizeText(item.rarity || 'ÉPICO').replace(/[^a-z]/g,''));
     const img = card.querySelector('img');
     img.src = item.imageUrl;
     img.alt = `Print de ${item.name}`;

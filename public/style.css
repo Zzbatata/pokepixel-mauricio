@@ -91,7 +91,30 @@ button{cursor:pointer}
 .poke-card.is-sold{opacity:.72}
 .card-head{display:flex;align-items:start;justify-content:space-between;gap:8px;padding:11px;border-bottom:1px solid #43515a}
 .card-head strong{display:block;font-size:24px;color:#f0d18a}
-.rarity-badge{display:inline-block;margin-top:4px;padding:3px 6px;border:1px solid #76509c;color:#d98cff;font-size:15px}
+.rarity-badge{
+  display:inline-block;margin-top:4px;padding:3px 7px;font-size:15px;
+  font-weight:bold;border:1px solid #6b7176;color:#d9dfe2;background:#171c20
+}
+.rarity-badge.rarity-epico{
+  color:#ffe17b;
+  border-color:#c79a16;
+  background:linear-gradient(180deg,#4a3910,#241c08);
+  box-shadow:inset 0 0 0 1px #6f5510,0 0 8px rgba(255,195,35,.12)
+}
+.poke-card.rarity-epico{
+  border-color:#9e7b10;
+}
+.poke-card.rarity-epico .card-head{
+  border-bottom-color:#725b16;
+}
+.rarity-badge.rarity-raro{
+  color:#78c8ff;
+  border-color:#2789c4;
+  background:linear-gradient(180deg,#123a54,#0b2232);
+}
+.poke-card.rarity-raro{
+  border-color:#277aa7;
+}
 .quick-stats{display:flex;flex-direction:column;gap:3px;text-align:right;font-size:16px;color:#9eabb3}
 .quick-stats b{color:#fff}
 .screen-btn{position:relative;width:100%;padding:0;border:0;background:#05090d;display:block;overflow:hidden}
@@ -186,3 +209,7 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
   .payment-grid,.checkout-list{grid-template-columns:1fr}
   footer{flex-direction:column}
 }
+
+/* V3.1 — identidade de raridade igual à lógica visual do Pokepixel */
+.poke-card.rarity-epico .card-head strong{color:#f2d28b}
+.poke-card.rarity-epico.in-cart{border-color:#e0ad1b}

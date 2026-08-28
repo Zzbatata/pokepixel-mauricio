@@ -1,0 +1,24 @@
+POKEPIXEL MARKET — V3.1
+
+CORREÇÕES DESTA VERSÃO
+
+1. ANALISADOR DE PRINT REFEITO
+- Não depende mais principalmente do OCR da imagem inteira.
+- Recorta as regiões exatas do card Pokepixel.
+- Qualidade x1,xx é lida isoladamente.
+- IV Total /186 é lido isoladamente.
+- Os seis IVs são lidos somente na área XX/31.
+- Faz uma segunda leitura com outro limiar quando a soma não fecha.
+- Escolhe, quando possível, a combinação de leituras que fecha exatamente o IV Total.
+- Natureza é corrigida por aproximação com a lista de Naturezas do jogo.
+- Gênero e Assinatura continuam sendo identificados.
+- OCR da tela inteira agora é apenas FALLBACK.
+- O sistema avisa claramente quando a soma dos IVs não confere.
+
+2. ÉPICOS AGORA SÃO DOURADOS
+- Badge ÉPICO dourado/amarelo como a identidade visual do Pokepixel.
+- Borda do card épico ganhou detalhe dourado.
+- RARO já está preparado em azul para quando entrar no catálogo.
+
+Nenhum Pokémon do lote foi removido.
+Carrinho, Pix, WhatsApp, Admin e catálogo de 47 Pokémon foram preservados.
