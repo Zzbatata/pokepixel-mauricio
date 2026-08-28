@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+
+<script>
+(function(){
+  const h = window.location.hash || "";
+  if (
+    h.startsWith("#invite_token=") ||
+    h.startsWith("#recovery_token=") ||
+    h.startsWith("#confirmation_token=") ||
+    h.startsWith("#email_change_token=")
+  ){
+    window.location.replace("/admin/" + h);
+  }
+})();
+</script>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pokepixel Market • Maurício</title>
+  <meta name="description" content="Vitrine de Pokémon do Pokepixel • Maurício">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbrand">◉ POKEPIXEL</div>
+    <nav>
+      <a href="#inicio">INÍCIO</a>
+      <a href="#pokemon">POKÉMON</a>
+      <a href="#como">COMO COMPRAR</a>
+    </nav>
+    <a class="admin-shortcut" href="/admin/" title="Área administrativa protegida">🔒 ADMIN</a>
+  </header>
+
+  <section class="hero-clean" id="inicio">
+  <div class="hero-overlay">
+    <div class="hero-box">
+      <p class="hero-kicker">CATÁLOGO DE POKÉMON</p>
+      <h1>POKEPIXEL MARKET</h1>
+      <p class="hero-subtitle">Escolha seu Pokémon, confira o print completo e compre de forma simples.</p>
+      <a class="hero-cta" href="#pokemon">VER POKÉMONS</a>
+    </div>
+  </div>
+</section>
+
+
+  <main class="layout catalog-only">
+    <section class="shop-panel" id="pokemon">
+      <div class="panel-title">
+        <h3>POKÉMON DISPONÍVEIS</h3>
+        <span id="catalogCount">Catálogo atualizado</span>
+      </div>
+
+      
+      <div class="catalog-tools" id="catalogTools">
+        <div class="search-box">
+          <label for="pokemonSearch">BUSCAR</label>
+          <input id="pokemonSearch" type="search" placeholder="Ex.: Machoke, Kabutops..." autocomplete="off">
+        </div>
+
+        <div class="filter-box">
+          <label for="statusFilter">STATUS</label>
+          <select id="statusFilter">
+            <option value="all">TODOS</option>
+            <option value="available">DISPONÍVEIS</option>
+            <option value="sold">VENDIDOS</option>
+          </select>
+        </div>
+
+        <div class="filter-box">
+          <label for="sortFilter">ORDENAR</label>
+          <select id="sortFilter">
+            <option value="default">ORDEM PADRÃO</option>
+            <option value="name-asc">NOME A-Z</option>
+            <option value="price-asc">MENOR PREÇO</option>
+            <option value="price-desc">MAIOR PREÇO</option>
+          </select>
+        </div>
+
+        <button id="clearFilters" class="clear-filters" type="button">LIMPAR</button>
+      </div>
+
+      <div class="catalog-summary">
+        <span id="visibleCount">0 Pokémon exibidos</span>
+      </div>
+
+      <div class="cards">
+        <article class="poke-card" data-product-id="jumpluff01" data-name="Jumpluff #01" data-price="5">
+          <div class="card-head">
+            <strong>JUMPLUFF #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/jumpluff01-hq.png','Jumpluff #01')">
+            <img src="assets/jumpluff01-hq.png" alt="Print original de Jumpluff #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 5,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Jumpluff #01','R$ 5,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="jumpluff02" data-name="Jumpluff #02" data-price="4">
+          <div class="card-head">
+            <strong>JUMPLUFF #02</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/jumpluff02-hq.png','Jumpluff #02')">
+            <img src="assets/jumpluff02-hq.png" alt="Print original de Jumpluff #02" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 4,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Jumpluff #02','R$ 4,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="kabutops01" data-name="Kabutops #01" data-price="6">
+          <div class="card-head">
+            <strong>KABUTOPS #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/kabutops01-hq.png','Kabutops #01')">
+            <img src="assets/kabutops01-hq.png" alt="Print original de Kabutops #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 6,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Kabutops #01','R$ 6,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="kabutops02" data-name="Kabutops #02" data-price="5">
+          <div class="card-head">
+            <strong>KABUTOPS #02</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/kabutops02-hq.png','Kabutops #02')">
+            <img src="assets/kabutops02-hq.png" alt="Print original de Kabutops #02" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 5,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Kabutops #02','R$ 5,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="machoke01" data-name="Machoke #01" data-price="4">
+          <div class="card-head">
+            <strong>MACHOKE #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/machoke01-hq.png','Machoke #01')">
+            <img src="assets/machoke01-hq.png" alt="Print original de Machoke #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 4,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Machoke #01','R$ 4,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="machoke02" data-name="Machoke #02" data-price="4">
+          <div class="card-head">
+            <strong>MACHOKE #02</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/machoke02-hq.png','Machoke #02')">
+            <img src="assets/machoke02-hq.png" alt="Print original de Machoke #02" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 4,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Machoke #02','R$ 4,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="machoke03" data-name="Machoke #03" data-price="4">
+          <div class="card-head">
+            <strong>MACHOKE #03</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/machoke03-hq.png','Machoke #03')">
+            <img src="assets/machoke03-hq.png" alt="Print original de Machoke #03" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 4,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Machoke #03','R$ 4,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="machoke04" data-name="Machoke #04" data-price="3">
+          <div class="card-head">
+            <strong>MACHOKE #04</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/machoke04-hq.png','Machoke #04')">
+            <img src="assets/machoke04-hq.png" alt="Print original de Machoke #04" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 3,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Machoke #04','R$ 3,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="machoke05" data-name="Machoke #05" data-price="3">
+          <div class="card-head">
+            <strong>MACHOKE #05</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/machoke05-hq.png','Machoke #05')">
+            <img src="assets/machoke05-hq.png" alt="Print original de Machoke #05" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 3,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Machoke #05','R$ 3,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="magmar01" data-name="Magmar #01" data-price="3">
+          <div class="card-head">
+            <strong>MAGMAR #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/magmar01-hq.png','Magmar #01')">
+            <img src="assets/magmar01-hq.png" alt="Print original de Magmar #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 3,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Magmar #01','R$ 3,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="magnemite01" data-name="Magnemite #01" data-price="5">
+          <div class="card-head">
+            <strong>MAGNEMITE #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/magnemite01-hq.png','Magnemite #01')">
+            <img src="assets/magnemite01-hq.png" alt="Print original de Magnemite #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 5,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Magnemite #01','R$ 5,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="nidorina01" data-name="Nidorina #01" data-price="3">
+          <div class="card-head">
+            <strong>NIDORINA #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/nidorina01-hq.png','Nidorina #01')">
+            <img src="assets/nidorina01-hq.png" alt="Print original de Nidorina #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 3,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Nidorina #01','R$ 3,00')">COMPRAR</button>
+        </article>
+
+        <article class="poke-card" data-product-id="ninetales01" data-name="Ninetales #01" data-price="4">
+          <div class="card-head">
+            <strong>NINETALES #01</strong>
+            <span>ÉPICO</span>
+          </div>
+          <button class="screen-btn full-print" onclick="openViewer('assets/ninetales01-hq.png','Ninetales #01')">
+            <img src="assets/ninetales01-hq.png" alt="Print original de Ninetales #01" loading="lazy">
+            <span>🔍 CLIQUE PARA AMPLIAR</span>
+          </button>
+          <div class="card-price">R$ 4,00</div>
+          <div class="available">● DISPONÍVEL</div>
+          <button class="buy" onclick="openBuy('Ninetales #01','R$ 4,00')">COMPRAR</button>
+        </article>
+      </div>
+    </section>
+
+    
+  </main>
+
+  <footer>
+    <span>Pokepixel Market • vitrine independente</span>
+    <span>Site de Maurício Lucas</span></footer>
+
+  <div class="modal" id="viewer">
+    <div class="overlay" onclick="closeViewer()"></div>
+    <div class="modal-box">
+      <button class="close" onclick="closeViewer()">×</button>
+      <h3 id="viewerName">Pokémon</h3>
+      <img id="viewerImg" src="" alt="">
+      <p>Print original preservado. Use o zoom do navegador/celular para conferir todos os detalhes.</p>
+    </div>
+  </div>
+
+  <div class="modal" id="buyModal">
+    <div class="overlay" onclick="closeBuy()"></div>
+    <div class="buy-box payment-modal-box">
+      <button class="close" onclick="closeBuy()">×</button>
+
+      <div class="payment-modal-head">
+        <span class="modal-status">● DISPONÍVEL</span>
+        <h3 id="buyName">Pokémon</h3>
+        <div class="big-price" id="buyPrice">R$ 0,00</div>
+      </div>
+
+      <div class="payment-modal-grid">
+        <section class="modal-pay-section">
+          <h4>◆ PAGAMENTO VIA PIX</h4>
+          <p>Escaneie o QR Code com o app do seu banco ou copie a chave PIX.</p>
+
+          <img class="qr buy-qr" src="assets/pix-qrcode.png" alt="QR Code PIX">
+
+          <label>CHAVE PIX</label>
+          <div class="pix-row modal-pix-row">
+            <input value="fb154152-891c-4bee-96bf-9cce909bc1ac" readonly>
+            <button onclick="copyPix()">COPIAR</button>
+          </div>
+
+          <div class="payment-data modal-payment-data">
+            BENEFICIÁRIO: <b>MAURICIO LUCAS</b><br>
+            BANCO: <b>NUBANK</b><br>
+            CIDADE: <b>BELO HORIZONTE - MG</b>
+          </div>
+        </section>
+
+        <section class="modal-proof-section">
+          <h4>☏ APÓS O PAGAMENTO</h4>
+          <p>Envie o comprovante pelo WhatsApp para confirmar a compra e realizar a troca dentro do jogo.</p>
+
+          <button class="proof-btn" id="buyWhatsapp">
+            JÁ PAGUEI<br>
+            ENVIAR COMPROVANTE
+          </button>
+
+          <small>WhatsApp: (31) 98755-5415</small>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast">CHAVE PIX COPIADA!</div>
+
+  <script>
+  const WHATSAPP = "5531987555415";
+  const PIX = "fb154152-891c-4bee-96bf-9cce909bc1ac";
+
+  function openViewer(src, name){
+    const img = document.getElementById('viewerImg');
+    const title = document.getElementById('viewerName');
+    const modal = document.getElementById('viewer');
+
+    if(!img || !title || !modal) return;
+
+    img.src = src;
+    img.alt = name;
+    title.textContent = name;
+    modal.classList.add('on');
+  }
+
+  function closeViewer(){
+    const modal = document.getElementById('viewer');
+    if(modal) modal.classList.remove('on');
+  }
+
+  function openBuy(name, price){
+    const title = document.getElementById('buyName');
+    const priceEl = document.getElementById('buyPrice');
+    const whatsappBtn = document.getElementById('buyWhatsapp');
+    const modal = document.getElementById('buyModal');
+
+    if(!title || !priceEl || !whatsappBtn || !modal) return;
+
+    title.textContent = name;
+    priceEl.textContent = price;
+    whatsappBtn.onclick = () => sendWhatsApp(name, price);
+    modal.classList.add('on');
+  }
+
+  function closeBuy(){
+    const modal = document.getElementById('buyModal');
+    if(modal) modal.classList.remove('on');
+  }
+
+  async function copyPix(){
+    try{
+      await navigator.clipboard.writeText(PIX);
+      const t = document.getElementById('toast');
+      if(t){
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 1500);
+      }
+    }catch(e){
+      window.prompt('Copie sua chave PIX:', PIX);
+    }
+  }
+
+  function sendWhatsApp(name, price){
+    const msg = `Olá! Fiz o pagamento do ${name} por ${price} no Pokepixel Market do Maurício. Estou enviando o comprovante.`;
+    window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
+  }
+
+  window.addEventListener('keydown', e => {
+    if(e.key === 'Escape'){
+      closeViewer();
+      closeBuy();
+    }
+  });
+</script>
+
+<script>
+function moneyBR(value){
+  return `R$ ${Number(value || 0).toFixed(2).replace('.', ',')}`;
+}
+
+function buildDynamicCard(id, item){
+  const card = document.createElement('article');
+  card.className = 'poke-card dynamic-card';
+  card.dataset.productId = id;
+  card.dataset.name = item.name || 'Pokémon';
+  card.dataset.price = Number(item.price || 0);
+
+  const head = document.createElement('div');
+  head.className = 'card-head';
+
+  const title = document.createElement('strong');
+  title.textContent = String(item.name || 'Pokémon').toUpperCase();
+
+  const rarity = document.createElement('span');
+  rarity.textContent = item.rarity || 'ÉPICO';
+
+  head.append(title, rarity);
+
+  const imageButton = document.createElement('button');
+  imageButton.className = 'screen-btn full-print';
+
+  const img = document.createElement('img');
+  img.src = item.imageUrl;
+  img.alt = `Print original de ${item.name || 'Pokémon'}`;
+  img.loading = 'lazy';
+
+  const zoom = document.createElement('span');
+  zoom.textContent = '🔍 CLIQUE PARA AMPLIAR';
+
+  imageButton.append(img, zoom);
+  imageButton.onclick = () => openViewer(item.imageUrl, item.name || 'Pokémon');
+
+  const price = document.createElement('div');
+  price.className = 'card-price';
+
+  const status = document.createElement('div');
+  status.className = 'available';
+
+  const buy = document.createElement('button');
+  buy.className = 'buy';
+
+  card.append(head, imageButton, price, status, buy);
+  return card;
+}
+
+function applyItemToCard(card, id, item){
+  const name = item.name || card.dataset.name || 'Pokémon';
+  const price = Number(item.price ?? card.dataset.price ?? 0);
+  const sold = Boolean(item.sold);
+  const imageUrl = item.imageUrl;
+
+  card.dataset.productId = id;
+  card.dataset.name = name;
+  card.dataset.price = price;
+
+  const title = card.querySelector('.card-head strong');
+  const rarity = card.querySelector('.card-head span');
+  const priceEl = card.querySelector('.card-price');
+  const statusEl = card.querySelector('.available, .sold');
+  const buyBtn = card.querySelector('.buy');
+  const imageBtn = card.querySelector('.screen-btn');
+  const img = card.querySelector('.screen-btn img');
+
+  if(title) title.textContent = name.toUpperCase();
+  if(rarity && item.rarity) rarity.textContent = item.rarity;
+  if(priceEl) priceEl.textContent = moneyBR(price);
+
+  if(imageUrl && img){
+    img.src = imageUrl;
+    img.alt = `Print original de ${name}`;
+  }
+  if(imageBtn && imageUrl){
+    imageBtn.onclick = () => openViewer(imageUrl, name);
+  }
+
+  if(statusEl){
+    statusEl.className = sold ? 'sold' : 'available';
+    statusEl.textContent = sold ? '● VENDIDO' : '● DISPONÍVEL';
+  }
+
+  if(buyBtn){
+    if(sold){
+      buyBtn.textContent = 'VENDIDO';
+      buyBtn.disabled = true;
+      buyBtn.classList.add('sold-btn');
+      buyBtn.onclick = null;
+    }else{
+      buyBtn.textContent = 'COMPRAR';
+      buyBtn.disabled = false;
+      buyBtn.classList.remove('sold-btn');
+      buyBtn.onclick = () => openBuy(name, moneyBR(price));
+    }
+  }
+}
+
+async function syncCatalog(){
+  try{
+    const response = await fetch('/api/catalog', {cache:'no-store'});
+    if(!response.ok){
+      console.warn('Catálogo remoto indisponível; usando os dados padrão da página.');
+      return;
+    }
+
+    const remote = await response.json();
+    const cardsContainer = document.querySelector('.cards');
+    if(!cardsContainer) return;
+
+    // Remove only dynamic cards that no longer exist in storage.
+    document.querySelectorAll('.poke-card.dynamic-card[data-product-id]').forEach(card => {
+      if(!remote[card.dataset.productId]) card.remove();
+    });
+
+    for(const [id, item] of Object.entries(remote)){
+      let card = document.querySelector(`.poke-card[data-product-id="${CSS.escape(id)}"]`);
+      if(!card){
+        card = buildDynamicCard(id, item);
+        cardsContainer.appendChild(card);
+      }
+      applyItemToCard(card, id, item);
+    }
+
+    const count = document.getElementById('catalogCount');
+    if(count){
+      const total = Object.keys(remote).length;
+      count.textContent = `${total} Pokémon no catálogo`;
+    }
+
+    if(typeof applyCatalogFilters === 'function') applyCatalogFilters();
+  }catch(e){
+    console.warn('Não foi possível sincronizar o catálogo.', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', syncCatalog);
+</script>
+
+
+<script>
+const searchInput = document.getElementById('pokemonSearch');
+const statusFilter = document.getElementById('statusFilter');
+const sortFilter = document.getElementById('sortFilter');
+const clearFiltersBtn = document.getElementById('clearFilters');
+const visibleCount = document.getElementById('visibleCount');
+
+function normalizeText(value){
+  return String(value || '')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .trim();
+}
+
+function cardInfo(card){
+  const name = card.dataset.name || card.querySelector('.card-head strong')?.textContent || '';
+  const price = Number(card.dataset.price || 0);
+  const sold = !!card.querySelector('.sold') || card.querySelector('.buy')?.disabled === true;
+  return {name, price, sold};
+}
+
+function applyCatalogFilters(){
+  const container = document.querySelector('.cards');
+  if(!container) return;
+
+  const query = normalizeText(searchInput?.value);
+  const status = statusFilter?.value || 'all';
+  const sort = sortFilter?.value || 'default';
+
+  const cards = Array.from(container.querySelectorAll('.poke-card[data-product-id]'));
+
+  cards.forEach((card, index) => {
+    if(!card.dataset.originalIndex) card.dataset.originalIndex = String(index);
+  });
+
+  let visible = cards.filter(card => {
+    const info = cardInfo(card);
+    const matchesSearch = !query || normalizeText(info.name).includes(query);
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'available' && !info.sold) ||
+      (status === 'sold' && info.sold);
+
+    const show = matchesSearch && matchesStatus;
+    card.hidden = !show;
+    return show;
+  });
+
+  const sorted = [...visible].sort((a,b) => {
+    const A = cardInfo(a);
+    const B = cardInfo(b);
+
+    if(sort === 'name-asc'){
+      return A.name.localeCompare(B.name, 'pt-BR', {sensitivity:'base'});
+    }
+    if(sort === 'price-asc'){
+      return A.price - B.price || A.name.localeCompare(B.name, 'pt-BR');
+    }
+    if(sort === 'price-desc'){
+      return B.price - A.price || A.name.localeCompare(B.name, 'pt-BR');
+    }
+
+    return Number(a.dataset.originalIndex || 0) - Number(b.dataset.originalIndex || 0);
+  });
+
+  sorted.forEach(card => container.appendChild(card));
+
+  if(visibleCount){
+    const total = visible.length;
+    visibleCount.textContent = `${total} ${total === 1 ? 'Pokémon exibido' : 'Pokémon exibidos'}`;
+  }
+}
+
+searchInput?.addEventListener('input', applyCatalogFilters);
+statusFilter?.addEventListener('change', applyCatalogFilters);
+sortFilter?.addEventListener('change', applyCatalogFilters);
+
+clearFiltersBtn?.addEventListener('click', () => {
+  if(searchInput) searchInput.value = '';
+  if(statusFilter) statusFilter.value = 'all';
+  if(sortFilter) sortFilter.value = 'default';
+  applyCatalogFilters();
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  setTimeout(applyCatalogFilters, 50);
+});
+</script>
+
+</body>
+</html>

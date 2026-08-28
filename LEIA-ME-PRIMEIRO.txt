@@ -1,0 +1,42 @@
+POKEPIXEL MARKET — CLOUDFLARE V2 (WORKERS KV)
+
+IMPORTANTE
+Esta é a versão correta para o Workers KV que você acabou de criar.
+Ela NÃO usa R2.
+
+O namespace já criado:
+pokepixel-market-store
+
+NÃO precisamos do Namespace ID.
+Na interface atual da Cloudflare, vamos conectar o KV ao Worker pelo painel:
+Worker > Settings/Bindings > Add binding > KV namespace
+
+O nome da variável/binding DEVE ser exatamente:
+STORE
+
+E o namespace escolhido deve ser:
+pokepixel-market-store
+
+ARQUITETURA
+- Cloudflare Worker: backend + rotas da loja
+- Static Assets: HTML/CSS/JS e os 13 prints atuais
+- Workers KV: catálogo dinâmico + prints novos
+- Cloudflare Access: proteção do caminho /admin*
+
+AUTOMAÇÃO DO ADMIN
+- escolher print
+- ANALISAR PRINT
+- tenta detectar qualidade, IV total, IVs individuais, Natureza e gênero
+- calcula pré-nota genérica
+- você confere/corrige
+- publica
+
+PASSOS DE MIGRAÇÃO
+1. Criar o Worker/app.
+2. Conectar este KV ao Worker com binding STORE.
+3. Publicar/testar.
+4. Proteger /admin* com Cloudflare Access.
+5. Só depois abandonar o Netlify.
+
+OBSERVAÇÃO
+O site do Netlify continua funcionando durante todo o processo.

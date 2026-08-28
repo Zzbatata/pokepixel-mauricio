@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin • Pokepixel Market</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/admin/admin.css">
+  <script src="https://cdn.jsdelivr.net/npm/tesseract.js@6.0.1/dist/tesseract.min.js"></script>
+</head>
+<body class="admin-body">
+  <header class="admin-top">
+    <div>
+      <strong>POKEPIXEL MARKET</strong>
+      <span>PAINEL ADMINISTRATIVO</span>
+    </div>
+    <a href="/">← VOLTAR À LOJA</a>
+  </header>
+
+  <main class="admin-wrap">
+    <section class="admin-dashboard">
+      <div class="admin-bar">
+        <div>
+          <h1>CATÁLOGO</h1>
+          <p>Área protegida pelo Cloudflare Access.</p>
+        </div>
+      </div>
+
+      <div class="admin-note">
+        Novo fluxo: escolher o print → analisar automaticamente → conferir os campos → publicar.
+      </div>
+
+      <section class="add-product-panel">
+        <div class="add-product-title">
+          <h2>+ ADICIONAR / ANALISAR POKÉMON</h2>
+          <p>A leitura automática serve para preencher os dados usados futuramente nos filtros. Você pode corrigir qualquer campo antes de publicar.</p>
+        </div>
+
+        <form id="addProductForm" class="add-product-form">
+          <div class="upload-column">
+            <div class="upload-preview">
+              <img id="uploadPreview" alt="Prévia do print" hidden>
+              <div id="uploadPlaceholder">SELECIONE O PRINT</div>
+            </div>
+
+            <label class="file-label">PRINT DO POKÉMON
+              <input id="newImage" name="image" type="file" accept="image/png,image/jpeg,image/webp" required>
+            </label>
+
+            <button id="analyzeBtn" class="analyze-btn" type="button">🔍 ANALISAR PRINT</button>
+            <div class="ocr-progress" id="ocrProgress">Aguardando imagem.</div>
+          </div>
+
+          <div class="add-fields">
+            <label>NOME / IDENTIFICAÇÃO
+              <input id="newName" name="name" type="text" maxlength="80" placeholder="Ex.: Machoke #06" required>
+            </label>
+
+            <div class="add-two">
+              <label>PREÇO (R$)
+                <input id="newPrice" name="price" type="number" min="1" max="999" step="1" value="4" required>
+              </label>
+              <label>RARIDADE
+                <select id="newRarity" name="rarity">
+                  <option value="ÉPICO" selected>ÉPICO</option>
+                  <option value="LENDÁRIO">LENDÁRIO</option>
+                  <option value="RARO">RARO</option>
+                  <option value="INCOMUM">INCOMUM</option>
+                  <option value="COMUM">COMUM</option>
+                </select>
+              </label>
+            </div>
+
+            <fieldset class="technical-fieldset">
+              <legend>DADOS LIDOS DO PRINT</legend>
+
+              <div class="add-two">
+                <label>QUALIDADE x
+                  <input id="quality" name="quality" type="number" step="0.01" min="1" max="2" placeholder="1.53">
+                </label>
+                <label>IV TOTAL /186
+                  <input id="ivTotal" name="ivTotal" type="number" min="0" max="186" placeholder="136">
+                </label>
+              </div>
+
+              <div class="iv-grid">
+                <label>HP IV<input id="hpIv" name="hpIv" type="number" min="0" max="31"></label>
+                <label>ATK IV<input id="atkIv" name="atkIv" type="number" min="0" max="31"></label>
+                <label>DEF IV<input id="defIv" name="defIv" type="number" min="0" max="31"></label>
+                <label>SP.ATK IV<input id="spatkIv" name="spatkIv" type="number" min="0" max="31"></label>
+                <label>SP.DEF IV<input id="spdefIv" name="spdefIv" type="number" min="0" max="31"></label>
+                <label>VEL IV<input id="speedIv" name="speedIv" type="number" min="0" max="31"></label>
+              </div>
+
+              <div class="add-two">
+                <label>NATUREZA
+                  <input id="nature" name="nature" type="text" maxlength="40" placeholder="Ex.: Alegre">
+                </label>
+                <label>GÊNERO
+                  <select id="gender" name="gender">
+                    <option value="">Não identificado</option>
+                    <option value="Macho">Macho</option>
+                    <option value="Fêmea">Fêmea</option>
+                  </select>
+                </label>
+              </div>
+
+              <div class="auto-score">
+                <span>PRÉ-NOTA AUTOMÁTICA</span>
+                <strong id="autoScoreText">--</strong>
+                <input id="autoScore" name="autoScore" type="hidden">
+                <small>Pré-nota genérica de IV + qualidade. Não substitui nossa análise por espécie.</small>
+              </div>
+            </fieldset>
+
+            <button id="addProductBtn" type="submit">CONFIRMAR E PUBLICAR</button>
+            <p id="addProductError" class="error"></p>
+          </div>
+        </form>
+      </section>
+
+      <div id="adminProducts" class="admin-products"></div>
+      <div id="toastAdmin" class="save-message"></div>
+    </section>
+  </main>
+
+  <script src="/admin/admin.js"></script>
+</body>
+</html>
