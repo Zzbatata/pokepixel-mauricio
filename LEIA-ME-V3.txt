@@ -1,0 +1,24 @@
+POKEPIXEL MARKET — V3.0
+
+ATUALIZAÇÃO GRANDE:
+- 47 cards recebidos nos prints.
+- 13 já estavam no site e foram ignorados.
+- 34 Pokémon novos adicionados.
+- Prints separados e tratados em 2x, mantendo todas as informações.
+- Carrinho para comprar vários Pokémon no mesmo pedido.
+- WhatsApp recebe lista dos itens + total.
+- Épicos agora ficam na faixa R$ 7 a R$ 12.
+- Todos os 13 épicos antigos também foram reposicionados nessa faixa.
+- Estrutura de raridade já preparada para RAROS.
+- Capa refeita em pixel-art noturno, sem escrita escondida no fundo.
+- Mantido o print original ampliável.
+- Admin passa a tentar ler a ASSINATURA e o backend bloqueia assinatura duplicada.
+- Admin sugere automaticamente preço de ÉPICO entre R$ 7 e R$ 12.
+
+TOTAL DO CATÁLOGO PADRÃO: 47 Pokémon.
+
+IMPORTANTE:
+O catálogo salvo no KV continua preservando status Vendido/Disponível.
+Preços antigos de épicos abaixo de R$ 7 são automaticamente migrados para a nova faixa.
+
+Arquivo LOTE-2026-08-28.json contém a lista dos 34 novos e dos 13 ignorados.

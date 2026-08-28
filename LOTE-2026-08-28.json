@@ -1,0 +1,227 @@
+{
+  "total_cards_received": 47,
+  "already_in_site_ignored": 13,
+  "new_added": 34,
+  "new_items": [
+    {
+      "name": "Abra #01",
+      "quality": 1.49,
+      "ivTotal": 106,
+      "price": 8
+    },
+    {
+      "name": "Beedrill #01",
+      "quality": 1.49,
+      "ivTotal": 133,
+      "price": 10
+    },
+    {
+      "name": "Charmeleon #01",
+      "quality": 1.49,
+      "ivTotal": 124,
+      "price": 10
+    },
+    {
+      "name": "Drowzee #01",
+      "quality": 1.49,
+      "ivTotal": 137,
+      "price": 11
+    },
+    {
+      "name": "Charmeleon #02",
+      "quality": 1.46,
+      "ivTotal": 134,
+      "price": 11
+    },
+    {
+      "name": "Dugtrio #01",
+      "quality": 1.51,
+      "ivTotal": 138,
+      "price": 11
+    },
+    {
+      "name": "Electabuzz #01",
+      "quality": 1.49,
+      "ivTotal": 108,
+      "price": 8
+    },
+    {
+      "name": "Fearow #01",
+      "quality": 1.4,
+      "ivTotal": 109,
+      "price": 7
+    },
+    {
+      "name": "Electabuzz #02",
+      "quality": 1.49,
+      "ivTotal": 135,
+      "price": 10
+    },
+    {
+      "name": "Gengar #01",
+      "quality": 1.41,
+      "ivTotal": 126,
+      "price": 9
+    },
+    {
+      "name": "Geodude #01",
+      "quality": 1.44,
+      "ivTotal": 142,
+      "price": 10
+    },
+    {
+      "name": "Gloom #01",
+      "quality": 1.41,
+      "ivTotal": 103,
+      "price": 7
+    },
+    {
+      "name": "Gloom #02",
+      "quality": 1.5,
+      "ivTotal": 143,
+      "price": 12
+    },
+    {
+      "name": "Graveler #01",
+      "quality": 1.53,
+      "ivTotal": 128,
+      "price": 11
+    },
+    {
+      "name": "Gyarados #01",
+      "quality": 1.47,
+      "ivTotal": 141,
+      "price": 12
+    },
+    {
+      "name": "Horsea #01",
+      "quality": 1.48,
+      "ivTotal": 102,
+      "price": 8
+    },
+    {
+      "name": "Ivysaur #01",
+      "quality": 1.49,
+      "ivTotal": 123,
+      "price": 9
+    },
+    {
+      "name": "Parasect #01",
+      "quality": 1.48,
+      "ivTotal": 125,
+      "price": 9
+    },
+    {
+      "name": "Persian #01",
+      "quality": 1.4,
+      "ivTotal": 130,
+      "price": 8
+    },
+    {
+      "name": "Pidgeotto #01",
+      "quality": 1.53,
+      "ivTotal": 110,
+      "price": 9
+    },
+    {
+      "name": "Pidgeotto #02",
+      "quality": 1.48,
+      "ivTotal": 104,
+      "price": 8
+    },
+    {
+      "name": "Poliwhirl #01",
+      "quality": 1.49,
+      "ivTotal": 116,
+      "price": 9
+    },
+    {
+      "name": "Poliwhirl #02",
+      "quality": 1.53,
+      "ivTotal": 120,
+      "price": 10
+    },
+    {
+      "name": "Poliwhirl #03",
+      "quality": 1.45,
+      "ivTotal": 117,
+      "price": 8
+    },
+    {
+      "name": "Porygon #01",
+      "quality": 1.51,
+      "ivTotal": 111,
+      "price": 9
+    },
+    {
+      "name": "Primeape #01",
+      "quality": 1.44,
+      "ivTotal": 141,
+      "price": 10
+    },
+    {
+      "name": "Psyduck #01",
+      "quality": 1.5,
+      "ivTotal": 133,
+      "price": 10
+    },
+    {
+      "name": "Psyduck #02",
+      "quality": 1.49,
+      "ivTotal": 110,
+      "price": 8
+    },
+    {
+      "name": "Pupitar #01",
+      "quality": 1.48,
+      "ivTotal": 134,
+      "price": 10
+    },
+    {
+      "name": "Quilava #01",
+      "quality": 1.48,
+      "ivTotal": 128,
+      "price": 10
+    },
+    {
+      "name": "Sandslash #01",
+      "quality": 1.51,
+      "ivTotal": 105,
+      "price": 8
+    },
+    {
+      "name": "Tangela #01",
+      "quality": 1.5,
+      "ivTotal": 144,
+      "price": 12
+    },
+    {
+      "name": "Tyranitar #01",
+      "quality": 1.45,
+      "ivTotal": 143,
+      "price": 12
+    },
+    {
+      "name": "Yanma #01",
+      "quality": 1.45,
+      "ivTotal": 108,
+      "price": 8
+    }
+  ],
+  "duplicates_ignored": [
+    "Jumpluff #01",
+    "Jumpluff #02",
+    "Kabutops #01",
+    "Kabutops #02",
+    "Machoke #01",
+    "Machoke #02",
+    "Machoke #03",
+    "Machoke #04",
+    "Machoke #05",
+    "Magmar #01",
+    "Magnemite #01",
+    "Nidorina #01",
+    "Ninetales #01"
+  ],
+  "pricing_rule": "Épicos R$ 7 a R$ 12; sugestão automática baseada em qualidade + IV, com pequeno ajuste de procura em algumas espécies."
+}

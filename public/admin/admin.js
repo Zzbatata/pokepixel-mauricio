@@ -185,6 +185,18 @@ function parseGender(text){
   return '';
 }
 
+function parseSignature(text){
+  const t = normalizeOCR(text);
+  const m = t.match(/ASSINATURA\s*[:\-]?\s*([0-9A-Za-z@#£]{8,}(?:-[0-9A-Za-z@#£]{3,}){3,})/i);
+  if(!m) return '';
+  return m[1]
+    .replace(/@/g,'a')
+    .replace(/£/g,'f')
+    .replace(/#/g,'f')
+    .trim()
+    .toLowerCase();
+}
+
 /*
   Usa a soma dos 6 IVs como validação:
   - se todos foram lidos e a soma bate com IV TOTAL, alta confiança;
@@ -229,7 +241,8 @@ function parseTechnical(text){
     spdefIv: extractLabeledIv(text,'spdef'),
     speedIv: extractLabeledIv(text,'speed'),
     nature: parseNature(text),
-    gender: parseGender(text)
+    gender: parseGender(text),
+    signature: parseSignature(text)
   };
 
   return validateAndInferIvs(parsed);
@@ -290,6 +303,33 @@ newImage.addEventListener('change', () => {
   ocrProgress.textContent = 'Imagem pronta para análise.';
 });
 
+
+function suggestEpicPrice(){
+  const rarity = String($('newRarity')?.value || '').toUpperCase();
+  if(rarity !== 'ÉPICO') return;
+
+  const iv = Number($('ivTotal')?.value);
+  const q = Number($('quality')?.value);
+  if(!Number.isFinite(iv) || !Number.isFinite(q) || !iv || !q) return;
+
+  const ivScore = Math.max(0, Math.min(100, (iv - 90) / 60 * 100));
+  const qScore = Math.max(0, Math.min(100, (q - 1.40) / (1.54 - 1.40) * 100));
+  const score = ivScore * 0.65 + qScore * 0.35;
+
+  let price = 7;
+  if(score >= 82) price = 12;
+  else if(score >= 72) price = 11;
+  else if(score >= 60) price = 10;
+  else if(score >= 45) price = 9;
+  else if(score >= 30) price = 8;
+
+  $('newPrice').value = price;
+}
+
+$('newRarity')?.addEventListener('change', suggestEpicPrice);
+$('ivTotal')?.addEventListener('input', suggestEpicPrice);
+$('quality')?.addEventListener('input', suggestEpicPrice);
+
 async function preprocessImage(file){
   const bitmap = await createImageBitmap(file);
   const scale = 2;
@@ -345,9 +385,11 @@ analyzeBtn.addEventListener('click', async () => {
     setIf('speedIv', parsed.speedIv);
     setIf('nature', parsed.nature);
     setIf('gender', parsed.gender);
+    setIf('signature', parsed.signature);
     recomputeAutoScore();
+    suggestEpicPrice();
 
-    const mainFields = ['quality','ivTotal','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv','nature','gender'];
+    const mainFields = ['quality','ivTotal','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv','nature','gender','signature'];
     const found = mainFields.filter(k => parsed[k] !== null && parsed[k] !== undefined && parsed[k] !== '').length;
 
     if(parsed.ivValidated){
