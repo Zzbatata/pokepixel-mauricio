@@ -1,3 +1,32 @@
+CLOUDFLARE V2.2 — ADMIN COM SENHA, SEM ZERO TRUST
+
+Por que mudamos:
+- O onboarding do Zero Trust Free atualmente pode pedir forma de pagamento.
+- Para manter a loja sem essa dependência, o próprio Worker protege o painel.
+
+Como funciona:
+- /admin/ mostra uma tela de senha.
+- A senha fica como SECRET no Cloudflare, não dentro do GitHub.
+- Após login, o Worker cria um cookie seguro HttpOnly por 12 horas.
+- As APIs de alterar preço, vender, excluir e publicar exigem essa sessão.
+
+SECRETS NECESSÁRIOS NO CLOUDFLARE:
+ADMIN_PASSWORD = sua senha escolhida
+SESSION_SECRET = uma sequência longa e aleatória
+
+Você vai cadastrar os dois em:
+Worker > Configurações > Variáveis e segredos > Adicionar variável
+marcando como segredo quando a interface oferecer essa opção.
+
+CLOUDFLARE V2.1 — KV JÁ VINCULADO
+
+Binding: STORE
+Namespace: loja-mercado-pokepixel
+Namespace ID: b43865fff36b42e193da5fdf05f9159b
+
+O arquivo wrangler.jsonc já contém a vinculação.
+Ao substituir esse arquivo no GitHub, a Cloudflare fará novo deploy automaticamente.
+
 POKEPIXEL MARKET — CLOUDFLARE V2 (WORKERS KV)
 
 IMPORTANTE

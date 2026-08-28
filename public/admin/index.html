@@ -21,12 +21,25 @@
   </header>
 
   <main class="admin-wrap">
-    <section class="admin-dashboard">
+    <section id="loginPanel" class="admin-login">
+      <h1>ACESSO ADMINISTRATIVO</h1>
+      <p>Digite sua senha para gerenciar a loja.</p>
+      <form id="loginForm">
+        <label>SENHA
+          <input id="adminPassword" type="password" autocomplete="current-password" required>
+        </label>
+        <button type="submit">ENTRAR</button>
+      </form>
+      <p id="loginError" class="error"></p>
+    </section>
+
+    <section id="dashboard" class="admin-dashboard" hidden>
       <div class="admin-bar">
         <div>
           <h1>CATÁLOGO</h1>
-          <p>Área protegida pelo Cloudflare Access.</p>
+          <p>Painel privado da loja.</p>
         </div>
+        <button id="logoutBtn" class="logout-btn" type="button">SAIR</button>
       </div>
 
       <div class="admin-note">

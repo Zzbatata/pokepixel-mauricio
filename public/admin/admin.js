@@ -10,6 +10,12 @@ const analyzeBtn = $('analyzeBtn');
 const ocrProgress = $('ocrProgress');
 const adminProducts = $('adminProducts');
 const toastAdmin = $('toastAdmin');
+const loginPanel = $('loginPanel');
+const dashboard = $('dashboard');
+const loginForm = $('loginForm');
+const loginError = $('loginError');
+const adminPassword = $('adminPassword');
+const logoutBtn = $('logoutBtn');
 
 function flash(msg){
   toastAdmin.textContent = msg;
@@ -204,10 +210,57 @@ analyzeBtn.addEventListener('click', async () => {
 
 async function adminFetch(url, options={}){
   const res = await fetch(url, {...options, cache:'no-store'});
-  if(res.status === 403) throw new Error('Acesso administrativo não reconhecido. Confira o Cloudflare Access.');
+  if(res.status === 403) throw new Error('Sua sessão administrativa expirou. Entre novamente.');
   if(!res.ok) throw new Error(await res.text() || 'Erro na operação.');
   return res;
 }
+
+
+async function checkSession(){
+  const res = await fetch('/admin/api/session',{cache:'no-store'});
+  const data = await res.json();
+  return !!data.authenticated;
+}
+
+async function showAdmin(){
+  loginPanel.hidden = true;
+  dashboard.hidden = false;
+  await render();
+}
+
+async function showLogin(){
+  dashboard.hidden = true;
+  loginPanel.hidden = false;
+}
+
+loginForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  loginError.textContent = '';
+
+  try{
+    const res = await fetch('/admin/api/login',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({password:adminPassword.value}),
+      cache:'no-store'
+    });
+
+    if(!res.ok){
+      loginError.textContent = await res.text() || 'Não foi possível entrar.';
+      return;
+    }
+
+    adminPassword.value = '';
+    await showAdmin();
+  }catch(e){
+    loginError.textContent = 'Não foi possível entrar agora.';
+  }
+});
+
+logoutBtn.addEventListener('click', async () => {
+  await fetch('/admin/api/logout',{method:'POST',cache:'no-store'});
+  location.reload();
+});
 
 async function render(){
   const res = await adminFetch('/admin/api/catalog');
@@ -325,7 +378,12 @@ addProductForm.addEventListener('submit', async e => {
   }
 });
 
-render().catch(e => {
-  addProductError.textContent = e.message;
-  console.error(e);
-});
+(async function init(){
+  try{
+    if(await checkSession()) await showAdmin();
+    else await showLogin();
+  }catch(e){
+    console.error(e);
+    await showLogin();
+  }
+})();

@@ -47,12 +47,67 @@ async function saveCatalog(env, catalog) {
   await env.STORE.put('_catalog.json', JSON.stringify(catalog));
 }
 
-function requireAdmin(request, env) {
-  if(env.DEV_ADMIN_BYPASS === '1') return true;
-  return Boolean(
-    request.headers.get('Cf-Access-Jwt-Assertion') ||
-    request.headers.get('Cf-Access-Authenticated-User-Email')
+function base64url(bytes) {
+  let binary = '';
+  const arr = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
+  for(const b of arr) binary += String.fromCharCode(b);
+  return btoa(binary).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+function textBytes(value) {
+  return new TextEncoder().encode(String(value));
+}
+
+async function hmacHex(secret, value) {
+  const key = await crypto.subtle.importKey(
+    'raw',
+    textBytes(secret),
+    {name:'HMAC', hash:'SHA-256'},
+    false,
+    ['sign']
   );
+  const sig = await crypto.subtle.sign('HMAC', key, textBytes(value));
+  return base64url(sig);
+}
+
+function getCookie(request, name) {
+  const raw = request.headers.get('Cookie') || '';
+  for(const part of raw.split(';')) {
+    const [k, ...rest] = part.trim().split('=');
+    if(k === name) return rest.join('=');
+  }
+  return '';
+}
+
+async function createSession(env) {
+  const exp = Math.floor(Date.now()/1000) + 60*60*12;
+  const nonce = crypto.randomUUID();
+  const payload = `${exp}.${nonce}`;
+  const sig = await hmacHex(env.SESSION_SECRET, payload);
+  return `${payload}.${sig}`;
+}
+
+async function validSession(request, env) {
+  if(!env.SESSION_SECRET) return false;
+  const token = getCookie(request, 'pp_admin');
+  if(!token) return false;
+
+  const parts = token.split('.');
+  if(parts.length !== 3) return false;
+  const [expRaw, nonce, sig] = parts;
+  const exp = Number(expRaw);
+  if(!Number.isFinite(exp) || exp < Math.floor(Date.now()/1000)) return false;
+
+  const expected = await hmacHex(env.SESSION_SECRET, `${expRaw}.${nonce}`);
+  if(expected.length !== sig.length) return false;
+
+  let diff = 0;
+  for(let i=0;i<expected.length;i++) diff |= expected.charCodeAt(i) ^ sig.charCodeAt(i);
+  return diff === 0;
+}
+
+async function requireAdmin(request, env) {
+  return await validSession(request, env);
 }
 
 async function serveImage(env, id) {
@@ -74,7 +129,7 @@ async function serveImage(env, id) {
 }
 
 async function adminCatalog(request, env) {
-  if(!requireAdmin(request, env)) {
+  if(!(await requireAdmin(request, env))) {
     return new Response('Acesso administrativo não autorizado.',{status:403});
   }
 
@@ -178,6 +233,39 @@ async function adminCatalog(request, env) {
   return json({ok:true,item});
 }
 
+
+async function loginAdmin(request, env) {
+  if(request.method !== 'POST') return new Response('Method not allowed',{status:405});
+  if(!env.ADMIN_PASSWORD || !env.SESSION_SECRET){
+    return new Response('Segredos do admin ainda não configurados.',{status:503});
+  }
+
+  const body = await request.json().catch(()=>({}));
+  const password = String(body.password || '');
+  if(password !== env.ADMIN_PASSWORD){
+    return new Response('Senha incorreta.',{status:401});
+  }
+
+  const token = await createSession(env);
+  return json({ok:true},{
+    headers:{
+      'Set-Cookie':`pp_admin=${token}; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=43200`
+    }
+  });
+}
+
+async function logoutAdmin() {
+  return json({ok:true},{
+    headers:{
+      'Set-Cookie':'pp_admin=; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=0'
+    }
+  });
+}
+
+async function sessionStatus(request, env) {
+  return json({authenticated:await validSession(request, env)});
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -189,6 +277,18 @@ export default {
     if(url.pathname.startsWith('/api/image/') && request.method === 'GET') {
       const id = decodeURIComponent(url.pathname.slice('/api/image/'.length));
       return serveImage(env, id);
+    }
+
+    if(url.pathname === '/admin/api/login') {
+      return loginAdmin(request, env);
+    }
+
+    if(url.pathname === '/admin/api/logout') {
+      return logoutAdmin();
+    }
+
+    if(url.pathname === '/admin/api/session') {
+      return sessionStatus(request, env);
     }
 
     if(url.pathname === '/admin/api/catalog') {

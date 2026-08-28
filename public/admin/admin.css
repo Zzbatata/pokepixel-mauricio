@@ -35,3 +35,45 @@ body.admin-body{background:#071018;min-height:100vh}
 .admin-actions{display:flex;gap:8px;margin-top:11px}.admin-actions button{flex:1}.admin-actions .sell,.delete-btn{background:#8f2929!important;border-color:#bf4b4b!important}
 @media(max-width:850px){.add-product-form{grid-template-columns:1fr}.admin-products{grid-template-columns:1fr}}
 @media(max-width:600px){.add-two,.iv-grid{grid-template-columns:1fr 1fr}.admin-card{grid-template-columns:95px 1fr}.admin-thumb{width:95px;height:140px}.admin-top{gap:12px;align-items:flex-start}}
+.admin-login{
+  max-width:470px;
+  margin:90px auto;
+  padding:24px;
+  border:2px solid #59666e;
+  background:#0b171f;
+  box-shadow:0 6px 0 #030507;
+}
+.admin-login h1{
+  font-family:'Press Start 2P';
+  font-size:13px;
+  color:#ffd31a;
+  line-height:1.5;
+}
+.admin-login input{
+  width:100%;
+  margin-top:6px;
+  background:#071018;
+  color:#fff;
+  border:2px solid #48555e;
+  padding:10px;
+  font-family:'VT323';
+  font-size:22px;
+}
+.admin-login button,.logout-btn{
+  margin-top:12px;
+  padding:11px 15px;
+  border:2px solid #29994a;
+  background:#1c873a;
+  color:#fff;
+  font-family:'Press Start 2P';
+  font-size:8px;
+  cursor:pointer;
+}
+.admin-login form button{width:100%}
+.admin-bar{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.logout-btn{
+  margin-top:0;
+  background:#633030;
+  border-color:#9f4c4c;
+}
+[hidden]{display:none!important}
