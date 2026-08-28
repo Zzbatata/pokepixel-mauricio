@@ -13,5 +13,11 @@
       "binding": "STORE",
       "id": "b43865fff36b42e193da5fdf05f9159b"
     }
-  ]
+  ],
+  "secrets": {
+    "required": [
+      "ADMIN_PASSWORD",
+      "SESSION_SECRET"
+    ]
+  }
 }
