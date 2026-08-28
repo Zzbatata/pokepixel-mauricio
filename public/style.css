@@ -213,3 +213,195 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
 /* V3.1 — identidade de raridade igual à lógica visual do Pokepixel */
 .poke-card.rarity-epico .card-head strong{color:#f2d28b}
 .poke-card.rarity-epico.in-cart{border-color:#e0ad1b}
+
+
+/* =========================================================
+   V3.2 — LEGIBILIDADE DOS NOMES, PREÇOS E DADOS PRINCIPAIS
+   ========================================================= */
+
+/* Mantém o estilo pixel nas áreas decorativas, mas usa uma fonte
+   mais limpa nos dados que precisam ser lidos rapidamente. */
+.card-head strong,
+.card-price,
+.quick-stats b,
+.cart-item strong,
+.cart-item b,
+.checkout-list span,
+.checkout-list b,
+.big-price,
+.cart-total strong{
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Nome do Pokémon */
+.card-head strong{
+  font-size:26px;
+  line-height:1.12;
+  font-weight:900;
+  letter-spacing:.2px;
+  color:#fff0bd !important;
+  text-shadow:
+    0 1px 0 #000,
+    0 2px 2px rgba(0,0,0,.9);
+  overflow-wrap:anywhere;
+}
+
+/* Cabeçalho do card mais espaçoso */
+.card-head{
+  min-height:88px;
+  padding:14px 13px 12px;
+  background:linear-gradient(180deg,#16232c,#101b23);
+}
+
+/* ÉPICO bem evidente e dourado */
+.rarity-badge{
+  margin-top:7px;
+  padding:5px 8px;
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  line-height:1.4;
+  letter-spacing:0;
+}
+
+/* IV e Qualidade */
+.quick-stats{
+  min-width:92px;
+  gap:6px;
+  padding-top:1px;
+  font-size:16px;
+  line-height:1.15;
+}
+.quick-stats span{
+  color:#b8c3c9;
+}
+.quick-stats b{
+  display:block;
+  margin-top:2px;
+  font-size:18px;
+  font-weight:800;
+  color:#ffffff;
+  letter-spacing:.2px;
+}
+
+/* Área inferior com preço e botão */
+.card-bottom{
+  min-height:92px;
+  padding:13px;
+  background:linear-gradient(180deg,#0d1921,#08131a);
+}
+
+/* PREÇO — principal melhoria visual */
+.card-price{
+  font-size:31px;
+  line-height:1;
+  font-weight:900;
+  letter-spacing:-.5px;
+  color:#52ff67;
+  text-shadow:
+    0 1px 0 #051a09,
+    0 0 8px rgba(64,255,92,.18);
+  white-space:nowrap;
+}
+
+/* Status */
+.available,
+.sold{
+  margin-top:7px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.5px;
+}
+
+/* Botão do carrinho maior e mais fácil de ler */
+.cart-add{
+  min-width:132px;
+  min-height:44px;
+  padding:11px 10px;
+  font-size:7px;
+  line-height:1.35;
+  box-shadow:0 3px 0 rgba(0,0,0,.65);
+}
+
+/* Melhora a leitura do texto sobre a imagem */
+.screen-btn span{
+  left:10px;
+  right:10px;
+  bottom:10px;
+  padding:9px 8px;
+  border:1px solid #748590;
+  background:rgba(2,9,14,.94);
+  font-size:7px;
+  line-height:1.4;
+  text-shadow:0 1px 1px #000;
+}
+
+/* Carrinho lateral */
+.cart-item strong{
+  font-size:18px;
+  line-height:1.2;
+  font-weight:900;
+  color:#ffe29a;
+}
+.cart-item b{
+  display:block;
+  margin-top:5px;
+  font-size:18px;
+  font-weight:900;
+  color:#52ff67;
+}
+
+/* Total do carrinho */
+.cart-total strong{
+  font-size:28px;
+  font-weight:900;
+  color:#52ff67;
+}
+
+/* Modal de pagamento */
+.big-price{
+  font-size:44px;
+  font-weight:900;
+  color:#52ff67;
+}
+.checkout-list span{
+  font-size:16px;
+  font-weight:700;
+}
+.checkout-list b{
+  font-size:17px;
+  font-weight:900;
+  color:#52ff67;
+}
+
+/* Desktop muito largo: cards um pouco mais confortáveis */
+@media(min-width:1450px){
+  .cards{
+    grid-template-columns:repeat(3,minmax(310px,1fr));
+  }
+}
+
+/* Tablets */
+@media(max-width:1250px){
+  .card-head strong{font-size:24px}
+  .card-price{font-size:29px}
+}
+
+/* Celular */
+@media(max-width:650px){
+  .card-head{
+    min-height:auto;
+    padding:13px 12px;
+  }
+  .card-head strong{
+    font-size:25px;
+  }
+  .card-price{
+    font-size:30px;
+  }
+  .quick-stats b{
+    font-size:17px;
+  }
+}

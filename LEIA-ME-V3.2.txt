@@ -1,0 +1,14 @@
+POKEPIXEL MARKET — V3.2
+
+FOCO DESTA VERSÃO: LEGIBILIDADE
+
+- Nome dos Pokémon maior, mais nítido e com fonte limpa.
+- Preços maiores, mais grossos e com contraste muito melhor.
+- IV e Qualidade mais fáceis de ler.
+- Cabeçalho e rodapé dos cards ganharam mais espaço.
+- Botão do carrinho ficou maior.
+- Nome/preço dentro do carrinho também foram melhorados.
+- Total do carrinho e preço do pagamento ficaram mais destacados.
+- Estilo pixel-art continua nos elementos decorativos e nos badges.
+
+Nenhum Pokémon, preço, carrinho ou lógica do analisador foi removido.
