@@ -77,3 +77,141 @@ body.admin-body{background:#071018;min-height:100vh}
   border-color:#9f4c4c;
 }
 [hidden]{display:none!important}
+
+
+/* ===== V2.4: prévia em qualidade original + zoom ===== */
+.admin-wrap{max-width:1420px}
+
+.add-product-form{
+  grid-template-columns:minmax(430px,.95fr) minmax(500px,1.05fr);
+}
+
+.upload-preview{
+  position:relative;
+  min-height:640px;
+  max-height:78vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  overflow:auto;
+  padding:14px;
+  background:#050a0e;
+  border:2px dashed #4c5b64;
+}
+
+.upload-preview img{
+  width:auto;
+  height:auto;
+  max-width:100%;
+  max-height:none;
+  object-fit:unset;
+  image-rendering:auto;
+  cursor:zoom-in;
+  display:block;
+}
+
+.preview-open-btn{
+  position:sticky;
+  left:12px;
+  bottom:12px;
+  align-self:flex-end;
+  margin-left:-156px;
+  width:144px;
+  min-width:144px;
+  padding:10px 8px;
+  border:2px solid #3f91c2;
+  background:rgba(14,41,58,.94);
+  color:#fff;
+  font-family:'Press Start 2P';
+  font-size:7px;
+  cursor:pointer;
+  box-shadow:0 3px 0 #06131a;
+}
+
+.image-zoom-modal{
+  position:fixed;
+  inset:0;
+  z-index:9999;
+  display:none;
+  flex-direction:column;
+  background:rgba(2,7,11,.97);
+}
+
+.image-zoom-modal.on{display:flex}
+
+.image-zoom-toolbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:16px;
+  flex-wrap:wrap;
+  padding:12px 16px;
+  background:#09151d;
+  border-bottom:2px solid #4c5d67;
+  color:#ffd31a;
+}
+
+.image-zoom-toolbar strong{
+  font-family:'Press Start 2P';
+  font-size:9px;
+}
+
+.image-zoom-actions{
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+
+.image-zoom-actions button{
+  min-width:42px;
+  min-height:38px;
+  padding:7px 10px;
+  border:2px solid #53636d;
+  background:#14232c;
+  color:#fff;
+  font-family:'Press Start 2P';
+  font-size:8px;
+  cursor:pointer;
+}
+
+.image-zoom-actions .close-zoom{
+  border-color:#a94a4a;
+  background:#6f2929;
+}
+
+#zoomLevel{
+  min-width:62px;
+  text-align:center;
+  color:#31ff4f;
+  font-family:'Press Start 2P';
+  font-size:8px;
+}
+
+.image-zoom-viewport{
+  flex:1;
+  overflow:auto;
+  padding:24px;
+  text-align:center;
+}
+
+.image-zoom-viewport img{
+  width:100%;
+  max-width:none;
+  height:auto;
+  image-rendering:auto;
+  box-shadow:0 0 0 2px #5b6870,0 12px 34px rgba(0,0,0,.55);
+}
+
+body.zoom-open{overflow:hidden}
+
+@media(max-width:980px){
+  .add-product-form{grid-template-columns:1fr}
+  .upload-preview{min-height:560px;max-height:72vh}
+}
+
+@media(max-width:600px){
+  .upload-preview{min-height:430px;padding:8px}
+  .image-zoom-toolbar{align-items:flex-start}
+  .image-zoom-actions{width:100%;flex-wrap:wrap}
+  .image-zoom-viewport{padding:10px}
+}

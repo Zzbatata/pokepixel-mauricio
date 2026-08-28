@@ -1,3 +1,17 @@
+CLOUDFLARE V2.4 — OCR + PRÉVIA/ZOOM DO PRINT
+
+- OCR corrige a leitura dos IVs: lê o número antes de /31.
+- Valida a soma dos 6 IVs contra o IV Total.
+- A prévia não é mais limitada a 520px de altura.
+- Clique no print ou em AMPLIAR PRINT para abrir em tela cheia.
+- Zoom de 50% a 400%.
+
+Teste Tangela01 esperado:
+Qualidade 1.50 | IV 144
+HP 26 | ATK 18 | DEF 21 | SP.ATK 29 | SP.DEF 21 | VEL 29
+Natureza Calma | Gênero Macho
+Soma dos IVs = 144
+
 CLOUDFLARE V2.2 — ADMIN COM SENHA, SEM ZERO TRUST
 
 Por que mudamos:

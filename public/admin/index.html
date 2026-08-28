@@ -54,9 +54,10 @@
 
         <form id="addProductForm" class="add-product-form">
           <div class="upload-column">
-            <div class="upload-preview">
+            <div class="upload-preview" id="uploadPreviewBox">
               <img id="uploadPreview" alt="Prévia do print" hidden>
               <div id="uploadPlaceholder">SELECIONE O PRINT</div>
+              <button id="openPreviewBtn" class="preview-open-btn" type="button" hidden>🔍 AMPLIAR PRINT</button>
             </div>
 
             <label class="file-label">PRINT DO POKÉMON
@@ -141,5 +142,22 @@
   </main>
 
   <script src="/admin/admin.js"></script>
+
+  <div id="imageZoomModal" class="image-zoom-modal" aria-hidden="true">
+    <div class="image-zoom-toolbar">
+      <strong>VISUALIZAÇÃO DO PRINT ORIGINAL</strong>
+      <div class="image-zoom-actions">
+        <button id="zoomOutBtn" type="button">−</button>
+        <span id="zoomLevel">100%</span>
+        <button id="zoomInBtn" type="button">+</button>
+        <button id="zoomResetBtn" type="button">100%</button>
+        <button id="closeZoomBtn" class="close-zoom" type="button">FECHAR ✕</button>
+      </div>
+    </div>
+    <div id="imageZoomViewport" class="image-zoom-viewport">
+      <img id="imageZoomTarget" alt="Print original ampliado">
+    </div>
+  </div>
+
 </body>
 </html>

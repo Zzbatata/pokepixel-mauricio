@@ -10,6 +10,17 @@ const analyzeBtn = $('analyzeBtn');
 const ocrProgress = $('ocrProgress');
 const adminProducts = $('adminProducts');
 const toastAdmin = $('toastAdmin');
+const openPreviewBtn = $('openPreviewBtn');
+const imageZoomModal = $('imageZoomModal');
+const imageZoomTarget = $('imageZoomTarget');
+const imageZoomViewport = $('imageZoomViewport');
+const zoomLevel = $('zoomLevel');
+const zoomInBtn = $('zoomInBtn');
+const zoomOutBtn = $('zoomOutBtn');
+const zoomResetBtn = $('zoomResetBtn');
+const closeZoomBtn = $('closeZoomBtn');
+let previewObjectUrl = null;
+let zoomScale = 1;
 const loginPanel = $('loginPanel');
 const dashboard = $('dashboard');
 const loginForm = $('loginForm');
@@ -38,54 +49,190 @@ function guessNameFromFilename(filename){
 function normalizeOCR(text){
   return String(text || '')
     .replace(/\r/g,'')
-    .replace(/[|]/g,'I')
-    .replace(/,/g,'.');
+    .replace(/,/g,'.')
+    .replace(/[│|]/g,'I')
+    .replace(/[“”]/g,'"')
+    .replace(/[–—]/g,'-');
 }
 
-function firstNumberNear(text, labels, max=31){
-  const lines = normalizeOCR(text).split('\n').map(x=>x.trim()).filter(Boolean);
+function compactLine(line){
+  return normalizeOCR(line)
+    .toUpperCase()
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+/*
+  Captura especificamente o NUMERADOR antes de /31.
+  Ex.: "HP 76 • 26/31" => 26
+  O analisador antigo pegava o último número da linha, que era 31.
+*/
+function ivBefore31(fragment){
+  const s = compactLine(fragment)
+    .replace(/3[I|L]/g,'31')
+    .replace(/\/\s*3\s*1/g,'/31');
+
+  const matches = [...s.matchAll(/(\d{1,2})\s*\/\s*31\b/g)];
+  if(!matches.length) return null;
+
+  const value = Number(matches[matches.length - 1][1]);
+  return value >= 0 && value <= 31 ? value : null;
+}
+
+function getLines(text){
+  return normalizeOCR(text)
+    .split('\n')
+    .map(compactLine)
+    .filter(Boolean);
+}
+
+function lineWindow(lines, index){
+  return [
+    lines[index - 1] || '',
+    lines[index] || '',
+    lines[index + 1] || ''
+  ].join(' ');
+}
+
+function isSpAtk(line){
+  return /\b(?:ATK\s*SP|SP\.?\s*ATK|ATAQUE\s*SP)\b/.test(line);
+}
+
+function isSpDef(line){
+  return /\b(?:DEF\s*SP|SP\.?\s*DEF|DEFESA\s*SP)\b/.test(line);
+}
+
+function extractLabeledIv(text, kind){
+  const lines = getLines(text);
+
   for(let i=0;i<lines.length;i++){
-    const upper = lines[i].toUpperCase();
-    if(labels.some(label=>upper.includes(label))){
-      const joined = `${lines[i]} ${lines[i+1] || ''}`;
-      const nums = [...joined.matchAll(/\b(\d{1,3})\b/g)]
-        .map(m=>Number(m[1]))
-        .filter(n=>n>=0 && n<=max);
-      if(nums.length) return nums[nums.length-1];
+    const line = lines[i];
+    let match = false;
+
+    if(kind === 'hp'){
+      match = /^HP\b/.test(line) && !/HP\s*\+/.test(line);
+    }else if(kind === 'atk'){
+      match = /\bATK\b|\bATAQUE\b/.test(line) && !isSpAtk(line);
+    }else if(kind === 'def'){
+      match = /\bDEF\b|\bDEFESA\b/.test(line) && !isSpDef(line);
+    }else if(kind === 'spatk'){
+      match = isSpAtk(line);
+    }else if(kind === 'spdef'){
+      match = isSpDef(line);
+    }else if(kind === 'speed'){
+      match = /\bVEL\b|\bSPEED\b|\bSPE\b/.test(line);
+    }
+
+    if(!match) continue;
+
+    const value = ivBefore31(lineWindow(lines, i));
+    if(value !== null) return value;
+  }
+
+  return null;
+}
+
+function parseQuality(text){
+  const t = normalizeOCR(text);
+  const patterns = [
+    /(?:ÉPICA|EPICA|RARIDADE)?[^\n]{0,20}[xX]\s*(1[.,]\d{2})/i,
+    /[xX]\s*(1[.,]\d{2})/i
+  ];
+
+  for(const p of patterns){
+    const m = t.match(p);
+    if(m) return Number(m[1].replace(',','.'));
+  }
+  return null;
+}
+
+function parseIvTotal(text){
+  const t = normalizeOCR(text);
+  const patterns = [
+    /IV(?:\s*TOTAL)?[^\d]{0,20}(\d{2,3})\s*\/\s*186/i,
+    /(\d{2,3})\s*\/\s*186/i
+  ];
+
+  for(const p of patterns){
+    const m = t.match(p);
+    if(m){
+      const value = Number(m[1]);
+      if(value >= 0 && value <= 186) return value;
     }
   }
   return null;
 }
 
-function parseTechnical(text){
+function parseNature(text){
+  const lines = getLines(text);
+  for(let i=0;i<lines.length;i++){
+    if(!/\bNATUREZA\b|\bNATURE\b/.test(lines[i])) continue;
+
+    const raw = normalizeOCR(
+      `${lines[i]} ${lines[i+1] || ''}`
+    );
+
+    const m = raw.match(/(?:NATUREZA|NATURE)\s*[:\-]?\s*([A-Za-zÀ-ÿ]+)/i);
+    if(m && !/^NATUREZA$/i.test(m[1])) return m[1];
+  }
+  return '';
+}
+
+function parseGender(text){
   const t = normalizeOCR(text);
+  if(/[♀]/.test(t) || /\bF[EÊ]MEA\b/i.test(t)) return 'Fêmea';
+  if(/[♂]/.test(t) || /\bMACHO\b/i.test(t)) return 'Macho';
+  return '';
+}
 
-  let quality = null;
-  const q = t.match(/[xX]\s*(1(?:\.\d{2}))/);
-  if(q) quality = Number(q[1]);
+/*
+  Usa a soma dos 6 IVs como validação:
+  - se todos foram lidos e a soma bate com IV TOTAL, alta confiança;
+  - se só 1 IV ficou faltando, ele pode ser inferido pelo IV TOTAL.
+*/
+function validateAndInferIvs(parsed){
+  const keys = ['hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv'];
+  const known = keys.filter(k => Number.isFinite(parsed[k]));
+  const missing = keys.filter(k => !Number.isFinite(parsed[k]));
 
-  let ivTotal = null;
-  for(const p of [/IV(?:\s*TOTAL)?[^\d]{0,12}(\d{2,3})\s*\/\s*186/i,/(\d{2,3})\s*\/\s*186/i]){
-    const m = t.match(p);
-    if(m){ ivTotal = Number(m[1]); break; }
+  if(Number.isFinite(parsed.ivTotal)){
+    const knownSum = known.reduce((sum,k)=>sum + parsed[k],0);
+
+    if(missing.length === 1){
+      const inferred = parsed.ivTotal - knownSum;
+      if(inferred >= 0 && inferred <= 31){
+        parsed[missing[0]] = inferred;
+        parsed.inferredField = missing[0];
+      }
+    }
+
+    const finalValues = keys.map(k=>parsed[k]);
+    if(finalValues.every(Number.isFinite)){
+      parsed.ivSum = finalValues.reduce((a,b)=>a+b,0);
+      parsed.ivValidated = parsed.ivSum === parsed.ivTotal;
+    }else{
+      parsed.ivValidated = false;
+    }
   }
 
-  const hpIv = firstNumberNear(t, ['HP'], 31);
-  const atkIv = firstNumberNear(t, ['ATK','ATAQUE'], 31);
-  const defIv = firstNumberNear(t, ['DEF'], 31);
-  const spatkIv = firstNumberNear(t, ['SP.ATK','SP ATK','ATK SP','ATAQUE SP'], 31);
-  const spdefIv = firstNumberNear(t, ['SP.DEF','SP DEF','DEF SP'], 31);
-  const speedIv = firstNumberNear(t, ['VEL','SPEED','SPE'], 31);
+  return parsed;
+}
 
-  let nature = '';
-  const natureMatch = t.match(/NATURE(?:ZA)?\s*[:\-]?\s*([A-Za-zÀ-ÿ]+)/i);
-  if(natureMatch) nature = natureMatch[1];
+function parseTechnical(text){
+  const parsed = {
+    quality: parseQuality(text),
+    ivTotal: parseIvTotal(text),
+    hpIv: extractLabeledIv(text,'hp'),
+    atkIv: extractLabeledIv(text,'atk'),
+    defIv: extractLabeledIv(text,'def'),
+    spatkIv: extractLabeledIv(text,'spatk'),
+    spdefIv: extractLabeledIv(text,'spdef'),
+    speedIv: extractLabeledIv(text,'speed'),
+    nature: parseNature(text),
+    gender: parseGender(text)
+  };
 
-  let gender = '';
-  if(/[♂]/.test(t) || /\bMACHO\b/i.test(t)) gender = 'Macho';
-  if(/[♀]/.test(t) || /\bF[EÊ]MEA\b/i.test(t)) gender = 'Fêmea';
-
-  return {quality,ivTotal,hpIv,atkIv,defIv,spatkIv,spdefIv,speedIv,nature,gender};
+  return validateAndInferIvs(parsed);
 }
 
 function setIf(id, value){
@@ -129,9 +276,12 @@ newImage.addEventListener('change', () => {
     return;
   }
 
-  uploadPreview.src = URL.createObjectURL(file);
+  if(previewObjectUrl) URL.revokeObjectURL(previewObjectUrl);
+  previewObjectUrl = URL.createObjectURL(file);
+  uploadPreview.src = previewObjectUrl;
   uploadPreview.hidden = false;
   uploadPlaceholder.hidden = true;
+  openPreviewBtn.hidden = false;
 
   if(!$('newName').value.trim()){
     $('newName').value = guessNameFromFilename(file.name);
@@ -197,14 +347,83 @@ analyzeBtn.addEventListener('click', async () => {
     setIf('gender', parsed.gender);
     recomputeAutoScore();
 
-    const found = Object.values(parsed).filter(v=>v!==null && v!==undefined && v!=='').length;
-    ocrProgress.textContent = `Análise concluída: ${found} campos identificados. Confira antes de publicar.`;
+    const mainFields = ['quality','ivTotal','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv','nature','gender'];
+    const found = mainFields.filter(k => parsed[k] !== null && parsed[k] !== undefined && parsed[k] !== '').length;
+
+    if(parsed.ivValidated){
+      const inferredNote = parsed.inferredField ? ' 1 IV foi inferido pela soma do IV total.' : '';
+      ocrProgress.textContent = `Análise concluída: ${found}/10 campos. IVs validados pela soma (${parsed.ivSum}/${parsed.ivTotal}).${inferredNote} Confira antes de publicar.`;
+    }else if(Number.isFinite(parsed.ivTotal) && Number.isFinite(parsed.ivSum)){
+      ocrProgress.textContent = `ATENÇÃO: os IVs lidos somam ${parsed.ivSum}, mas o IV Total é ${parsed.ivTotal}. Confira os IVs antes de publicar.`;
+    }else{
+      ocrProgress.textContent = `Análise concluída: ${found}/10 campos. Confira os campos não identificados antes de publicar.`;
+    }
   }catch(e){
     console.error(e);
     ocrProgress.textContent = 'Não consegui analisar automaticamente este print.';
     addProductError.textContent = 'A análise automática falhou, mas você pode preencher/corrigir os campos manualmente.';
   }finally{
     analyzeBtn.disabled = false;
+  }
+});
+
+
+function applyZoom(){
+  if(!imageZoomTarget) return;
+  imageZoomTarget.style.width = `${Math.round(zoomScale * 100)}%`;
+  imageZoomTarget.style.maxWidth = 'none';
+  zoomLevel.textContent = `${Math.round(zoomScale * 100)}%`;
+}
+
+function openImageZoom(){
+  if(!previewObjectUrl) return;
+  imageZoomTarget.src = previewObjectUrl;
+  zoomScale = 1;
+  applyZoom();
+  imageZoomModal.classList.add('on');
+  imageZoomModal.setAttribute('aria-hidden','false');
+  document.body.classList.add('zoom-open');
+}
+
+function closeImageZoom(){
+  imageZoomModal.classList.remove('on');
+  imageZoomModal.setAttribute('aria-hidden','true');
+  document.body.classList.remove('zoom-open');
+}
+
+openPreviewBtn?.addEventListener('click', openImageZoom);
+uploadPreview?.addEventListener('click', openImageZoom);
+closeZoomBtn?.addEventListener('click', closeImageZoom);
+
+zoomInBtn?.addEventListener('click', () => {
+  zoomScale = Math.min(4, zoomScale + 0.25);
+  applyZoom();
+});
+
+zoomOutBtn?.addEventListener('click', () => {
+  zoomScale = Math.max(0.5, zoomScale - 0.25);
+  applyZoom();
+});
+
+zoomResetBtn?.addEventListener('click', () => {
+  zoomScale = 1;
+  applyZoom();
+  imageZoomViewport.scrollTo({top:0,left:0,behavior:'smooth'});
+});
+
+imageZoomModal?.addEventListener('click', e => {
+  if(e.target === imageZoomModal) closeImageZoom();
+});
+
+document.addEventListener('keydown', e => {
+  if(e.key === 'Escape' && imageZoomModal?.classList.contains('on')) closeImageZoom();
+  if(imageZoomModal?.classList.contains('on') && (e.key === '+' || e.key === '=')){
+    zoomScale = Math.min(4, zoomScale + 0.25);
+    applyZoom();
+  }
+  if(imageZoomModal?.classList.contains('on') && e.key === '-'){
+    zoomScale = Math.max(0.5, zoomScale - 0.25);
+    applyZoom();
   }
 });
 
@@ -366,6 +585,11 @@ addProductForm.addEventListener('submit', async e => {
     uploadPreview.hidden = true;
     uploadPreview.removeAttribute('src');
     uploadPlaceholder.hidden = false;
+    openPreviewBtn.hidden = true;
+    if(previewObjectUrl){
+      URL.revokeObjectURL(previewObjectUrl);
+      previewObjectUrl = null;
+    }
     $('autoScoreText').textContent = '--';
     ocrProgress.textContent = 'Aguardando imagem.';
     flash('Pokémon publicado.');
