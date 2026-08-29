@@ -1500,3 +1500,111 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
     font-size:5px !important;
   }
 }
+
+
+/* ==========================================================
+   V4.6.3 — MOBILE: tutorial curto + Finalizar compra flutuante
+   ========================================================== */
+
+/* Tutorial extremamente curto e discreto */
+.quick-howto{
+  width:100%;
+  background:#071219;
+  border-bottom:1px solid #263b47;
+}
+.quick-howto-inner{
+  width:min(1540px,100%);
+  margin:0 auto;
+  padding:13px 24px 14px;
+}
+.quick-howto-steps{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px 16px;
+  margin-top:8px;
+}
+.quick-howto-steps span{
+  color:#b8c3c9;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+  font-weight:700;
+  line-height:1.3;
+}
+.quick-howto-steps b{
+  color:#ffe17b;
+}
+
+/* Botão flutuante: só aparece no mobile e somente com itens no carrinho */
+.mobile-checkout-float{
+  display:none;
+}
+
+@media(max-width:980px){
+  body{
+    padding-bottom:76px;
+  }
+
+  .mobile-checkout-float:not([hidden]){
+    position:fixed;
+    z-index:350;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    min-height:54px;
+    padding:10px 14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    border:2px solid #2ea64d;
+    background:#143a20;
+    color:#8dff9f;
+    box-shadow:0 5px 0 rgba(0,0,0,.65), 0 0 18px rgba(46,166,77,.12);
+    font-family:'Press Start 2P',monospace;
+    font-size:8px;
+    line-height:1.35;
+    text-align:center;
+  }
+
+  .mobile-checkout-float b{
+    display:grid;
+    place-items:center;
+    min-width:26px;
+    height:26px;
+    padding:0 6px;
+    border:1px solid #7deb90;
+    background:#081d0e;
+    color:#fff;
+    font-family:Arial,Helvetica,sans-serif;
+    font-size:14px;
+    border-radius:3px;
+  }
+
+  body.cart-mobile-open .mobile-checkout-float{
+    display:none !important;
+  }
+}
+
+@media(max-width:650px){
+  .quick-howto-inner{
+    padding:11px 12px 12px;
+  }
+
+  .quick-howto-steps{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:5px;
+  }
+
+  .quick-howto-steps span{
+    font-size:12px;
+  }
+
+  .mobile-checkout-float:not([hidden]){
+    left:8px;
+    right:8px;
+    bottom:8px;
+    min-height:52px;
+    font-size:7px;
+  }
+}

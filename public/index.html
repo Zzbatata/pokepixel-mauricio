@@ -28,7 +28,7 @@
     <a href="#como">COMO COMPRAR</a>
   </nav>
   <div class="top-actions">
-    <button class="cart-top" id="cartTop">🛒 CARRINHO <b id="cartCount">0</b> <span id="cartTopTotal">R$ 0,00 • 💎 0</span></button>
+    <button class="cart-top" id="cartTop">🛒 CARRINHO <b id="cartCount">0</b></button>
     <a class="admin-shortcut" href="/admin/" title="Área administrativa">🔒 ADMIN</a>
   </div>
 </header>
@@ -46,6 +46,19 @@
       <div><b>⚡ PIX OU 💎</b><span>Escolha como pagar</span></div>
       <div><b>🛒 CARRINHO</b><span>Leve vários juntos</span></div>
       <div><b>☏ WHATSAPP</b><span>Envie o comprovante</span></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="quick-howto" id="como-comprar">
+  <div class="quick-howto-inner">
+    <span class="eyebrow">COMO COMPRAR</span>
+    <div class="quick-howto-steps">
+      <span><b>1.</b> Adicione ao carrinho</span>
+      <span><b>2.</b> Toque em Finalizar compra</span>
+      <span><b>3.</b> Escolha PIX ou 💎 em cada Pokémon</span>
+      <span><b>4.</b> Confirme pelo WhatsApp</span>
     </div>
   </div>
 </section>
@@ -165,6 +178,13 @@
   <span>Pokepixel Market • vitrine independente</span>
   <span>Pix ou 💎 Diamantes • confirmação via WhatsApp</span>
 </footer>
+
+
+<button id="mobileCheckoutFloat" class="mobile-checkout-float" type="button" hidden>
+  <span>🛒 FINALIZAR COMPRA</span>
+  <b id="mobileCheckoutCount">0</b>
+</button>
+
 
 <div class="modal" id="viewer">
   <div class="overlay" data-close="viewer"></div>
@@ -412,6 +432,14 @@ function renderCart(){
   const valid = cart.map(id=>catalog[id]).filter(Boolean);
   $('cartCount').textContent = valid.length;
 
+  const mobileFloat = $('mobileCheckoutFloat');
+  const mobileFloatCount = $('mobileCheckoutCount');
+  if(mobileFloat){
+    mobileFloat.hidden = valid.length === 0;
+    mobileFloat.classList.toggle('has-items', valid.length > 0);
+  }
+  if(mobileFloatCount) mobileFloatCount.textContent = valid.length;
+
   if(!valid.length){
     box.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
   }else{
@@ -461,7 +489,6 @@ function renderCart(){
 
   $('cartTotal').textContent = `PIX ${moneyBR(pixTotal)}`;
   $('cartDiamondTotal').textContent = `💎 ${diamondTotal}`;
-  $('cartTopTotal').textContent = `${moneyBR(pixTotal)} • 💎 ${diamondTotal}`;
 
   if(!valid.length){
     $('cartPaymentStatus').textContent = 'Escolha PIX ou 💎 em cada Pokémon.';
@@ -767,6 +794,12 @@ $('clearCartBtn').addEventListener('click',()=>{
 });
 $('copyPixBtn').addEventListener('click',copyPix);
 $('cartTop').addEventListener('click',()=>document.body.classList.add('cart-mobile-open'));
+$('mobileCheckoutFloat')?.addEventListener('click',()=>{
+  document.body.classList.add('cart-mobile-open');
+  setTimeout(()=>{
+    $('cartPanel')?.scrollIntoView({behavior:'smooth',block:'start'});
+  },50);
+});
 $('closeCartMobile').addEventListener('click',()=>document.body.classList.remove('cart-mobile-open'));
 
 document.querySelectorAll('[data-close]').forEach(el=>el.addEventListener('click',()=>closeModal(el.dataset.close)));

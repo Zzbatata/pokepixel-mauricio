@@ -1,0 +1,30 @@
+POKEPIXEL MARKET — V4.6.3
+
+MELHORIAS MOBILE
+
+1. Tutorial curto de compra
+- Adicione ao carrinho
+- Toque em Finalizar compra
+- Escolha PIX ou Diamantes em cada Pokémon
+- Confirme pelo WhatsApp
+
+2. Botão flutuante no celular
+- Aparece somente quando há Pokémon no carrinho.
+- Mostra a quantidade de itens.
+- "FINALIZAR COMPRA" leva o cliente diretamente ao carrinho.
+- O cliente escolhe PIX ou Diamantes dentro do carrinho.
+- Quando o carrinho está aberto, o botão flutuante desaparece para não atrapalhar.
+
+3. Carrinho no topo
+- Removido o valor prévio ao lado do carrinho.
+- Fica somente "CARRINHO" + quantidade de Pokémon.
+- Isso evita mostrar R$ 0,00 / 💎 0 antes da pessoa definir a forma de pagamento.
+
+Nenhuma alteração em:
+- catálogo;
+- preços;
+- analisador;
+- anti-duplicação;
+- sistema de pagamento misto;
+- cores;
+- alinhamento dos cards.
