@@ -1,0 +1,25 @@
+POKEPIXEL MARKET — V4.6.2
+
+CORREÇÃO DE ALINHAMENTO GLOBAL
+
+O problema encontrado:
+Ainda existiam regras antigas no CSS usando proporções 1.08 / 0.92
+para PIX e Diamantes. Isso podia fazer o retângulo de PIX ficar maior
+que o de Diamantes em algumas larguras de card.
+
+A V4.6.2 remove essa lógica e usa flex-basis 0.
+
+RESULTADO:
+- PIX e DIAMANTES: exatamente 50/50.
+- Mesma altura.
+- Mesmo tamanho externo.
+- Conteúdo centralizado.
+- O "OU" possui largura fixa no centro.
+- COMPRAR AGORA e + CARRINHO: exatamente 50/50.
+- Botões PIX/DIAMANTES dentro do carrinho: exatamente 50/50.
+- Botões PIX/DIAMANTES no checkout: exatamente 50/50.
+- Subtotais PIX/DIAMANTES no checkout: exatamente 50/50.
+- Card inferior alinhado entre Pokémon da mesma linha.
+
+Nenhum preço, Pokémon, analisador, anti-duplicação ou regra
+de pagamento foi alterado.

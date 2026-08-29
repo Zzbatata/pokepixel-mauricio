@@ -1,0 +1,34 @@
+POKEPIXEL MARKET — V4.6.1
+
+FOCO: IGUALDADE VISUAL ENTRE PIX E DIAMANTES
+
+CARRINHO
+- PIX e DIAMANTES agora ficam em uma linha própria usando toda a largura.
+- Os dois botões têm exatamente a mesma largura.
+- Mesma altura.
+- Mesma fonte.
+- Mesmo tamanho de fonte.
+- Mesma espessura de borda.
+- "DIAMANTES" não deve mais sair da caixa.
+- A única diferença é a cor temática quando a opção está selecionada.
+
+CARD DO POKÉMON
+- Caixas de PIX e DIAMANTES agora têm largura 50/50.
+- Mesmo tamanho de preço.
+- Mesma altura e alinhamento.
+- O "OU" continua no centro.
+
+CHECKOUT
+- Subtotal PIX e subtotal DIAMANTES têm o mesmo tamanho visual.
+- Os botões PIX e DIAMANTES de cada Pokémon têm dimensões iguais.
+
+BOTÕES DE AÇÃO
+- COMPRAR AGORA e + CARRINHO continuam com o mesmo tamanho.
+
+Nenhuma alteração em:
+- catálogo;
+- preços;
+- conversão interna;
+- analisador;
+- anti-duplicação;
+- pagamento misto.

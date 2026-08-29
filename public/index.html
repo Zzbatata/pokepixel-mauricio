@@ -430,13 +430,16 @@ function renderCart(){
             <b>${moneyBR(item.price)}</b>
             <em>💎 ${diamondsForPrice(item.price)}</em>
           </div>
+        </div>
+        <button class="cart-remove" title="Remover">×</button>
+
+        <div class="cart-payment-block">
           <div class="cart-item-payment-title">COMO PAGAR ESTE POKÉMON?</div>
           <div class="cart-item-payment-buttons">
             <button type="button" class="cart-pay-pix ${method === 'pix' ? 'active' : ''}">⚡ PIX</button>
             <button type="button" class="cart-pay-diamond ${method === 'diamonds' ? 'active' : ''}">💎 DIAMANTES</button>
           </div>
         </div>
-        <button class="cart-remove" title="Remover">×</button>
       `;
 
       row.querySelector('img').src = item.imageUrl;

@@ -792,11 +792,7 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
   z-index:20 !important;
 }
 
-/* PIX e Diamantes precisam caber lado a lado sem vazar */
-.card-payment-options{
-  grid-template-columns:minmax(0,1.08fr) 24px minmax(0,.92fr) !important;
-  gap:5px !important;
-}
+/* Regra antiga de proporções diferentes removida na V4.6.2 */
 .card-pay-option{
   padding:8px 5px !important;
   overflow:hidden;
@@ -822,10 +818,7 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
 }
 
 /* Em cards mais estreitos, reduz mais um pouco sem quebrar o layout */
-@media(max-width:420px){
-  .card-payment-options{
-    grid-template-columns:minmax(0,1.06fr) 22px minmax(0,.94fr) !important;
-  }
+@media(max-width:420px){ /* proporções PIX/Diamantes normalizadas na V4.6.2 */
   .pix-option strong{
     font-size:18px !important;
   }
@@ -1074,4 +1067,436 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
 /* V4.6 — faixa de preços por raridade removida da vitrine */
 .catalog-summary{
   justify-content:flex-start !important;
+}
+
+
+/* ==========================================================
+   V4.6.1 — IGUALDADE VISUAL ENTRE PIX E DIAMANTES
+   ========================================================== */
+
+/* ---------- CARRINHO ---------- */
+/* Os botões agora ocupam a largura inteira do card do carrinho,
+   em uma linha própria, para nenhuma palavra sair da caixa. */
+.cart-payment-block{
+  grid-column:1 / -1;
+  width:100%;
+  min-width:0;
+  margin-top:2px;
+}
+.cart-item-payment-title{
+  margin:0 0 6px !important;
+  text-align:center;
+  font-size:5.5px !important;
+  line-height:1.45 !important;
+}
+.cart-item-payment-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+  width:100% !important;
+  margin:0 !important;
+}
+.cart-item-payment-buttons button{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:42px !important;
+  padding:8px 7px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  border-width:2px !important;
+  font-family:'Press Start 2P',monospace !important;
+  font-size:6px !important;
+  line-height:1.35 !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-align:center !important;
+  box-shadow:0 3px 0 rgba(0,0,0,.55) !important;
+}
+
+/* Mesmo peso visual; muda somente a cor temática quando selecionado. */
+.cart-item-payment-buttons .cart-pay-pix,
+.cart-item-payment-buttons .cart-pay-diamond{
+  background:#0b171f !important;
+  border-color:#52646e !important;
+  color:#d4dde1 !important;
+}
+.cart-item-payment-buttons .cart-pay-pix.active{
+  background:#3a2c0b !important;
+  border-color:#d6a51c !important;
+  color:#ffe17b !important;
+}
+.cart-item-payment-buttons .cart-pay-diamond.active{
+  background:#0b2b39 !important;
+  border-color:#4ab7df !important;
+  color:#a9eaff !important;
+}
+
+/* ---------- CARD PRINCIPAL ---------- */
+/* PIX e Diamantes passam a ter exatamente a mesma largura, altura e tipografia. */
+.card-payment-options{
+  grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr) !important;
+  gap:6px !important;
+}
+.card-pay-option{
+  min-height:59px !important;
+  padding:8px 6px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+.card-pay-option span{
+  width:100%;
+  font-size:5.5px !important;
+  line-height:1.35 !important;
+  text-align:center !important;
+}
+.card-pay-option strong,
+.pix-option strong,
+.diamond-option strong{
+  width:100%;
+  font-size:18px !important;
+  line-height:1.05 !important;
+  letter-spacing:-.15px !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+}
+
+/* ---------- CHECKOUT ---------- */
+/* Subtotais PIX e Diamantes com dimensões e peso idênticos. */
+.checkout-split-summary{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+}
+.split-summary{
+  min-height:83px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:center !important;
+  align-items:center !important;
+  text-align:center !important;
+  padding:10px 8px !important;
+}
+.split-summary span{
+  width:100%;
+  font-size:6px !important;
+  text-align:center !important;
+}
+.split-summary strong{
+  width:100%;
+  font-size:24px !important;
+  line-height:1.05 !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+}
+
+/* Seleção por item dentro do checkout: os dois botões são gêmeos. */
+.checkout-item-payment-buttons{
+  display:grid !important;
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+  width:250px !important;
+  min-width:250px !important;
+}
+.checkout-item-payment-buttons button{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:44px !important;
+  padding:8px 6px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-family:'Press Start 2P',monospace !important;
+  font-size:6px !important;
+  line-height:1.35 !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  border-width:2px !important;
+  text-align:center !important;
+}
+
+/* ---------- BOTÕES DE AÇÃO DO CARD ---------- */
+/* Comprar agora e Carrinho também permanecem visualmente equivalentes. */
+.card-actions{
+  grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  gap:8px !important;
+}
+.buy-now,
+.cart-add{
+  width:100% !important;
+  min-width:0 !important;
+  min-height:45px !important;
+  padding:8px 6px !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  font-size:6px !important;
+  line-height:1.4 !important;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media(max-width:720px){
+  .checkout-item-payment-buttons{
+    width:100% !important;
+    min-width:0 !important;
+  }
+}
+@media(max-width:450px){
+  .cart-item-payment-buttons{
+    grid-template-columns:repeat(2,minmax(0,1fr)) !important;
+  }
+  .cart-item-payment-buttons button{
+    font-size:5.5px !important;
+  }
+  .checkout-item-payment-buttons button{
+    font-size:5.5px !important;
+  }
+  .card-pay-option strong,
+  .pix-option strong,
+  .diamond-option strong{
+    font-size:17px !important;
+  }
+}
+@media(max-width:330px){
+  .cart-item-payment-buttons button,
+  .checkout-item-payment-buttons button{
+    font-size:5px !important;
+  }
+}
+
+
+/* ==========================================================
+   V4.6.2 — ALINHAMENTO GLOBAL RÍGIDO
+   PIX, DIAMANTES, COMPRAR e CARRINHO sempre 50/50
+   ========================================================== */
+
+:root{
+  --pp-choice-gap:8px;
+  --pp-middle-size:28px;
+  --pp-option-height:62px;
+  --pp-action-height:46px;
+}
+
+/* ---------- PREÇOS NO CARD ---------- */
+.card-payment-options{
+  display:flex !important;
+  width:100% !important;
+  min-width:0 !important;
+  align-items:stretch !important;
+  gap:var(--pp-choice-gap) !important;
+}
+
+.card-pay-option{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:var(--pp-option-height) !important;
+  min-height:var(--pp-option-height) !important;
+  padding:8px 6px !important;
+  box-sizing:border-box !important;
+  overflow:hidden !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+
+.card-pay-or{
+  flex:0 0 var(--pp-middle-size) !important;
+  width:var(--pp-middle-size) !important;
+  min-width:var(--pp-middle-size) !important;
+  max-width:var(--pp-middle-size) !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+
+.card-pay-option span{
+  width:100% !important;
+  margin:0 0 4px !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+}
+
+.card-pay-option strong,
+.pix-option strong,
+.diamond-option strong{
+  width:100% !important;
+  max-width:100% !important;
+  margin:0 !important;
+  font-size:18px !important;
+  line-height:1.05 !important;
+  letter-spacing:-.15px !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+  text-overflow:clip !important;
+}
+
+/* ---------- COMPRAR AGORA / CARRINHO ---------- */
+.card-actions{
+  display:flex !important;
+  width:100% !important;
+  min-width:0 !important;
+  gap:var(--pp-choice-gap) !important;
+  align-items:stretch !important;
+}
+
+.buy-now,
+.cart-add{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:var(--pp-action-height) !important;
+  min-height:var(--pp-action-height) !important;
+  margin:0 !important;
+  padding:7px 5px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  white-space:normal !important;
+  overflow:hidden !important;
+}
+
+/* ---------- CARRINHO: PIX / DIAMANTES ---------- */
+.cart-item-payment-buttons{
+  display:flex !important;
+  width:100% !important;
+  min-width:0 !important;
+  gap:var(--pp-choice-gap) !important;
+}
+
+.cart-item-payment-buttons button{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:42px !important;
+  min-height:42px !important;
+  margin:0 !important;
+  padding:7px 5px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+}
+
+/* ---------- CHECKOUT: SUBTOTAIS ---------- */
+.checkout-split-summary{
+  display:flex !important;
+  width:min(600px,100%) !important;
+  min-width:0 !important;
+  gap:var(--pp-choice-gap) !important;
+}
+
+.split-summary{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+  min-height:84px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  flex-direction:column !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+}
+
+/* ---------- CHECKOUT: PIX / DIAMANTES DE CADA POKÉMON ---------- */
+.checkout-item-payment-buttons{
+  display:flex !important;
+  width:250px !important;
+  min-width:250px !important;
+  max-width:250px !important;
+  gap:var(--pp-choice-gap) !important;
+}
+
+.checkout-item-payment-buttons button{
+  flex:1 1 0 !important;
+  width:0 !important;
+  min-width:0 !important;
+  max-width:none !important;
+  height:44px !important;
+  min-height:44px !important;
+  box-sizing:border-box !important;
+  display:flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  text-align:center !important;
+  white-space:nowrap !important;
+  overflow:hidden !important;
+}
+
+/* ---------- PADRÃO DE CARD ---------- */
+/* Mantém a área inferior alinhada entre cards da mesma linha. */
+.poke-card{
+  display:flex !important;
+  flex-direction:column !important;
+  min-width:0 !important;
+}
+
+.poke-card .card-bottom{
+  width:100% !important;
+  margin-top:auto !important;
+  box-sizing:border-box !important;
+}
+
+/* ---------- RESPONSIVO ---------- */
+@media(max-width:720px){
+  .checkout-item-payment-buttons{
+    width:100% !important;
+    min-width:0 !important;
+    max-width:none !important;
+  }
+}
+
+@media(max-width:450px){
+  :root{
+    --pp-choice-gap:6px;
+    --pp-middle-size:24px;
+  }
+
+  .card-pay-option strong,
+  .pix-option strong,
+  .diamond-option strong{
+    font-size:17px !important;
+  }
+
+  .buy-now,
+  .cart-add{
+    font-size:5.5px !important;
+  }
+
+  .cart-item-payment-buttons button,
+  .checkout-item-payment-buttons button{
+    font-size:5.5px !important;
+  }
+}
+
+@media(max-width:330px){
+  .card-pay-option strong,
+  .pix-option strong,
+  .diamond-option strong{
+    font-size:15.5px !important;
+  }
+
+  .cart-item-payment-buttons button,
+  .checkout-item-payment-buttons button,
+  .buy-now,
+  .cart-add{
+    font-size:5px !important;
+  }
 }
