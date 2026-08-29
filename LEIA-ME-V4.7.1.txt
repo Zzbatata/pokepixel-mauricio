@@ -1,0 +1,30 @@
+POKEPIXEL MARKET — V4.7.1
+
+ALTERAÇÃO ÚNICA:
+- Nome do Worker alterado no wrangler.jsonc para: loja
+
+OBJETIVO:
+https://loja.pokepixelmarket.workers.dev
+
+NENHUMA outra parte foi alterada:
+- catálogo
+- preços
+- carrinho
+- Pix
+- Diamantes
+- analisador
+- anti-duplicação
+- segurança da V4.7
+- layout
+- Admin
+
+IMPORTANTE:
+Esta atualização pode fazer a Cloudflare tratar "loja" como um novo Worker
+ou pedir alinhamento do projeto conectado ao GitHub, dependendo da forma
+como o projeto atual foi criado.
+
+Depois do Push:
+1. Aguarde o deploy da Cloudflare.
+2. Confira em Workers & Pages se aparece um Worker chamado "loja".
+3. Teste https://loja.pokepixelmarket.workers.dev
+4. Não exclua o Worker antigo até confirmar que o novo endereço está funcionando.
