@@ -125,7 +125,6 @@
 
     <div class="catalog-summary">
       <span id="visibleCount">0 Pokémon exibidos</span>
-      <span class="epic-range"><b>RAROS</b> • R$ 4 A R$ 7 &nbsp;|&nbsp; <strong>ÉPICOS</strong> • R$ 7 A R$ 12</span>
     </div>
 
     <div class="cards" id="cards"></div>
@@ -144,17 +143,21 @@
       <div class="cart-empty">Seu carrinho está vazio.</div>
     </div>
 
+    <div class="cart-payment-status" id="cartPaymentStatus">
+      Escolha PIX ou 💎 em cada Pokémon.
+    </div>
+
     <div class="cart-total">
-      <span>TOTAL</span>
+      <span>PAGAMENTO</span>
       <div class="cart-total-values">
-        <strong id="cartTotal">R$ 0,00</strong>
+        <strong id="cartTotal">PIX R$ 0,00</strong>
         <b id="cartDiamondTotal">💎 0</b>
       </div>
     </div>
 
-    <button id="checkoutBtn" class="checkout-btn" disabled>FINALIZAR COMPRA</button>
+    <button id="checkoutBtn" class="checkout-btn" disabled>ESCOLHA O PAGAMENTO DOS ITENS</button>
     <button id="clearCartBtn" class="clear-cart-btn" disabled>ESVAZIAR CARRINHO</button>
-    <small>Você escolhe no checkout: Pix ou Diamantes do jogo.</small>
+    <small>Cada Pokémon pode ser pago separadamente via PIX ou Diamantes.</small>
   </aside>
 </main>
 
@@ -180,25 +183,27 @@
     <div class="payment-head">
       <span class="eyebrow">FINALIZAR COMPRA</span>
       <h3 id="buyName">Seu carrinho</h3>
-      <div class="checkout-totals">
-        <div class="big-price" id="buyPrice">R$ 0,00</div>
-        <div class="big-diamond" id="buyDiamondPrice">💎 0</div>
+      <div class="checkout-split-summary">
+        <div class="split-summary pix-summary">
+          <span>VIA PIX</span>
+          <strong id="buyPrice">R$ 0,00</strong>
+        </div>
+        <div class="split-summary diamond-summary">
+          <span>VIA DIAMANTES</span>
+          <strong id="buyDiamondPrice">💎 0</strong>
+        </div>
       </div>
-      <small class="diamond-rate">Conversão da loja: 1 💎 = R$ 0,40</small>
-      <div id="paymentMethodBadge" class="payment-method-badge pix">⚡ PAGAMENTO VIA PIX</div>
+      <small class="diamond-rate">Você pode misturar PIX e Diamantes no mesmo pedido.</small>
+      <div id="checkoutPaymentStatus" class="checkout-payment-status">Escolha a forma de pagamento de cada Pokémon.</div>
     </div>
 
     <div class="checkout-list" id="checkoutList"></div>
 
-    <div class="payment-choice" role="tablist" aria-label="Forma de pagamento">
-      <button type="button" id="payPixTab" class="payment-choice-btn active">⚡ PIX</button>
-      <button type="button" id="payDiamondTab" class="payment-choice-btn">💎 DIAMANTES</button>
-    </div>
-
     <div class="payment-grid">
       <section id="pixPaymentPanel" class="payment-panel active">
         <h4>◆ PAGAMENTO VIA PIX</h4>
-        <p>Escaneie o QR Code ou copie a chave. Pague o valor total em reais mostrado acima.</p>
+        <p>Pague somente o subtotal dos Pokémon marcados como PIX.</p>
+        <div class="payment-subtotal">SUBTOTAL PIX: <strong id="pixPanelTotal">R$ 0,00</strong></div>
         <img class="qr" src="/assets/pix-qrcode.png" alt="QR Code Pix">
         <label>CHAVE PIX</label>
         <div class="pix-row">
@@ -215,17 +220,17 @@
       <section id="diamondPaymentPanel" class="payment-panel diamond-panel">
         <h4>💎 PAGAMENTO COM DIAMANTES</h4>
         <div class="diamond-box">
-          <span>VALOR DO PEDIDO</span>
+          <span>SUBTOTAL EM DIAMANTES</span>
           <strong id="diamondPanelTotal">💎 0</strong>
         </div>
-        <p>Os Diamantes são entregues dentro do jogo. Clique abaixo para abrir o WhatsApp com o pedido e o total em Diamantes.</p>
-        <div class="diamond-note">Conversão usada nesta vitrine: <b>1 Diamante = R$ 0,40</b>.</div>
+        <p>Esse subtotal corresponde somente aos Pokémon marcados como Diamantes.</p>
+        
       </section>
 
       <section class="proof-section">
         <h4>☏ CONFIRMAR PEDIDO</h4>
-        <p id="paymentHelpText">Depois do Pix, envie o comprovante pelo WhatsApp.</p>
-        <button class="proof-btn" id="buyWhatsapp">CONFIRMAR PELO WHATSAPP</button>
+        <p id="paymentHelpText">Escolha PIX ou Diamantes em cada Pokémon acima.</p>
+        <button class="proof-btn" id="buyWhatsapp" disabled>ESCOLHA O PAGAMENTO DOS ITENS</button>
         <small>WhatsApp: (31) 98755-5415</small>
       </section>
     </div>
@@ -238,9 +243,11 @@
 const WHATSAPP = "5531987555415";
 const PIX = "fb154152-891c-4bee-96bf-9cce909bc1ac";
 const DIAMOND_BRL = 0.40;
-let selectedPaymentMethod = "pix";
 let catalog = {};
 let cart = JSON.parse(localStorage.getItem('pp_cart_v3') || '[]');
+let cartPayments = JSON.parse(localStorage.getItem('pp_cart_payments_v45') || '{}');
+let checkoutPayments = {};
+let checkoutItems = [];
 
 const $ = id => document.getElementById(id);
 const moneyBR = v => `R$ ${Number(v || 0).toFixed(2).replace('.',',')}`;
@@ -251,12 +258,17 @@ const normalizeText = v => String(v || '').normalize('NFD').replace(/[\u0300-\u0
 
 function saveCart(){
   localStorage.setItem('pp_cart_v3', JSON.stringify(cart));
+  localStorage.setItem('pp_cart_payments_v45', JSON.stringify(cartPayments));
   renderCart();
   renderCards();
 }
 
 function cleanCartAgainstCatalog(){
   cart = cart.filter(id => catalog[id] && !catalog[id].sold);
+  const keep = new Set(cart);
+  for(const id of Object.keys(cartPayments)){
+    if(!keep.has(id)) delete cartPayments[id];
+  }
   saveCart();
 }
 
@@ -275,8 +287,20 @@ function closeModal(id){
 function toggleCart(id){
   const item = catalog[id];
   if(!item || item.sold) return;
-  if(cart.includes(id)) cart = cart.filter(x => x !== id);
-  else cart.push(id);
+
+  if(cart.includes(id)){
+    cart = cart.filter(x => x !== id);
+    delete cartPayments[id];
+  }else{
+    cart.push(id);
+    if(!cartPayments[id]) cartPayments[id] = null;
+  }
+  saveCart();
+}
+
+function setCartPayment(id, method){
+  if(!cart.includes(id)) return;
+  cartPayments[id] = method === 'diamonds' ? 'diamonds' : 'pix';
   saveCart();
 }
 
@@ -392,135 +416,248 @@ function renderCart(){
     box.innerHTML = '<div class="cart-empty">Seu carrinho está vazio.</div>';
   }else{
     box.innerHTML = '';
+
     valid.forEach(item => {
+      const method = cartPayments[item.id] || null;
       const row = document.createElement('div');
-      row.className = 'cart-item';
+      row.className = 'cart-item cart-item-v45';
       row.innerHTML = `
         <img alt="">
-        <div><strong></strong><span>${item.rarity}</span><b>${moneyBR(item.price)}</b><em>${diamondsLabel(diamondsForPrice(item.price))}</em></div>
-        <button title="Remover">×</button>
+        <div class="cart-item-info">
+          <strong></strong>
+          <span>${item.rarity}</span>
+          <div class="cart-item-values">
+            <b>${moneyBR(item.price)}</b>
+            <em>💎 ${diamondsForPrice(item.price)}</em>
+          </div>
+          <div class="cart-item-payment-title">COMO PAGAR ESTE POKÉMON?</div>
+          <div class="cart-item-payment-buttons">
+            <button type="button" class="cart-pay-pix ${method === 'pix' ? 'active' : ''}">⚡ PIX</button>
+            <button type="button" class="cart-pay-diamond ${method === 'diamonds' ? 'active' : ''}">💎 DIAMANTES</button>
+          </div>
+        </div>
+        <button class="cart-remove" title="Remover">×</button>
       `;
+
       row.querySelector('img').src = item.imageUrl;
       row.querySelector('img').alt = item.name;
-      row.querySelector('strong').textContent = item.name;
-      row.querySelector('button').onclick = () => toggleCart(item.id);
+      row.querySelector('.cart-item-info > strong').textContent = item.name;
+      row.querySelector('.cart-pay-pix').onclick = () => setCartPayment(item.id,'pix');
+      row.querySelector('.cart-pay-diamond').onclick = () => setCartPayment(item.id,'diamonds');
+      row.querySelector('.cart-remove').onclick = () => toggleCart(item.id);
       box.appendChild(row);
     });
   }
 
-  const total = valid.reduce((s,item)=>s+Number(item.price||0),0);
-  const diamondTotal = diamondsForItems(valid);
-  $('cartTotal').textContent = moneyBR(total);
-  $('cartDiamondTotal').textContent = diamondsLabel(diamondTotal);
-  $('cartTopTotal').textContent = `${moneyBR(total)} • 💎 ${diamondTotal}`;
-  $('checkoutBtn').disabled = !valid.length;
+  const pixItems = valid.filter(item => cartPayments[item.id] === 'pix');
+  const diamondItems = valid.filter(item => cartPayments[item.id] === 'diamonds');
+  const unassigned = valid.filter(item => !cartPayments[item.id]);
+
+  const pixTotal = pixItems.reduce((s,item)=>s+Number(item.price||0),0);
+  const diamondTotal = diamondsForItems(diamondItems);
+
+  $('cartTotal').textContent = `PIX ${moneyBR(pixTotal)}`;
+  $('cartDiamondTotal').textContent = `💎 ${diamondTotal}`;
+  $('cartTopTotal').textContent = `${moneyBR(pixTotal)} • 💎 ${diamondTotal}`;
+
+  if(!valid.length){
+    $('cartPaymentStatus').textContent = 'Escolha PIX ou 💎 em cada Pokémon.';
+  }else if(unassigned.length){
+    $('cartPaymentStatus').innerHTML = `⚠ Escolha a forma de pagamento de <b>${unassigned.length}</b> ${unassigned.length === 1 ? 'Pokémon' : 'Pokémon'}.`;
+  }else if(pixItems.length && diamondItems.length){
+    $('cartPaymentStatus').textContent = `✓ Pagamento misto: ${pixItems.length} via PIX + ${diamondItems.length} via Diamantes.`;
+  }else if(pixItems.length){
+    $('cartPaymentStatus').textContent = `✓ Todos os ${pixItems.length} Pokémon serão pagos via PIX.`;
+  }else{
+    $('cartPaymentStatus').textContent = `✓ Todos os ${diamondItems.length} Pokémon serão pagos via Diamantes.`;
+  }
+
+  $('checkoutBtn').disabled = !valid.length || unassigned.length > 0;
+  $('checkoutBtn').textContent = unassigned.length
+    ? 'ESCOLHA O PAGAMENTO DOS ITENS'
+    : 'FINALIZAR COMPRA';
   $('clearCartBtn').disabled = !valid.length;
 }
 
-function setPaymentMethod(method, items, total, diamondTotal){
-  selectedPaymentMethod = method === 'diamonds' ? 'diamonds' : 'pix';
+function checkoutStats(){
+  const pixItems = checkoutItems.filter(item => checkoutPayments[item.id] === 'pix');
+  const diamondItems = checkoutItems.filter(item => checkoutPayments[item.id] === 'diamonds');
+  const unassigned = checkoutItems.filter(item => !checkoutPayments[item.id]);
 
-  const pixTab = $('payPixTab');
-  const diamondTab = $('payDiamondTab');
-  const pixPanel = $('pixPaymentPanel');
-  const diamondPanel = $('diamondPaymentPanel');
+  return {
+    pixItems,
+    diamondItems,
+    unassigned,
+    pixTotal: pixItems.reduce((s,item)=>s+Number(item.price||0),0),
+    diamondTotal: diamondsForItems(diamondItems)
+  };
+}
 
-  pixTab?.classList.toggle('active', selectedPaymentMethod === 'pix');
-  diamondTab?.classList.toggle('active', selectedPaymentMethod === 'diamonds');
-  pixPanel?.classList.toggle('active', selectedPaymentMethod === 'pix');
-  diamondPanel?.classList.toggle('active', selectedPaymentMethod === 'diamonds');
+function setCheckoutPayment(id, method){
+  checkoutPayments[id] = method === 'diamonds' ? 'diamonds' : 'pix';
 
-  const badge = $('paymentMethodBadge');
-
-  if(selectedPaymentMethod === 'pix'){
-    $('paymentHelpText').textContent = 'Depois do Pix, envie o comprovante pelo WhatsApp.';
-    $('buyWhatsapp').textContent = 'JÁ PAGUEI VIA PIX • ENVIAR COMPROVANTE';
-    if(badge){
-      badge.className = 'payment-method-badge pix';
-      badge.textContent = '⚡ PAGAMENTO VIA PIX';
-    }
-  }else{
-    $('paymentHelpText').textContent = `Confirme pelo WhatsApp que o pedido será pago com ${diamondTotal} Diamantes dentro do jogo.`;
-    $('buyWhatsapp').textContent = `💎 COMPREI VIA DIAMANTES • CONFIRMAR`;
-    if(badge){
-      badge.className = 'payment-method-badge diamonds';
-      badge.textContent = `💎 PAGAMENTO VIA DIAMANTES • ${diamondTotal}`;
-    }
+  // Se veio do carrinho, salva também a escolha nele.
+  if(cart.includes(id)){
+    cartPayments[id] = checkoutPayments[id];
+    localStorage.setItem('pp_cart_payments_v45', JSON.stringify(cartPayments));
   }
 
-  $('buyWhatsapp').onclick = () => {
-    if(selectedPaymentMethod === 'pix'){
-      const lines = items.map(item =>
-        `• ${item.name} — ${moneyBR(item.price)}`
-      ).join('\n');
+  renderCheckout();
+  renderCart();
+}
 
-      const msg =
+function renderCheckout(){
+  const {pixItems,diamondItems,unassigned,pixTotal,diamondTotal} = checkoutStats();
+
+  $('buyName').textContent = checkoutItems.length === 1
+    ? checkoutItems[0].name
+    : `${checkoutItems.length} Pokémon no pedido`;
+
+  $('buyPrice').textContent = moneyBR(pixTotal);
+  $('buyDiamondPrice').textContent = `💎 ${diamondTotal}`;
+  $('pixPanelTotal').textContent = moneyBR(pixTotal);
+  $('diamondPanelTotal').textContent = `💎 ${diamondTotal}`;
+
+  $('checkoutList').innerHTML = checkoutItems.map(item => {
+    const method = checkoutPayments[item.id] || null;
+    const d = diamondsForPrice(item.price);
+
+    return `
+      <div class="checkout-product-mixed">
+        <div class="checkout-product-main">
+          <span>${item.name}</span>
+          <div class="checkout-product-prices">
+            <b>${moneyBR(item.price)}</b>
+            <em>💎 ${d}</em>
+          </div>
+        </div>
+        <div class="checkout-item-payment-buttons">
+          <button type="button" data-pay-id="${item.id}" data-pay-method="pix" class="${method === 'pix' ? 'active pix' : ''}">⚡ PIX</button>
+          <button type="button" data-pay-id="${item.id}" data-pay-method="diamonds" class="${method === 'diamonds' ? 'active diamonds' : ''}">💎 DIAMANTES</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  $('checkoutList').querySelectorAll('[data-pay-id]').forEach(btn => {
+    btn.onclick = () => setCheckoutPayment(btn.dataset.payId, btn.dataset.payMethod);
+  });
+
+  // Mostra os painéis somente quando aquela forma é usada.
+  $('pixPaymentPanel').classList.toggle('active', pixItems.length > 0);
+  $('diamondPaymentPanel').classList.toggle('active', diamondItems.length > 0);
+
+  const confirmBtn = $('buyWhatsapp');
+
+  if(unassigned.length){
+    $('checkoutPaymentStatus').innerHTML = `⚠ Falta escolher o pagamento de <b>${unassigned.length}</b> ${unassigned.length === 1 ? 'Pokémon' : 'Pokémon'}.`;
+    $('paymentHelpText').textContent = 'Escolha PIX ou Diamantes em cada Pokémon acima.';
+    confirmBtn.disabled = true;
+    confirmBtn.textContent = 'ESCOLHA O PAGAMENTO DOS ITENS';
+    confirmBtn.onclick = null;
+    return;
+  }
+
+  confirmBtn.disabled = false;
+
+  if(pixItems.length && diamondItems.length){
+    $('checkoutPaymentStatus').textContent = `✓ PEDIDO MISTO • PIX ${moneyBR(pixTotal)} + 💎 ${diamondTotal}`;
+    $('paymentHelpText').textContent = 'Envie o comprovante da parte em PIX. A parte em Diamantes será combinada dentro do jogo.';
+    confirmBtn.textContent = 'CONFIRMAR PEDIDO MISTO PELO WHATSAPP';
+  }else if(pixItems.length){
+    $('checkoutPaymentStatus').textContent = `✓ PAGAMENTO VIA PIX • ${moneyBR(pixTotal)}`;
+    $('paymentHelpText').textContent = 'Depois do Pix, envie o comprovante pelo WhatsApp.';
+    confirmBtn.textContent = 'JÁ PAGUEI VIA PIX • ENVIAR COMPROVANTE';
+  }else{
+    $('checkoutPaymentStatus').textContent = `✓ PAGAMENTO VIA DIAMANTES • 💎 ${diamondTotal}`;
+    $('paymentHelpText').textContent = 'Confirme pelo WhatsApp para combinar a transferência dos Diamantes dentro do jogo.';
+    confirmBtn.textContent = '💎 COMPREI VIA DIAMANTES • CONFIRMAR';
+  }
+
+  confirmBtn.onclick = () => {
+    const pixLines = pixItems.map(item =>
+      `• ${item.name} — ${moneyBR(item.price)}`
+    ).join('\n');
+
+    const diamondLines = diamondItems.map(item =>
+      `• ${item.name} — 💎 ${diamondsForPrice(item.price)} diamantes`
+    ).join('\n');
+
+    let msg = '';
+
+    if(pixItems.length && diamondItems.length){
+      msg =
+`🔀 COMPRA MISTA — POKEPIXEL MARKET
+
+⚡ VIA PIX:
+${pixLines}
+SUBTOTAL PIX: ${moneyBR(pixTotal)}
+
+💎 VIA DIAMANTES:
+${diamondLines}
+SUBTOTAL DIAMANTES: 💎 ${diamondTotal} diamantes
+
+
+Estou enviando o comprovante da parte em PIX.
+A parte em Diamantes combinamos para transferência dentro do jogo.`;
+    }else if(pixItems.length){
+      msg =
 `⚡ COMPRA VIA PIX — POKEPIXEL MARKET
 
 Pokémon:
-${lines}
+${pixLines}
 
-TOTAL VIA PIX: ${moneyBR(total)}
+TOTAL VIA PIX: ${moneyBR(pixTotal)}
 
 Já realizei o pagamento via Pix e estou enviando o comprovante.`;
-
-      window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
-      return;
-    }
-
-    const lines = items.map(item => {
-      const d = diamondsForPrice(item.price);
-      return `• ${item.name} — 💎 ${d} diamantes`;
-    }).join('\n');
-
-    const msg =
+    }else{
+      msg =
 `💎 COMPRA VIA DIAMANTES — POKEPIXEL MARKET
 
 Pokémon:
-${lines}
+${diamondLines}
 
 TOTAL VIA DIAMANTES: 💎 ${diamondTotal} diamantes
-Conversão usada: 1 💎 = R$ 0,40
 
 Comprei via Diamantes. Quero concluir a troca dentro do jogo.`;
+    }
 
     window.open(`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg)}`, '_blank');
   };
 }
 
-function openCheckoutWithItems(items){
-  items = (items || []).filter(item=>item && !item.sold);
-  if(!items.length) return;
+function openCheckoutWithItems(items, initialPayments={}){
+  checkoutItems = (items || []).filter(item=>item && !item.sold);
+  if(!checkoutItems.length) return;
 
-  const total = items.reduce((s,item)=>s+Number(item.price||0),0);
-  const diamondTotal = diamondsForItems(items);
+  checkoutPayments = {};
+  for(const item of checkoutItems){
+    checkoutPayments[item.id] = initialPayments[item.id] || null;
+  }
 
-  $('buyName').textContent = items.length === 1 ? items[0].name : `${items.length} Pokémon no pedido`;
-  $('buyPrice').textContent = moneyBR(total);
-  $('buyDiamondPrice').textContent = diamondsLabel(diamondTotal);
-  $('diamondPanelTotal').textContent = diamondsLabel(diamondTotal);
-
-  $('checkoutList').innerHTML = items.map(item => {
-    const d = diamondsForPrice(item.price);
-    return `<div class="checkout-product-line"><span>${item.name}</span><b>${moneyBR(item.price)}</b><em>💎 ${d} diamantes</em></div>`;
-  }).join('');
-
-  $('payPixTab').onclick = () => setPaymentMethod('pix', items, total, diamondTotal);
-  $('payDiamondTab').onclick = () => setPaymentMethod('diamonds', items, total, diamondTotal);
-
-  setPaymentMethod('pix', items, total, diamondTotal);
+  renderCheckout();
   $('buyModal').classList.add('on');
 }
 
 function openCheckout(){
   const items = cart.map(id=>catalog[id]).filter(item=>item && !item.sold);
-  openCheckoutWithItems(items);
+  if(!items.length) return;
+
+  const unassigned = items.filter(item => !cartPayments[item.id]);
+  if(unassigned.length){
+    document.body.classList.add('cart-mobile-open');
+    $('cartPaymentStatus').scrollIntoView({behavior:'smooth',block:'nearest'});
+    return;
+  }
+
+  openCheckoutWithItems(items, cartPayments);
 }
 
 function buyNow(id){
   const item = catalog[id];
   if(!item || item.sold) return;
-  openCheckoutWithItems([item]);
+  // Comprar Agora abre apenas o Pokémon escolhido e pede a forma de pagamento.
+  openCheckoutWithItems([item], {});
 }
 
 async function copyPix(){
@@ -533,10 +670,71 @@ async function copyPix(){
   }
 }
 
+
+function publicIdentityKeys(item){
+  const identity = item?.identity || {};
+  const keys = [];
+  if(identity.signature || item?.signature) keys.push(`sig:${String(identity.signature || item.signature).toLowerCase()}`);
+  if(identity.legacyKey) keys.push(`cap:${String(identity.legacyKey).toLowerCase()}`);
+  if(identity.statsKey) keys.push(`stats:${String(identity.statsKey).toLowerCase()}`);
+  if(item?.name) keys.push(`name:${normalizeText(item.name)}`);
+  return keys;
+}
+
+function publicIntegrityScore(item){
+  let score = item?.builtin === true ? 100 : 0;
+  const identity = item?.identity || {};
+  const t = item?.technical || {};
+  if(identity.signature || item?.signature) score += 40;
+  if(identity.legacyKey) score += 25;
+  if(identity.statsKey) score += 30;
+  if(Number.isFinite(Number(t.quality))) score += 8;
+  if(Number.isFinite(Number(t.ivTotal))) score += 8;
+  return score;
+}
+
+function sanitizePublicCatalog(raw){
+  const source = Object.values(raw || {});
+  const kept = [];
+  const keyToIndex = new Map();
+
+  for(const item of source){
+    if(!item || !item.id) continue;
+
+    const keys = publicIdentityKeys(item);
+    let duplicateIndex = -1;
+
+    for(const key of keys){
+      if(keyToIndex.has(key)){
+        duplicateIndex = keyToIndex.get(key);
+        break;
+      }
+    }
+
+    if(duplicateIndex === -1){
+      const idx = kept.length;
+      kept.push(item);
+      for(const key of keys) keyToIndex.set(key,idx);
+      continue;
+    }
+
+    const current = kept[duplicateIndex];
+    if(publicIntegrityScore(item) > publicIntegrityScore(current)){
+      kept[duplicateIndex] = item;
+      for(const [key,idx] of keyToIndex.entries()){
+        if(idx === duplicateIndex) keyToIndex.delete(key);
+      }
+      for(const key of keys) keyToIndex.set(key,duplicateIndex);
+    }
+  }
+
+  return Object.fromEntries(kept.map(item=>[item.id,item]));
+}
+
 async function loadCatalog(){
   const res = await fetch('/api/catalog',{cache:'no-store'});
   if(!res.ok) throw new Error('Catálogo indisponível');
-  catalog = await res.json();
+  catalog = sanitizePublicCatalog(await res.json());
   cleanCartAgainstCatalog();
   renderCards();
   renderCart();
@@ -559,7 +757,11 @@ $('clearFilters').addEventListener('click',()=>{
   renderCards();
 });
 $('checkoutBtn').addEventListener('click',openCheckout);
-$('clearCartBtn').addEventListener('click',()=>{cart=[];saveCart();});
+$('clearCartBtn').addEventListener('click',()=>{
+  cart=[];
+  cartPayments={};
+  saveCart();
+});
 $('copyPixBtn').addEventListener('click',copyPix);
 $('cartTop').addEventListener('click',()=>document.body.classList.add('cart-mobile-open'));
 $('closeCartMobile').addEventListener('click',()=>document.body.classList.remove('cart-mobile-open'));

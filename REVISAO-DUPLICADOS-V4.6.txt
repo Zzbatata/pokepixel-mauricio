@@ -1,0 +1,57 @@
+POKEPIXEL MARKET — VARREDURA DE DUPLICADOS V4.6
+
+CATÁLOGO PADRÃO ANALISADO: 171 Pokémon
+
+RESULTADO DA VARREDURA ESTÁTICA:
+- Assinaturas duplicadas: 0
+- Identidades por captura/legacyKey duplicadas: 0
+- Identidades por 6 IVs/statsKey duplicadas: 0
+- Imagens com arquivo binário idêntico: 0
+- Imagens referenciadas ausentes: 0
+- Nomes duplicados antes da correção: 1
+- Nomes duplicados depois da correção: 0
+
+COLISÃO REAL ENCONTRADA NO CATÁLOGO PADRÃO:
+- Sandslash #01: sandslash01 (ÉPICO, R$ 8), rare-sandslash01 (RARO, R$ 6)
+
+CORREÇÃO:
+- Sandslash ÉPICO permanece Sandslash #01.
+- Os RAROS foram renumerados para Sandslash #02 e Sandslash #03.
+
+SOBRE O TANGELA #01 DUPLICADO VISTO NO SITE:
+No catálogo padrão da V4.5 existe apenas um Tangela #01:
+- ID: tangela01
+- Raridade: ÉPICO
+- Preço padrão: R$ 12
+- Qualidade: x1,50
+- IV Total: 144/186
+- Assinatura: f1eaa5a2-f984-4da2-bbe6-0e6e3d821699
+
+Isso indica que a segunda cópia exibida no site vinha do catálogo antigo
+persistido no Workers KV, e não do DEFAULTS atual.
+
+A V4.6 altera o carregamento do KV:
+1. DEFAULTS atual passa a ser a fonte oficial dos Pokémon builtin.
+2. Itens builtin antigos que não existem mais na versão atual são ignorados.
+3. IDs atuais preservam apenas estado Vendido e preço válido do KV.
+4. Itens adicionados manualmente pelo Admin continuam preservados.
+5. Itens extras são descartados se coincidirem por:
+   - assinatura;
+   - captura/legacyKey;
+   - conjunto completo de IVs/statsKey;
+   - nome já usado no catálogo revisado.
+6. O frontend faz uma segunda filtragem defensiva antes de renderizar.
+
+PREVENÇÃO FUTURA:
+- Pokémon criado pelo Admin recebe automaticamente o próximo número da espécie.
+- Isso evita dois "Tangela #01", "Sandslash #01", etc.
+
+LIMPEZA DA INTERFACE:
+- Removido da vitrine: "RAROS R$ 4–7 | ÉPICOS R$ 7–12".
+- Removida do checkout a frase pública "1 Diamante = R$ 0,40".
+- Removida a conversão também das mensagens de WhatsApp.
+- A conversão de R$ 0,40 continua existindo internamente apenas para calcular
+  quantos Diamantes correspondem ao preço.
+
+STATUS:
+V4.6 pronta para substituir a V4.5 antes do próximo Push.

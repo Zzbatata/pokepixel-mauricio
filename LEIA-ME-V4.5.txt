@@ -1,0 +1,46 @@
+POKEPIXEL MARKET — V4.5
+
+PAGAMENTO MISTO POR POKÉMON
+
+Exemplo:
+- Arcanine #01 -> PIX R$ 6,00
+- Graveler #10 -> 💎 15 diamantes
+- Ninetales #02 -> PIX R$ 7,00
+
+O cliente pode misturar as formas de pagamento no MESMO carrinho.
+
+NO CARRINHO:
+Cada Pokémon possui dois botões:
+[ PIX ] [ DIAMANTES ]
+
+O botão FINALIZAR COMPRA só libera quando todos os Pokémon
+tiverem uma forma de pagamento escolhida.
+
+NO CHECKOUT:
+A escolha continua visível e pode ser alterada individualmente.
+O checkout calcula separadamente:
+- SUBTOTAL PIX
+- SUBTOTAL DIAMANTES
+
+WHATSAPP:
+Se houver as duas formas, a mensagem começa:
+"COMPRA MISTA — POKEPIXEL MARKET"
+
+E separa:
+VIA PIX:
+- Pokémon e valores em R$
+- subtotal do Pix
+
+VIA DIAMANTES:
+- Pokémon e quantidade de diamantes individual
+- subtotal total em diamantes
+
+Assim o vendedor recebe o comprovante somente da parte PIX
+e já sabe quantos Diamantes devem ser transferidos no jogo.
+
+COMPRAR AGORA:
+Continua funcionando para um único Pokémon, mas agora o cliente
+escolhe PIX ou Diamantes diretamente no checkout.
+
+A alteração não mexe no catálogo, analisador, preços,
+anti-duplicação ou raridades.

@@ -847,3 +847,231 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
     font-size:18px !important;
   }
 }
+
+
+/* ==========================================================
+   V4.5 — PAGAMENTO MISTO POR POKÉMON
+   ========================================================== */
+
+.cart-payment-status{
+  margin:10px 0 4px;
+  padding:9px;
+  border:1px solid #465660;
+  background:#0a151c;
+  color:#b7c3ca;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  line-height:1.35;
+}
+.cart-payment-status b{color:#ffe17b}
+
+.cart-item-v45{
+  grid-template-columns:56px minmax(0,1fr) 32px !important;
+  align-items:start !important;
+}
+.cart-item-info{min-width:0}
+.cart-item-values{
+  display:flex;
+  flex-wrap:wrap;
+  gap:5px 10px;
+  margin-top:3px;
+}
+.cart-item-payment-title{
+  margin-top:8px;
+  color:#98a7af;
+  font-family:'Press Start 2P',monospace;
+  font-size:5px;
+  line-height:1.4;
+}
+.cart-item-payment-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-top:5px;
+}
+.cart-item-payment-buttons button{
+  min-height:30px;
+  padding:5px 3px;
+  border:1px solid #4c5e68;
+  background:#0a151c;
+  color:#9eabb3;
+  font-family:'Press Start 2P',monospace;
+  font-size:5px;
+  line-height:1.35;
+}
+.cart-item-payment-buttons .cart-pay-pix.active{
+  border-color:#d6a51c;
+  background:#3a2c0b;
+  color:#ffe17b;
+}
+.cart-item-payment-buttons .cart-pay-diamond.active{
+  border-color:#4ab7df;
+  background:#0b2b39;
+  color:#a9eaff;
+}
+.cart-remove{
+  width:30px;
+  height:30px;
+  border:1px solid #8b4040 !important;
+  background:#3b1717 !important;
+  color:#ff6e6e !important;
+}
+
+.checkout-split-summary{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:12px auto 6px;
+  max-width:600px;
+}
+.split-summary{
+  padding:11px;
+  border:2px solid;
+  background:#071219;
+}
+.split-summary span{
+  display:block;
+  margin-bottom:5px;
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+}
+.split-summary strong{
+  display:block;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:29px;
+  font-weight:900;
+}
+.pix-summary{border-color:#2ea64d}
+.pix-summary span{color:#7ce98d}
+.pix-summary strong{color:#52ff67}
+.diamond-summary{border-color:#3c9cc4}
+.diamond-summary span{color:#9bdcf6}
+.diamond-summary strong{color:#85ddff}
+
+.checkout-payment-status{
+  display:inline-block;
+  margin-top:9px;
+  padding:8px 11px;
+  border:1px solid #53636d;
+  background:#0a151c;
+  color:#d1d9dd;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:13px;
+}
+.checkout-payment-status b{color:#ffe17b}
+
+.checkout-product-mixed{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:10px;
+  border:1px solid #43515a;
+  background:#101d25;
+}
+.checkout-product-main{
+  min-width:0;
+}
+.checkout-product-main > span{
+  display:block;
+  font-family:Arial,Helvetica,sans-serif;
+  font-weight:900;
+  font-size:17px;
+  color:#ffe29a;
+}
+.checkout-product-prices{
+  display:flex;
+  gap:12px;
+  margin-top:4px;
+}
+.checkout-product-prices b{
+  color:#52ff67;
+  font-family:Arial,Helvetica,sans-serif;
+}
+.checkout-product-prices em{
+  color:#85ddff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-style:normal;
+  font-weight:800;
+}
+.checkout-item-payment-buttons{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:6px;
+  min-width:220px;
+}
+.checkout-item-payment-buttons button{
+  min-height:38px;
+  padding:7px 6px;
+  border:2px solid #50616b;
+  background:#0a151c;
+  color:#a9b4ba;
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+}
+.checkout-item-payment-buttons button.active.pix{
+  border-color:#d6a51c;
+  background:#3a2c0b;
+  color:#ffe17b;
+}
+.checkout-item-payment-buttons button.active.diamonds{
+  border-color:#4ab7df;
+  background:#0b2b39;
+  color:#a9eaff;
+}
+
+.payment-subtotal{
+  margin:10px 0;
+  padding:9px;
+  border:1px solid #2ea64d;
+  background:#0b2012;
+  color:#c8f3cf;
+}
+.payment-subtotal strong{
+  color:#52ff67;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:20px;
+}
+
+/* O checkout não usa mais os botões globais PIX/DIAMANTES. */
+.payment-choice{display:none !important}
+
+/* Se uma forma não for usada, o painel some. */
+.payment-panel{display:none !important}
+.payment-panel.active{display:block !important}
+
+.proof-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+@media(max-width:720px){
+  .checkout-product-mixed{
+    grid-template-columns:1fr;
+  }
+  .checkout-item-payment-buttons{
+    min-width:0;
+    width:100%;
+  }
+}
+@media(max-width:450px){
+  .checkout-split-summary{
+    grid-template-columns:1fr 1fr;
+    gap:6px;
+  }
+  .split-summary strong{
+    font-size:22px;
+  }
+  .checkout-item-payment-buttons{
+    grid-template-columns:1fr 1fr;
+  }
+  .cart-item-payment-buttons{
+    grid-template-columns:1fr;
+  }
+}
+
+
+/* V4.6 — faixa de preços por raridade removida da vitrine */
+.catalog-summary{
+  justify-content:flex-start !important;
+}

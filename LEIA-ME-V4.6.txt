@@ -1,0 +1,13 @@
+POKEPIXEL MARKET — V4.6
+
+- Varredura completa do catálogo padrão.
+- Corrigida colisão de nome Sandslash #01.
+- Limpeza automática de catálogo antigo persistido no Workers KV.
+- Proteção adicional no frontend contra duplicatas.
+- Admin passa a gerar numeração única por espécie.
+- Removida faixa pública de preços de Raros/Épicos.
+- Removida informação pública da conversão R$ ↔ Diamantes.
+- Pagamento misto da V4.5 preservado.
+- Catálogo, analisador, Pix, Diamantes e anti-duplicação preservados.
+
+Use esta versão no lugar da V4.5.
