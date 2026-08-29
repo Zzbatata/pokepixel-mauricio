@@ -585,3 +585,174 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
   text-align:right;
   color:#8ee3ff;
 }
+
+
+/* ==========================================================
+   V4.3 — CARDS MAIS CLAROS E PREÇOS COMO ALTERNATIVAS
+   ========================================================== */
+
+/* Nunca quebra GRAVELER, ELECTABUZZ etc. no meio da palavra. */
+.pokemon-card-name,
+.card-head strong{
+  display:block;
+  min-width:0;
+  max-width:100%;
+  font-size:22px !important;
+  line-height:1.08 !important;
+  letter-spacing:0 !important;
+  white-space:nowrap !important;
+  word-break:normal !important;
+  overflow-wrap:normal !important;
+  hyphens:none !important;
+}
+
+/* Dá mais espaço ao nome e enxuga o bloco IV/Q do cabeçalho. */
+.card-head{
+  display:grid !important;
+  grid-template-columns:minmax(0,1fr) 76px !important;
+  align-items:start !important;
+  gap:7px !important;
+}
+.quick-stats{
+  min-width:0 !important;
+  width:76px;
+  font-size:13px !important;
+}
+.quick-stats b{
+  font-size:16px !important;
+}
+
+/* Parte inferior vira um bloco vertical limpo. */
+.card-bottom{
+  display:block !important;
+  min-height:0 !important;
+  padding:11px !important;
+}
+
+/* PIX e DIAMANTES têm o MESMO peso visual. */
+.card-payment-options{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 28px minmax(0,1fr);
+  gap:6px;
+  align-items:stretch;
+}
+.card-pay-option{
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:3px;
+  padding:8px 7px;
+  border:1px solid;
+  background:#071219;
+}
+.card-pay-option span{
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+  line-height:1.3;
+}
+.card-pay-option strong{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:23px;
+  line-height:1;
+  font-weight:900;
+  white-space:nowrap;
+}
+.pix-option{
+  border-color:#2ea64d;
+}
+.pix-option span{color:#7ce98d}
+.pix-option strong{color:#52ff67}
+.diamond-option{
+  border-color:#3c9cc4;
+}
+.diamond-option span{color:#9bdcf6}
+.diamond-option strong{color:#85ddff}
+
+.card-pay-or{
+  display:grid;
+  place-items:center;
+  font-family:'Press Start 2P',monospace;
+  font-size:6px;
+  color:#8f9da5;
+}
+
+.card-status{
+  margin:9px 0 8px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  font-weight:900;
+  letter-spacing:.45px;
+}
+
+/* Dois botões com funções diferentes e nomes explícitos. */
+.card-actions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:7px;
+}
+.buy-now,
+.cart-add{
+  width:100%;
+  min-width:0 !important;
+  min-height:43px !important;
+  padding:8px 6px !important;
+  font-family:'Press Start 2P',monospace !important;
+  font-size:6px !important;
+  line-height:1.45 !important;
+  box-shadow:0 3px 0 rgba(0,0,0,.6);
+}
+.buy-now{
+  border:2px solid #36a653;
+  background:#12351d;
+  color:#8dff9f;
+}
+.buy-now:hover:not(:disabled){
+  background:#1b5b2d;
+  color:#fff;
+}
+.cart-add{
+  border:2px solid #b68c12 !important;
+  background:#30270d !important;
+  color:#ffdc3a !important;
+}
+.cart-add:hover:not(:disabled),
+.poke-card.in-cart .cart-add{
+  background:#806412 !important;
+  color:#fff !important;
+}
+.buy-now:disabled,
+.cart-add:disabled{
+  opacity:.55;
+  cursor:not-allowed;
+}
+
+.card-payment-note{
+  display:block;
+  margin-top:8px;
+  text-align:center;
+  color:#819099;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:11px;
+  line-height:1.25;
+}
+
+/* A regra antiga não é mais usada visualmente no card. */
+.card-price,
+.card-diamond{
+  font-size:inherit;
+}
+
+/* Em telas estreitas, preserva os dois preços lado a lado. */
+@media(max-width:380px){
+  .pokemon-card-name,
+  .card-head strong{
+    font-size:20px !important;
+  }
+  .card-pay-option strong{
+    font-size:20px;
+  }
+  .card-actions{
+    grid-template-columns:1fr;
+  }
+}

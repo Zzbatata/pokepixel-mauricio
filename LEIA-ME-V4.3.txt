@@ -1,0 +1,32 @@
+POKEPIXEL MARKET — V4.3
+
+CORREÇÕES VISUAIS DOS CARDS
+
+1. PREÇO NÃO PARECE MAIS SOMA
+Antes:
+R$ 6,00
+💎 15 diamantes
+
+Agora:
+[ PIX | R$ 6,00 ]  OU  [ DIAMANTES | 💎 15 ]
+
+Os dois preços têm praticamente o mesmo tamanho e peso visual.
+
+2. BOTÕES ORGANIZADOS
+COMPRAR AGORA:
+- abre diretamente o checkout apenas daquele Pokémon;
+- no checkout o comprador escolhe PIX ou DIAMANTES.
+
++ CARRINHO:
+- adiciona o Pokémon ao carrinho para comprar vários de uma vez.
+
+3. NOME COMPLETO
+- removida a quebra no meio das palavras;
+- "GRAVELER #10" não vira mais "GRAVELE / R #10";
+- bloco de IV/Qualidade do cabeçalho foi estreitado para dar mais espaço ao nome.
+
+4. TEXTO DE AJUDA
+Cada card informa:
+"Escolha PIX ou 💎 Diamantes no checkout"
+
+Nenhuma regra de preço, catálogo, analisador ou anti-duplicação foi alterada.

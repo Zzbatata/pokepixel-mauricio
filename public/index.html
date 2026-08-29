@@ -320,7 +320,7 @@ function renderCards(){
     card.innerHTML = `
       <div class="card-head">
         <div>
-          <strong></strong>
+          <strong class="pokemon-card-name"></strong>
           <span class="rarity-badge"></span>
         </div>
         <div class="quick-stats">
@@ -335,13 +335,32 @@ function renderCards(){
       </button>
 
       <div class="card-bottom">
-        <div>
-          <div class="card-price">${moneyBR(item.price)}</div><div class="card-diamond">${diamondsLabel(diamondsForPrice(item.price))}</div>
-          <div class="${item.sold ? 'sold' : 'available'}">${item.sold ? '● VENDIDO' : '● DISPONÍVEL'}</div>
+        <div class="card-payment-options" aria-label="Formas de pagamento">
+          <div class="card-pay-option pix-option">
+            <span>PIX</span>
+            <strong>${moneyBR(item.price)}</strong>
+          </div>
+          <div class="card-pay-or">OU</div>
+          <div class="card-pay-option diamond-option">
+            <span>DIAMANTES</span>
+            <strong>💎 ${diamondsForPrice(item.price)}</strong>
+          </div>
         </div>
-        <button class="cart-add" type="button" ${item.sold ? 'disabled' : ''}>
-          ${item.sold ? 'VENDIDO' : (inCart ? '✓ NO CARRINHO' : '+ CARRINHO')}
-        </button>
+
+        <div class="card-status ${item.sold ? 'sold' : 'available'}">
+          ${item.sold ? '● VENDIDO' : '● DISPONÍVEL'}
+        </div>
+
+        <div class="card-actions">
+          <button class="buy-now" type="button" ${item.sold ? 'disabled' : ''}>
+            ${item.sold ? 'VENDIDO' : 'COMPRAR AGORA'}
+          </button>
+          <button class="cart-add" type="button" ${item.sold ? 'disabled' : ''}>
+            ${item.sold ? 'VENDIDO' : (inCart ? '✓ NO CARRINHO' : '+ CARRINHO')}
+          </button>
+        </div>
+
+        <small class="card-payment-note">Escolha PIX ou 💎 Diamantes no checkout</small>
       </div>
     `;
 
@@ -353,6 +372,7 @@ function renderCards(){
     img.src = item.imageUrl;
     img.alt = `Print de ${item.name}`;
     card.querySelector('.screen-btn').onclick = () => openViewer(item);
+    card.querySelector('.buy-now').onclick = () => buyNow(item.id);
     card.querySelector('.cart-add').onclick = () => toggleCart(item.id);
     container.appendChild(card);
   }
@@ -465,8 +485,8 @@ Comprei via Diamantes. Quero concluir a troca dentro do jogo.`;
   };
 }
 
-function openCheckout(){
-  const items = cart.map(id=>catalog[id]).filter(item=>item && !item.sold);
+function openCheckoutWithItems(items){
+  items = (items || []).filter(item=>item && !item.sold);
   if(!items.length) return;
 
   const total = items.reduce((s,item)=>s+Number(item.price||0),0);
@@ -487,6 +507,17 @@ function openCheckout(){
 
   setPaymentMethod('pix', items, total, diamondTotal);
   $('buyModal').classList.add('on');
+}
+
+function openCheckout(){
+  const items = cart.map(id=>catalog[id]).filter(item=>item && !item.sold);
+  openCheckoutWithItems(items);
+}
+
+function buyNow(id){
+  const item = catalog[id];
+  if(!item || item.sold) return;
+  openCheckoutWithItems([item]);
 }
 
 async function copyPix(){
