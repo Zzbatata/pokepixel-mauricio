@@ -1,0 +1,25 @@
+{
+  "version": "4.0.0",
+  "status": "PRONTO_PARA_PUBLICAR",
+  "catalog": {
+    "total": 171,
+    "epic": 47,
+    "rare": 124
+  },
+  "rareBatches": {
+    "part1": 82,
+    "part2": 42,
+    "part2Duplicates": 0
+  },
+  "pricing": {
+    "rare": "R$ 4 a R$ 7",
+    "epic": "R$ 7 a R$ 12"
+  },
+  "specialCases": {
+    "Charmander #01": {
+      "reason": "card antigo sem Assinatura do jogo",
+      "manualSignature": "manual-charmander-01-01082026-1516-117-134",
+      "stillProtectedBy": "assinatura manual + captura + qualidade + IV Total"
+    }
+  }
+}

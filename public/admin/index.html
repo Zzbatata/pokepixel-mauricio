@@ -75,7 +75,8 @@
 
             <div class="add-two">
               <label>PREÇO (R$)
-                <input id="newPrice" name="price" type="number" min="1" max="999" step="1" value="4" required>
+                <input id="newPrice" name="price" type="number" min="1" max="999" step="1" placeholder="Aguardando análise" required>
+                <small id="diamondPricePreview" class="diamond-price-preview">💎 --</small>
               </label>
               <label>RARIDADE
                 <select id="newRarity" name="rarity">
@@ -109,9 +110,23 @@
                 <label>VEL IV<input id="speedIv" name="speedIv" type="number" min="0" max="31"></label>
               </div>
 
+              <div id="ivValidation" class="iv-validation waiting">
+                ⏳ AGUARDANDO OS 6 IVs — o preço automático só será liberado quando a soma bater com o IV Total.
+              </div>
+
               <label>ASSINATURA / CÓDIGO ÚNICO
-                <input id="signature" name="signature" type="text" maxlength="80" placeholder="Lido do campo Assinatura do print">
+                <input id="signature" name="signature" type="text" maxlength="80" placeholder="Quando existir no card">
               </label>
+
+              <label>DATA / HORA DA CAPTURA
+                <input id="captureAt" name="captureAt" type="text" maxlength="40" placeholder="Ex.: 22/08/2026 21:43">
+              </label>
+
+              <input id="species" name="species" type="hidden">
+
+              <div id="duplicateStatus" class="duplicate-status waiting">
+                ⏳ ANALISE O PRINT PARA VERIFICAR SE JÁ ESTÁ CADASTRADO
+              </div>
 
               <div class="add-two">
                 <label>NATUREZA
@@ -130,7 +145,7 @@
                 <span>PRÉ-NOTA AUTOMÁTICA</span>
                 <strong id="autoScoreText">--</strong>
                 <input id="autoScore" name="autoScore" type="hidden">
-                <small>Pré-nota genérica de IV + qualidade. Em ÉPICOS, o preço é sugerido automaticamente entre R$ 7 e R$ 12.</small>
+                <small>Qualidade e IV são tratados separadamente. Em ÉPICOS e RAROS, o preço só é sugerido depois que os 6 IVs forem confirmados pela soma do IV Total.</small>
               </div>
             </fieldset>
 

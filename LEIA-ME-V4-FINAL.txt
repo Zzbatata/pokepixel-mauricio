@@ -1,0 +1,60 @@
+POKEPIXEL MARKET — V4 FINAL
+
+PRONTO PARA PUBLICAR.
+
+CATÁLOGO:
+- 47 ÉPICOS
+- 124 RAROS
+- 171 Pokémon no catálogo padrão
+
+RAROS:
+- Parte 1: 82
+- Parte 2: 42
+- Duplicados detectados na Parte 2: 0
+- Cor do RARO: lilás/roxo
+- Preço RARO: R$ 4 a R$ 7
+- Preço ÉPICO: R$ 7 a R$ 12
+
+ANTI-DUPLICAÇÃO:
+1. Assinatura/código único, quando existir.
+2. Espécie + data/hora de captura + qualidade + IV Total.
+3. Os 6 IVs, quando disponíveis.
+4. O Admin verifica ANTES da publicação.
+5. O Worker verifica novamente no servidor.
+
+CHARMANDER:
+O Charmander antigo sem Assinatura recebeu a assinatura manual controlada:
+manual-charmander-01-01082026-1516-117-134
+Ela não finge ser uma assinatura do jogo; é marcada como fallback interno.
+A identidade por captura + qualidade + IV Total continua ativa.
+
+ANALISADOR:
+- IVs lidos nos números dourados XX/31.
+- Qualidade lida na caixa grande de Raridade.
+- RARO: x1,25 a x1,39.
+- ÉPICO: x1,40 a x1,54.
+- Se os 6 IVs não somarem o IV Total, o preço automático é bloqueado.
+- O Worker recusa publicação com IV divergente.
+- Preço automático foi habilitado também para RAROS.
+
+FILTROS:
+- Busca
+- Raridade
+- IV mínimo
+- Qualidade mínima
+- Disponível/Vendido
+- Mais novos
+- Maior IV
+- Maior qualidade
+- Nome
+- Menor/Maior preço
+
+IDENTIDADE:
+- Metadados públicos: Pokepixel Market | Loja e Vitrine
+- Worker configurado com nome: loja
+- Alvo de endereço: loja.pokepixelmarket.workers.dev
+- A parte pokepixelmarket precisa ser alterada no subdomínio da conta Cloudflare.
+
+PUBLICAÇÃO:
+Suba o CONTEÚDO deste ZIP no repositório GitHub usado pela Cloudflare.
+Depois do deploy, faça Ctrl+F5.

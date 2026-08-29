@@ -1,0 +1,640 @@
+{
+  "status": "FINAL",
+  "part": "RAROS_PARTE_2",
+  "cardsReceived": 42,
+  "cardsAdded": 42,
+  "duplicatesRejected": 0,
+  "items": [
+    {
+      "id": "rare-poliwhirl11",
+      "name": "Poliwhirl #11",
+      "species": "Poliwhirl",
+      "quality": 1.37,
+      "ivTotal": 91,
+      "captureAt": "03/08/2026 22:14",
+      "price": 5,
+      "legacyKey": "poliwhirl|03/08/2026 22:14|1.37|91",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl11.png"
+    },
+    {
+      "id": "rare-drowzee03",
+      "name": "Drowzee #03",
+      "species": "Drowzee",
+      "quality": 1.38,
+      "ivTotal": 111,
+      "captureAt": "05/08/2026 03:07",
+      "price": 7,
+      "legacyKey": "drowzee|05/08/2026 03:07|1.38|111",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-drowzee03.png"
+    },
+    {
+      "id": "rare-ponyta03",
+      "name": "Ponyta #03",
+      "species": "Ponyta",
+      "quality": 1.38,
+      "ivTotal": 97,
+      "captureAt": "06/08/2026 23:44",
+      "price": 6,
+      "legacyKey": "ponyta|06/08/2026 23:44|1.38|97",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ponyta03.png"
+    },
+    {
+      "id": "rare-ponyta04",
+      "name": "Ponyta #04",
+      "species": "Ponyta",
+      "quality": 1.37,
+      "ivTotal": 102,
+      "captureAt": "06/08/2026 23:49",
+      "price": 6,
+      "legacyKey": "ponyta|06/08/2026 23:49|1.37|102",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ponyta04.png"
+    },
+    {
+      "id": "rare-poliwhirl12",
+      "name": "Poliwhirl #12",
+      "species": "Poliwhirl",
+      "quality": 1.38,
+      "ivTotal": 111,
+      "captureAt": "07/08/2026 09:24",
+      "price": 7,
+      "legacyKey": "poliwhirl|07/08/2026 09:24|1.38|111",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl12.png"
+    },
+    {
+      "id": "rare-poliwhirl13",
+      "name": "Poliwhirl #13",
+      "species": "Poliwhirl",
+      "quality": 1.38,
+      "ivTotal": 111,
+      "captureAt": "07/08/2026 09:28",
+      "price": 7,
+      "legacyKey": "poliwhirl|07/08/2026 09:28|1.38|111",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235753.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl13.png"
+    },
+    {
+      "id": "rare-poliwhirl14",
+      "name": "Poliwhirl #14",
+      "species": "Poliwhirl",
+      "quality": 1.39,
+      "ivTotal": 86,
+      "captureAt": "07/08/2026 13:40",
+      "price": 5,
+      "legacyKey": "poliwhirl|07/08/2026 13:40|1.39|86",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl14.png"
+    },
+    {
+      "id": "rare-poliwhirl15",
+      "name": "Poliwhirl #15",
+      "species": "Poliwhirl",
+      "quality": 1.38,
+      "ivTotal": 94,
+      "captureAt": "07/08/2026 14:11",
+      "price": 6,
+      "legacyKey": "poliwhirl|07/08/2026 14:11|1.38|94",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl15.png"
+    },
+    {
+      "id": "rare-victreebel03",
+      "name": "Victreebel #03",
+      "species": "Victreebel",
+      "quality": 1.32,
+      "ivTotal": 100,
+      "captureAt": "09/08/2026 11:27",
+      "price": 5,
+      "legacyKey": "victreebel|09/08/2026 11:27|1.32|100",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-victreebel03.png"
+    },
+    {
+      "id": "rare-ivysaur05",
+      "name": "Ivysaur #05",
+      "species": "Ivysaur",
+      "quality": 1.36,
+      "ivTotal": 106,
+      "captureAt": "17/08/2026 08:29",
+      "price": 7,
+      "legacyKey": "ivysaur|17/08/2026 08:29|1.36|106",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ivysaur05.png"
+    },
+    {
+      "id": "rare-ivysaur06",
+      "name": "Ivysaur #06",
+      "species": "Ivysaur",
+      "quality": 1.36,
+      "ivTotal": 114,
+      "captureAt": "18/08/2026 07:49",
+      "price": 7,
+      "legacyKey": "ivysaur|18/08/2026 07:49|1.36|114",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ivysaur06.png"
+    },
+    {
+      "id": "rare-tangela05",
+      "name": "Tangela #05",
+      "species": "Tangela",
+      "quality": 1.33,
+      "ivTotal": 114,
+      "captureAt": "18/08/2026 22:10",
+      "price": 6,
+      "legacyKey": "tangela|18/08/2026 22:10|1.33|114",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 235857.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-tangela05.png"
+    },
+    {
+      "id": "rare-poliwhirl16",
+      "name": "Poliwhirl #16",
+      "species": "Poliwhirl",
+      "quality": 1.37,
+      "ivTotal": 118,
+      "captureAt": "19/08/2026 03:06",
+      "price": 7,
+      "legacyKey": "poliwhirl|19/08/2026 03:06|1.37|118",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl16.png"
+    },
+    {
+      "id": "rare-graveler05",
+      "name": "Graveler #05",
+      "species": "Graveler",
+      "quality": 1.38,
+      "ivTotal": 104,
+      "captureAt": "19/08/2026 19:54",
+      "price": 6,
+      "legacyKey": "graveler|19/08/2026 19:54|1.38|104",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler05.png"
+    },
+    {
+      "id": "rare-ninetales06",
+      "name": "Ninetales #06",
+      "species": "Ninetales",
+      "quality": 1.33,
+      "ivTotal": 95,
+      "captureAt": "21/08/2026 03:36",
+      "price": 6,
+      "legacyKey": "ninetales|21/08/2026 03:36|1.33|95",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ninetales06.png"
+    },
+    {
+      "id": "rare-arcanine22",
+      "name": "Arcanine #22",
+      "species": "Arcanine",
+      "quality": 1.33,
+      "ivTotal": 102,
+      "captureAt": "21/08/2026 18:51",
+      "price": 7,
+      "legacyKey": "arcanine|21/08/2026 18:51|1.33|102",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-arcanine22.png"
+    },
+    {
+      "id": "rare-electabuzz10",
+      "name": "Electabuzz #10",
+      "species": "Electabuzz",
+      "quality": 1.37,
+      "ivTotal": 84,
+      "captureAt": "25/08/2026 03:22",
+      "price": 6,
+      "legacyKey": "electabuzz|25/08/2026 03:22|1.37|84",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-electabuzz10.png"
+    },
+    {
+      "id": "rare-yanma04",
+      "name": "Yanma #04",
+      "species": "Yanma",
+      "quality": 1.37,
+      "ivTotal": 111,
+      "captureAt": "26/08/2026 22:27",
+      "price": 7,
+      "legacyKey": "yanma|26/08/2026 22:27|1.37|111",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000042.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-yanma04.png"
+    },
+    {
+      "id": "rare-hitmontop03",
+      "name": "Hitmontop #03",
+      "species": "Hitmontop",
+      "quality": 1.32,
+      "ivTotal": 93,
+      "captureAt": "28/08/2026 07:31",
+      "price": 5,
+      "legacyKey": "hitmontop|28/08/2026 07:31|1.32|93",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-hitmontop03.png"
+    },
+    {
+      "id": "rare-hitmontop04",
+      "name": "Hitmontop #04",
+      "species": "Hitmontop",
+      "quality": 1.37,
+      "ivTotal": 102,
+      "captureAt": "28/08/2026 10:36",
+      "price": 6,
+      "legacyKey": "hitmontop|28/08/2026 10:36|1.37|102",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-hitmontop04.png"
+    },
+    {
+      "id": "rare-graveler06",
+      "name": "Graveler #06",
+      "species": "Graveler",
+      "quality": 1.35,
+      "ivTotal": 110,
+      "captureAt": "03/08/2026 13:40",
+      "price": 6,
+      "legacyKey": "graveler|03/08/2026 13:40|1.35|110",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler06.png"
+    },
+    {
+      "id": "rare-sandslash01",
+      "name": "Sandslash #01",
+      "species": "Sandslash",
+      "quality": 1.35,
+      "ivTotal": 101,
+      "captureAt": "03/08/2026 18:03",
+      "price": 6,
+      "legacyKey": "sandslash|03/08/2026 18:03|1.35|101",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-sandslash01.png"
+    },
+    {
+      "id": "rare-sandslash02",
+      "name": "Sandslash #02",
+      "species": "Sandslash",
+      "quality": 1.31,
+      "ivTotal": 82,
+      "captureAt": "03/08/2026 20:07",
+      "price": 4,
+      "legacyKey": "sandslash|03/08/2026 20:07|1.31|82",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-sandslash02.png"
+    },
+    {
+      "id": "rare-poliwhirl17",
+      "name": "Poliwhirl #17",
+      "species": "Poliwhirl",
+      "quality": 1.35,
+      "ivTotal": 110,
+      "captureAt": "03/08/2026 21:22",
+      "price": 6,
+      "legacyKey": "poliwhirl|03/08/2026 21:22|1.35|110",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000153.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl17.png"
+    },
+    {
+      "id": "rare-growlithe04",
+      "name": "Growlithe #04",
+      "species": "Growlithe",
+      "quality": 1.39,
+      "ivTotal": 86,
+      "captureAt": "06/08/2026 16:37",
+      "price": 5,
+      "legacyKey": "growlithe|06/08/2026 16:37|1.39|86",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-growlithe04.png"
+    },
+    {
+      "id": "rare-ponyta05",
+      "name": "Ponyta #05",
+      "species": "Ponyta",
+      "quality": 1.34,
+      "ivTotal": 111,
+      "captureAt": "06/08/2026 21:40",
+      "price": 6,
+      "legacyKey": "ponyta|06/08/2026 21:40|1.34|111",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ponyta05.png"
+    },
+    {
+      "id": "rare-ponyta06",
+      "name": "Ponyta #06",
+      "species": "Ponyta",
+      "quality": 1.35,
+      "ivTotal": 104,
+      "captureAt": "06/08/2026 21:40",
+      "price": 6,
+      "legacyKey": "ponyta|06/08/2026 21:40|1.35|104",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ponyta06.png"
+    },
+    {
+      "id": "rare-poliwhirl18",
+      "name": "Poliwhirl #18",
+      "species": "Poliwhirl",
+      "quality": 1.34,
+      "ivTotal": 107,
+      "captureAt": "07/08/2026 14:08",
+      "price": 6,
+      "legacyKey": "poliwhirl|07/08/2026 14:08|1.34|107",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl18.png"
+    },
+    {
+      "id": "rare-victreebel04",
+      "name": "Victreebel #04",
+      "species": "Victreebel",
+      "quality": 1.36,
+      "ivTotal": 94,
+      "captureAt": "09/08/2026 12:53",
+      "price": 5,
+      "legacyKey": "victreebel|09/08/2026 12:53|1.36|94",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-victreebel04.png"
+    },
+    {
+      "id": "rare-primeape06",
+      "name": "Primeape #06",
+      "species": "Primeape",
+      "quality": 1.31,
+      "ivTotal": 89,
+      "captureAt": "09/08/2026 22:17",
+      "price": 4,
+      "legacyKey": "primeape|09/08/2026 22:17|1.31|89",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000331.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-primeape06.png"
+    },
+    {
+      "id": "rare-murkrow01",
+      "name": "Murkrow #01",
+      "species": "Murkrow",
+      "quality": 1.38,
+      "ivTotal": 104,
+      "captureAt": "10/08/2026 10:55",
+      "price": 6,
+      "legacyKey": "murkrow|10/08/2026 10:55|1.38|104",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-murkrow01.png"
+    },
+    {
+      "id": "rare-murkrow02",
+      "name": "Murkrow #02",
+      "species": "Murkrow",
+      "quality": 1.34,
+      "ivTotal": 96,
+      "captureAt": "10/08/2026 11:06",
+      "price": 5,
+      "legacyKey": "murkrow|10/08/2026 11:06|1.34|96",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-murkrow02.png"
+    },
+    {
+      "id": "rare-misdreavus01",
+      "name": "Misdreavus #01",
+      "species": "Misdreavus",
+      "quality": 1.38,
+      "ivTotal": 84,
+      "captureAt": "10/08/2026 19:18",
+      "price": 5,
+      "legacyKey": "misdreavus|10/08/2026 19:18|1.38|84",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-misdreavus01.png"
+    },
+    {
+      "id": "rare-ivysaur07",
+      "name": "Ivysaur #07",
+      "species": "Ivysaur",
+      "quality": 1.35,
+      "ivTotal": 120,
+      "captureAt": "17/08/2026 05:17",
+      "price": 7,
+      "legacyKey": "ivysaur|17/08/2026 05:17|1.35|120",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ivysaur07.png"
+    },
+    {
+      "id": "rare-ivysaur08",
+      "name": "Ivysaur #08",
+      "species": "Ivysaur",
+      "quality": 1.38,
+      "ivTotal": 81,
+      "captureAt": "17/08/2026 08:03",
+      "price": 6,
+      "legacyKey": "ivysaur|17/08/2026 08:03|1.38|81",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ivysaur08.png"
+    },
+    {
+      "id": "rare-ivysaur09",
+      "name": "Ivysaur #09",
+      "species": "Ivysaur",
+      "quality": 1.39,
+      "ivTotal": 103,
+      "captureAt": "18/08/2026 08:31",
+      "price": 7,
+      "legacyKey": "ivysaur|18/08/2026 08:31|1.39|103",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000503.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-ivysaur09.png"
+    },
+    {
+      "id": "rare-poliwhirl19",
+      "name": "Poliwhirl #19",
+      "species": "Poliwhirl",
+      "quality": 1.35,
+      "ivTotal": 96,
+      "captureAt": "19/08/2026 18:02",
+      "price": 5,
+      "legacyKey": "poliwhirl|19/08/2026 18:02|1.35|96",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 1
+      },
+      "imageFile": "incoming/rare-part2/images/rare-poliwhirl19.png"
+    },
+    {
+      "id": "rare-graveler07",
+      "name": "Graveler #07",
+      "species": "Graveler",
+      "quality": 1.37,
+      "ivTotal": 83,
+      "captureAt": "19/08/2026 22:59",
+      "price": 5,
+      "legacyKey": "graveler|19/08/2026 22:59|1.37|83",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 2
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler07.png"
+    },
+    {
+      "id": "rare-graveler08",
+      "name": "Graveler #08",
+      "species": "Graveler",
+      "quality": 1.35,
+      "ivTotal": 83,
+      "captureAt": "19/08/2026 23:34",
+      "price": 4,
+      "legacyKey": "graveler|19/08/2026 23:34|1.35|83",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 3
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler08.png"
+    },
+    {
+      "id": "rare-graveler09",
+      "name": "Graveler #09",
+      "species": "Graveler",
+      "quality": 1.38,
+      "ivTotal": 100,
+      "captureAt": "20/08/2026 02:24",
+      "price": 6,
+      "legacyKey": "graveler|20/08/2026 02:24|1.38|100",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 4
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler09.png"
+    },
+    {
+      "id": "rare-graveler10",
+      "name": "Graveler #10",
+      "species": "Graveler",
+      "quality": 1.35,
+      "ivTotal": 112,
+      "captureAt": "20/08/2026 03:43",
+      "price": 6,
+      "legacyKey": "graveler|20/08/2026 03:43|1.35|112",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 5
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler10.png"
+    },
+    {
+      "id": "rare-graveler11",
+      "name": "Graveler #11",
+      "species": "Graveler",
+      "quality": 1.34,
+      "ivTotal": 94,
+      "captureAt": "20/08/2026 04:27",
+      "price": 5,
+      "legacyKey": "graveler|20/08/2026 04:27|1.34|94",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-29 000559.png",
+        "position": 6
+      },
+      "imageFile": "incoming/rare-part2/images/rare-graveler11.png"
+    }
+  ],
+  "duplicates": []
+}

@@ -1,0 +1,17 @@
+POKEPIXEL MARKET — V4.1 FINAL
+
+Esta versão substitui a V4.0 antes da publicação.
+
+NOVIDADES:
+- Pagamento via PIX ou DIAMANTES.
+- Conversão: 1 Diamante = R$ 0,40.
+- Preço em Diamantes visível nos cards, carrinho e checkout.
+- Carrinho mostra total em R$ e 💎.
+- WhatsApp muda a mensagem conforme a forma de pagamento escolhida.
+- Admin mostra o equivalente em Diamantes do preço em Reais.
+- Analisador ganhou fallback individual para os 6 IVs dourados.
+- Preço automático permanece bloqueado se a soma dos IVs não fechar com IV Total.
+- Revisão técnica salva em REVISAO-V4.1.txt.
+
+PUBLICAÇÃO:
+Use esta V4.1 no lugar da V4.0.

@@ -215,3 +215,27 @@ body.zoom-open{overflow:hidden}
   .image-zoom-actions{width:100%;flex-wrap:wrap}
   .image-zoom-viewport{padding:10px}
 }
+
+/* V4 — verificação de identidade/duplicidade */
+.duplicate-status{
+  margin:10px 0 2px;
+  padding:11px 12px;
+  border:2px solid #53616a;
+  background:#101a21;
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  line-height:1.7;
+}
+.duplicate-status.waiting{color:#aeb9bf;border-color:#53616a}
+.duplicate-status.checking{color:#ffe17b;border-color:#a9851b}
+.duplicate-status.ok{color:#61ef7a;border-color:#2d9e49;background:#0d2414}
+.duplicate-status.warn{color:#ffd46a;border-color:#b6891c;background:#2a210d}
+.duplicate-status.blocked{color:#ff7b7b;border-color:#b43b3b;background:#2b1010}
+
+
+/* V4 Beta 2 — validação forte dos IVs */
+.iv-validation{margin:10px 0 12px;padding:10px 12px;border:1px solid #53606a;background:#111b22;font-weight:700;line-height:1.35}
+.iv-validation.waiting{color:#b9c4ca;border-color:#52606a}
+.iv-validation.ok{color:#76ff8b;border-color:#2f9b4e;background:#0d2315}
+.iv-validation.bad{color:#ff8f8f;border-color:#a84545;background:#281111}
+.iv-validation.warn{color:#ffd86b;border-color:#9e7b20;background:#261f0d}

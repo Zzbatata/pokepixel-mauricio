@@ -1,0 +1,25 @@
+POKEPIXEL MARKET — V4.2
+
+AJUSTE FINAL DE PAGAMENTO
+
+PIX
+- Checkout mostra distintivo "PAGAMENTO VIA PIX".
+- Botão: "JÁ PAGUEI VIA PIX • ENVIAR COMPROVANTE".
+- WhatsApp abre com cabeçalho "COMPRA VIA PIX".
+- Lista cada Pokémon em R$ e informa o total via Pix.
+
+DIAMANTES
+- Checkout mostra distintivo "PAGAMENTO VIA DIAMANTES".
+- Botão: "COMPREI VIA DIAMANTES • CONFIRMAR".
+- WhatsApp abre com cabeçalho "COMPRA VIA DIAMANTES".
+- Lista cada Pokémon individualmente com sua quantidade de Diamantes.
+- Informa o TOTAL de Diamantes do pedido.
+- Mantém visível a conversão 1 Diamante = R$ 0,40.
+
+Exemplo de mensagem em Diamantes:
+💎 COMPRA VIA DIAMANTES — POKEPIXEL MARKET
+• Arcanine #01 — 💎 15 diamantes
+• Poliwhirl #02 — 💎 10 diamantes
+TOTAL VIA DIAMANTES: 💎 25 diamantes
+
+Nenhuma outra lógica da V4.1 foi alterada.

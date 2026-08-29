@@ -19,6 +19,7 @@ const zoomInBtn = $('zoomInBtn');
 const zoomOutBtn = $('zoomOutBtn');
 const zoomResetBtn = $('zoomResetBtn');
 const closeZoomBtn = $('closeZoomBtn');
+const duplicateStatus = $('duplicateStatus');
 let previewObjectUrl = null;
 let zoomScale = 1;
 const loginPanel = $('loginPanel');
@@ -248,6 +249,129 @@ function parseSignature(text){
     .toLowerCase();
 }
 
+function parseCaptureAt(text){
+  const t = normalizeOCR(text)
+    .replace(/[Oo](?=\d)/g,'0')
+    .replace(/(\d{2})-(\d{2})(?=\s|$)/g,'$1:$2');
+  const m = t.match(/(\d{2})\/(\d{2})\/(\d{4})\s*,?\s*(\d{2})[:\-](\d{2})/);
+  if(!m) return '';
+  return `${m[1]}/${m[2]}/${m[3]} ${m[4]}:${m[5]}`;
+}
+
+function speciesFromFormName(){
+  return String($('newName')?.value || '')
+    .replace(/\s+#\d+\s*$/,'')
+    .trim();
+}
+
+function currentTechnicalPayload(){
+  const num = id => {
+    const raw = $(id)?.value;
+    if(raw === '' || raw === undefined || raw === null) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) ? n : null;
+  };
+  return {
+    quality:num('quality'),
+    ivTotal:num('ivTotal'),
+    hpIv:num('hpIv'),
+    atkIv:num('atkIv'),
+    defIv:num('defIv'),
+    spatkIv:num('spatkIv'),
+    spdefIv:num('spdefIv'),
+    speedIv:num('speedIv')
+  };
+}
+
+let duplicateCheckToken = 0;
+let duplicateBlocked = false;
+
+function setDuplicateStatus(kind, message){
+  if(!duplicateStatus) return;
+  duplicateStatus.className = `duplicate-status ${kind}`;
+  duplicateStatus.textContent = message;
+}
+
+async function checkDuplicateIdentity(){
+  const species = speciesFromFormName();
+  const signature = String($('signature')?.value || '').trim();
+  const captureAt = String($('captureAt')?.value || '').trim();
+  const technical = currentTechnicalPayload();
+
+  $('species').value = species;
+  const token = ++duplicateCheckToken;
+  duplicateBlocked = false;
+
+  if(!species){
+    setDuplicateStatus('waiting','⏳ INFORME O NOME PARA VERIFICAR DUPLICIDADE');
+    return {duplicate:false,identityReady:false};
+  }
+
+  const hasCaptureIdentity = captureAt && Number.isFinite(technical.quality) && Number.isFinite(technical.ivTotal);
+  const hasStatsIdentity = [technical.hpIv,technical.atkIv,technical.defIv,technical.spatkIv,technical.spdefIv,technical.speedIv]
+    .every(Number.isFinite);
+
+  if(!signature && !hasCaptureIdentity && !hasStatsIdentity){
+    setDuplicateStatus('warn','⚠ AINDA FALTAM DADOS PARA A VERIFICAÇÃO ANTIDUPLICAÇÃO');
+    return {duplicate:false,identityReady:false};
+  }
+
+  setDuplicateStatus('checking','⌛ CONFERINDO IDENTIDADE NO CATÁLOGO...');
+
+  try{
+    const response = await adminFetch('/admin/api/duplicate-check',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        name:$('newName').value,
+        species,
+        signature,
+        captureAt,
+        technical
+      })
+    });
+    const res = await response.json();
+    if(token !== duplicateCheckToken) return res;
+
+    if(res.duplicate){
+      duplicateBlocked = true;
+      const method = res.method === 'signature'
+        ? 'ASSINATURA'
+        : res.method === 'captura'
+          ? 'DADOS DE CAPTURA'
+          : 'IVS';
+      setDuplicateStatus(
+        'blocked',
+        `⛔ JÁ CADASTRADO: ${res.item.name.toUpperCase()} • CONFIRMADO POR ${method}`
+      );
+    }else if(res.identityReady){
+      duplicateBlocked = false;
+      if(res.methodsAvailable?.signature){
+        setDuplicateStatus('ok','✅ ASSINATURA ÚNICA • POKÉMON NÃO ENCONTRADO NO CATÁLOGO');
+      }else if(res.methodsAvailable?.capture){
+        setDuplicateStatus('ok','✅ IDENTIDADE LIVRE • VERIFICADO POR CAPTURA + IV + QUALIDADE');
+      }else{
+        setDuplicateStatus('ok','✅ IDENTIDADE LIVRE • VERIFICADO PELOS IVS');
+      }
+    }else{
+      setDuplicateStatus('warn','⚠ NÃO FOI POSSÍVEL FORMAR UMA IDENTIDADE CONFIÁVEL');
+    }
+    return res;
+  }catch(e){
+    if(token === duplicateCheckToken){
+      setDuplicateStatus('warn','⚠ NÃO FOI POSSÍVEL CONSULTAR O CATÁLOGO AGORA');
+    }
+    return {duplicate:false,identityReady:false};
+  }
+}
+
+let duplicateTimer = null;
+function scheduleDuplicateCheck(){
+  clearTimeout(duplicateTimer);
+  duplicateTimer = setTimeout(()=>checkDuplicateIdentity(),450);
+}
+
+
 /*
   Usa a soma dos 6 IVs como validação:
   - se todos foram lidos e a soma bate com IV TOTAL, alta confiança;
@@ -293,7 +417,8 @@ function parseTechnical(text){
     speedIv: extractLabeledIv(text,'speed'),
     nature: parseNature(text),
     gender: parseGender(text),
-    signature: parseSignature(text)
+    signature: parseSignature(text),
+    captureAt: parseCaptureAt(text)
   };
 
   return validateAndInferIvs(parsed);
@@ -352,34 +477,159 @@ newImage.addEventListener('change', () => {
   }
 
   ocrProgress.textContent = 'Imagem pronta para análise.';
+  duplicateBlocked = false;
+  setDuplicateStatus('waiting','⏳ ANALISE O PRINT PARA VERIFICAR SE JÁ ESTÁ CADASTRADO');
 });
 
 
+let lastAutoPrice = null;
+const DIAMOND_BRL = 0.40;
+function diamondsForPrice(value){
+  const n = Number(value);
+  if(!Number.isFinite(n) || n <= 0) return 0;
+  return Math.max(1, Math.round(n / DIAMOND_BRL));
+}
+function updateDiamondPricePreview(){
+  const el = $('diamondPricePreview');
+  if(!el) return;
+  const d = diamondsForPrice($('newPrice')?.value);
+  el.textContent = d ? `💎 ${d} diamantes (1 💎 = R$ 0,40)` : '💎 --';
+}
+
+function currentIvState(){
+  const ids = ['hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv'];
+  const values = ids.map(id => {
+    const raw = $(id)?.value;
+    if(raw === '' || raw === null || raw === undefined) return null;
+    const n = Number(raw);
+    return Number.isFinite(n) && n >= 0 && n <= 31 ? n : null;
+  });
+  const totalRaw = $('ivTotal')?.value;
+  const total = totalRaw === '' ? null : Number(totalRaw);
+  const complete = values.every(Number.isFinite);
+  const sum = complete ? values.reduce((a,b)=>a+b,0) : null;
+  const valid = complete && Number.isFinite(total) && sum === total;
+  return {ids,values,total,complete,sum,valid};
+}
+
+function updateIvValidationUI(){
+  const box = $('ivValidation');
+  if(!box) return currentIvState();
+  const s = currentIvState();
+  box.className = 'iv-validation';
+  if(!Number.isFinite(s.total)){
+    box.classList.add('waiting');
+    box.textContent = '⏳ AGUARDANDO IV TOTAL /186.';
+  }else if(!s.complete){
+    const missing = s.ids.filter((id,i)=>!Number.isFinite(s.values[i])).map(id=>id.replace('Iv','').toUpperCase());
+    box.classList.add('warn');
+    box.textContent = `⚠ FALTAM IVs: ${missing.join(', ')}. O preço automático continua bloqueado.`;
+  }else if(s.valid){
+    box.classList.add('ok');
+    box.textContent = `✓ IVs CONFIRMADOS: ${s.values.join(' + ')} = ${s.sum}/${s.total}. Preço automático liberado.`;
+  }else{
+    box.classList.add('bad');
+    box.textContent = `⛔ DIVERGÊNCIA: os 6 IVs somam ${s.sum}, mas o IV Total é ${s.total}. O preço automático foi bloqueado.`;
+  }
+  return s;
+}
+
+function clearAutoPriceIfNeeded(){
+  const price = $('newPrice');
+  if(price && price.dataset.autoSuggested === '1'){
+    price.value = '';
+    price.dataset.autoSuggested = '0';
+    lastAutoPrice = null;
+  }
+}
+
 function suggestEpicPrice(){
   const rarity = String($('newRarity')?.value || '').toUpperCase();
-  if(rarity !== 'ÉPICO') return;
+  const price = $('newPrice');
+  const state = updateIvValidationUI();
+
+  if(rarity !== 'ÉPICO' && rarity !== 'RARO'){
+    clearAutoPriceIfNeeded();
+    return;
+  }
 
   const iv = Number($('ivTotal')?.value);
   const q = Number($('quality')?.value);
-  if(!Number.isFinite(iv) || !Number.isFinite(q) || !iv || !q) return;
 
-  const ivScore = Math.max(0, Math.min(100, (iv - 90) / 60 * 100));
-  const qScore = Math.max(0, Math.min(100, (q - 1.40) / (1.54 - 1.40) * 100));
-  const score = ivScore * 0.65 + qScore * 0.35;
+  if(!state.valid || !Number.isFinite(iv) || !Number.isFinite(q)){
+    clearAutoPriceIfNeeded();
+    return;
+  }
 
-  let price = 7;
-  if(score >= 82) price = 12;
-  else if(score >= 72) price = 11;
-  else if(score >= 60) price = 10;
-  else if(score >= 45) price = 9;
-  else if(score >= 30) price = 8;
+  const species = speciesFromFormName();
+  let suggested = null;
 
-  $('newPrice').value = price;
+  if(rarity === 'ÉPICO'){
+    if(q < 1.40 || q > 1.54){
+      clearAutoPriceIfNeeded();
+      return;
+    }
+
+    const ivScore = Math.max(0, Math.min(100, (iv - 90) / 60 * 100));
+    const qScore = Math.max(0, Math.min(100, (q - 1.40) / (1.54 - 1.40) * 100));
+    const score = ivScore * 0.65 + qScore * 0.35;
+
+    suggested = 7;
+    if(score >= 82) suggested = 12;
+    else if(score >= 72) suggested = 11;
+    else if(score >= 60) suggested = 10;
+    else if(score >= 45) suggested = 9;
+    else if(score >= 30) suggested = 8;
+
+    const demandBonus = {Tyranitar:2,Gyarados:1,Gengar:1,Charmeleon:1}[species] || 0;
+    suggested = Math.min(12, suggested + demandBonus);
+  }
+
+  if(rarity === 'RARO'){
+    if(q < 1.25 || q > 1.39){
+      clearAutoPriceIfNeeded();
+      return;
+    }
+
+    const ivScore = Math.max(0, Math.min(100, (iv - 75) / 50 * 100));
+    const qScore = Math.max(0, Math.min(100, (q - 1.25) / (1.39 - 1.25) * 100));
+    const score = ivScore * 0.68 + qScore * 0.32;
+
+    suggested = 4;
+    if(score >= 75) suggested = 7;
+    else if(score >= 55) suggested = 6;
+    else if(score >= 35) suggested = 5;
+
+    const demandBonus = {
+      Arcanine:1,Gyarados:1,Snorlax:1,Ninetales:1,Electabuzz:1,
+      Kadabra:1,Togetic:1,Charmander:1,Ivysaur:1
+    }[species] || 0;
+    suggested = Math.min(7, suggested + demandBonus);
+  }
+
+  price.value = suggested;
+  price.dataset.autoSuggested = '1';
+  lastAutoPrice = suggested;
+  updateDiamondPricePreview();
 }
 
+$('newPrice')?.addEventListener('input',()=>{
+  if(Number($('newPrice').value) !== lastAutoPrice) $('newPrice').dataset.autoSuggested = '0';
+  updateDiamondPricePreview();
+});
 $('newRarity')?.addEventListener('change', suggestEpicPrice);
-$('ivTotal')?.addEventListener('input', suggestEpicPrice);
-$('quality')?.addEventListener('input', suggestEpicPrice);
+['ivTotal','quality','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv'].forEach(id=>{
+  $(id)?.addEventListener('input',()=>{
+    recomputeAutoScore();
+    suggestEpicPrice();
+  });
+});
+
+
+['newName','signature','captureAt','quality','ivTotal','hpIv','atkIv','defIv','spatkIv','spdefIv','speedIv']
+  .forEach(id => $(id)?.addEventListener('input', scheduleDuplicateCheck));
+
+$('newRarity')?.addEventListener('change', scheduleDuplicateCheck);
 
 
 async function fileToBitmap(file){
@@ -422,10 +672,115 @@ function makeRegionCanvas(bitmap, rect, {
   return canvas;
 }
 
-function makeIvComposite(bitmap, threshold=110){
-  // Coordenadas normalizadas medidas diretamente no card do Pokepixel.
-  // Cada recorte contém praticamente apenas "XX/31".
-  const regions = [
+function makeGoldIvPanel(bitmap, side='left', variant=0){
+  const rect = side === 'left'
+    ? {x:.275,y:.532,w:.235,h:.108}
+    : {x:.755,y:.532,w:.235,h:.108};
+  const configs = [
+    {r:135,g:95,b:175,gd:12,rd:25},
+    {r:110,g:75,b:190,gd:5,rd:15},
+    {r:150,g:110,b:165,gd:18,rd:30}
+  ];
+  const cfg = configs[variant] || configs[0];
+  const sx = Math.max(0,Math.round(bitmap.width*rect.x));
+  const sy = Math.max(0,Math.round(bitmap.height*rect.y));
+  const sw = Math.max(1,Math.round(bitmap.width*rect.w));
+  const sh = Math.max(1,Math.round(bitmap.height*rect.h));
+  const scale = 4;
+  const canvas = document.createElement('canvas');
+  canvas.width = sw*scale;
+  canvas.height = sh*scale;
+  const ctx = canvas.getContext('2d',{willReadFrequently:true});
+  ctx.fillStyle='#fff';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
+  const image = ctx.getImageData(0,0,canvas.width,canvas.height);
+  const d = image.data;
+  for(let i=0;i<d.length;i+=4){
+    const r=d[i], g=d[i+1], b=d[i+2];
+    const isGold = r>cfg.r && g>cfg.g && b<cfg.b && (g-b)>cfg.gd && (r-b)>cfg.rd;
+    const out = isGold ? 0 : 255;
+    d[i]=d[i+1]=d[i+2]=out;
+    d[i+3]=255;
+  }
+  ctx.putImageData(image,0,0);
+  return canvas;
+}
+
+function parseIvColumn(text){
+  const normalized = String(text || '')
+    .replace(/[|Iil]/g,'1')
+    .replace(/[Oo]/g,'0')
+    .replace(/\\/g,'/')
+    .replace(/\r/g,'');
+  const lines = normalized.split(/\n+/).map(s=>s.trim()).filter(Boolean);
+  const values=[];
+  for(const line of lines){
+    const m = line.match(/(\d{1,2})\s*\/\s*(\d{2})/);
+    if(!m) continue;
+    const numerator = Number(m[1]);
+    const denominator = Number(m[2]);
+    values.push(numerator>=0 && numerator<=31 && denominator>=30 && denominator<=32 ? numerator : null);
+    if(values.length===3) break;
+  }
+  while(values.length<3) values.push(null);
+  return values.slice(0,3);
+}
+
+function resolveIvCandidates(candidatePasses, ivTotal){
+  const positions = Array.from({length:6},(_,i)=>{
+    const set = new Set();
+    for(const pass of candidatePasses){
+      const v=pass[i];
+      if(Number.isFinite(v) && v>=0 && v<=31) set.add(v);
+    }
+    return [...set];
+  });
+  if(Number.isFinite(ivTotal)){
+    let solution=null;
+    function walk(i,arr,sum){
+      if(solution) return;
+      if(i===6){ if(sum===ivTotal) solution=[...arr]; return; }
+      const opts=positions[i];
+      if(!opts.length) return;
+      for(const v of opts){
+        if(sum+v>ivTotal) continue;
+        arr.push(v); walk(i+1,arr,sum+v); arr.pop();
+      }
+    }
+    if(positions.every(a=>a.length)) walk(0,[],0);
+    if(solution && solution.every(Number.isFinite)) return solution;
+    const fixed=positions.map(a=>a.length===1?a[0]:null);
+    const missing=fixed.map((v,i)=>Number.isFinite(v)?-1:i).filter(i=>i>=0);
+    if(missing.length===1){
+      const sum=fixed.reduce((s,v)=>s+(Number.isFinite(v)?v:0),0);
+      const inferred=ivTotal-sum;
+      if(inferred>=0 && inferred<=31){ fixed[missing[0]]=inferred; return fixed; }
+    }
+  }
+  return positions.map(a=>a.length===1?a[0]:null);
+}
+
+async function readBattleIvs(worker, bitmap, ivTotal){
+  const passes=[];
+  for(let variant=0;variant<3;variant++){
+    const params={tessedit_char_whitelist:'0123456789/',tessedit_pageseg_mode:'6'};
+    const leftText=await recognizeWithWorker(worker,makeGoldIvPanel(bitmap,'left',variant),params);
+    const rightText=await recognizeWithWorker(worker,makeGoldIvPanel(bitmap,'right',variant),params);
+    const left=parseIvColumn(leftText);
+    const right=parseIvColumn(rightText);
+    passes.push([left[0],left[1],left[2],right[0],right[1],right[2]]);
+    const resolved=resolveIvCandidates(passes,ivTotal);
+    if(resolved.every(Number.isFinite) && (!Number.isFinite(ivTotal) || resolved.reduce((a,b)=>a+b,0)===ivTotal)) return resolved;
+  }
+  return resolveIvCandidates(passes,ivTotal);
+}
+
+
+function makeGoldIvCell(bitmap, index, variant=0){
+  const rects = [
     {x:.315,y:.538,w:.180,h:.034}, // HP
     {x:.315,y:.568,w:.180,h:.034}, // ATK
     {x:.315,y:.598,w:.180,h:.034}, // ATK SP
@@ -433,40 +788,80 @@ function makeIvComposite(bitmap, threshold=110){
     {x:.805,y:.568,w:.180,h:.034}, // DEF SP
     {x:.805,y:.598,w:.180,h:.034}, // VEL
   ];
+  const cfgs = [
+    {r:120,g:82,b:185,gd:7,rd:18},
+    {r:105,g:70,b:195,gd:3,rd:12},
+    {r:145,g:100,b:175,gd:12,rd:24}
+  ];
+  const rect = rects[index];
+  const cfg = cfgs[variant] || cfgs[0];
 
-  const parts = regions.map(r => makeRegionCanvas(bitmap,r,{
-    scale:6,threshold,padding:8
-  }));
+  const sx=Math.round(bitmap.width*rect.x);
+  const sy=Math.round(bitmap.height*rect.y);
+  const sw=Math.max(1,Math.round(bitmap.width*rect.w));
+  const sh=Math.max(1,Math.round(bitmap.height*rect.h));
+  const scale=7;
 
-  const width = Math.max(...parts.map(c=>c.width));
-  const gap = 30;
-  const height = parts.reduce((s,c)=>s+c.height,0) + gap*(parts.length-1);
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-  const ctx = canvas.getContext('2d');
+  const canvas=document.createElement('canvas');
+  canvas.width=sw*scale;
+  canvas.height=sh*scale;
+  const ctx=canvas.getContext('2d',{willReadFrequently:true});
   ctx.fillStyle='#fff';
-  ctx.fillRect(0,0,width,height);
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.imageSmoothingEnabled=true;
+  ctx.imageSmoothingQuality='high';
+  ctx.drawImage(bitmap,sx,sy,sw,sh,0,0,canvas.width,canvas.height);
 
-  let y=0;
-  for(const part of parts){
-    ctx.drawImage(part,0,y);
-    y += part.height + gap;
+  const image=ctx.getImageData(0,0,canvas.width,canvas.height);
+  const d=image.data;
+  for(let i=0;i<d.length;i+=4){
+    const r=d[i],g=d[i+1],b=d[i+2];
+    const isGold=r>cfg.r && g>cfg.g && b<cfg.b && (g-b)>cfg.gd && (r-b)>cfg.rd;
+    const out=isGold?0:255;
+    d[i]=d[i+1]=d[i+2]=out;
+    d[i+3]=255;
   }
+  ctx.putImageData(image,0,0);
   return canvas;
 }
 
-function parseSixIvsFromText(text){
-  const t = String(text || '')
+function parseSingleIv(text){
+  const t=String(text||'')
     .replace(/[|Iil]/g,'1')
     .replace(/[Oo]/g,'0')
-    .replace(/\s+/g,' ');
+    .replace(/\\/g,'/');
+  const m=t.match(/(\d{1,2})\s*\/?\s*(?:31)?/);
+  if(!m) return null;
+  const n=Number(m[1]);
+  return Number.isFinite(n) && n>=0 && n<=31 ? n : null;
+}
 
-  const values = [...t.matchAll(/(\d{1,2})\s*\/\s*31/g)]
-    .map(m=>Number(m[1]))
-    .filter(n=>Number.isFinite(n) && n>=0 && n<=31);
+async function readBattleIvsCellFallback(worker, bitmap, ivTotal){
+  const passes=[];
+  for(let variant=0;variant<3;variant++){
+    const values=[];
+    for(let i=0;i<6;i++){
+      const text=await recognizeWithWorker(
+        worker,
+        makeGoldIvCell(bitmap,i,variant),
+        {tessedit_char_whitelist:'0123456789/',tessedit_pageseg_mode:'7'}
+      );
+      values.push(parseSingleIv(text));
+    }
+    passes.push(values);
 
-  return values.slice(0,6);
+    if(values.every(Number.isFinite)){
+      const sum=values.reduce((a,b)=>a+b,0);
+      if(!Number.isFinite(ivTotal) || sum===ivTotal) return values;
+    }
+
+    const resolved=resolveIvCandidates(passes,ivTotal);
+    if(resolved.every(Number.isFinite)){
+      const sum=resolved.reduce((a,b)=>a+b,0);
+      if(!Number.isFinite(ivTotal) || sum===ivTotal) return resolved;
+    }
+  }
+  return resolveIvCandidates(passes,ivTotal);
 }
 
 function parseQualityPrecise(text){
@@ -474,10 +869,16 @@ function parseQualityPrecise(text){
     .replace(/[Oo]/g,'0')
     .replace(/[Il|]/g,'1')
     .replace(/,/g,'.');
-  const m = t.match(/1\.(\d{2})/);
-  if(!m) return null;
-  const q = Number(`1.${m[1]}`);
-  return q >= 1.35 && q <= 1.70 ? q : null;
+  const matches=[...t.matchAll(/1\.(\d{2})/g)].map(m=>Number(`1.${m[1]}`));
+  const q=matches.find(n=>Number.isFinite(n) && n>=1.20 && n<=1.99);
+  return Number.isFinite(q) ? q : null;
+}
+
+function rarityFromQuality(q){
+  const n=Number(q);
+  if(n>=1.40 && n<=1.54) return 'ÉPICO';
+  if(n>=1.25 && n<=1.39) return 'RARO';
+  return null;
 }
 
 function parseIvTotalPrecise(text){
@@ -526,128 +927,56 @@ async function recognizeWithWorker(worker, canvas, params={}){
 async function analyzePokepixelCard(file){
   const bitmap = await fileToBitmap(file);
   let worker = null;
-
-  const progress = pct => {
-    ocrProgress.textContent = `Análise precisa do Pokepixel... ${Math.max(1,Math.min(99,Math.round(pct)))}%`;
-  };
-
+  const progress = pct => { ocrProgress.textContent = `Analisando as áreas exatas do card Pokepixel... ${Math.max(1,Math.min(99,Math.round(pct)))}%`; };
   try{
-    progress(5);
-    worker = await Tesseract.createWorker('eng',1,{
-      logger:m=>{
-        if(m.status==='recognizing text' && m.progress){
-          // cada OCR é pequeno; usamos só um avanço visual suave
-        }
-      }
-    });
-
-    // 1. Qualidade (badge ÉPICA x1,xx)
-    const qualityCanvas = makeRegionCanvas(bitmap,{x:.185,y:.100,w:.270,h:.055},{
-      scale:6,threshold:105,padding:10
-    });
-    const qualityText = await recognizeWithWorker(worker,qualityCanvas,{
-      tessedit_char_whitelist:'xX0123456789,.',
-      tessedit_pageseg_mode:'7'
-    });
+    progress(4);
+    worker = await Tesseract.createWorker('eng',1,{logger:()=>{}});
+    const qualityCanvas = makeRegionCanvas(bitmap,{x:.45,y:.34,w:.53,h:.13},{scale:4,threshold:null,padding:8});
+    const qualityText = await recognizeWithWorker(worker,qualityCanvas,{tessedit_char_whitelist:'xX0123456789,./',tessedit_pageseg_mode:'6'});
     let quality = parseQualityPrecise(qualityText);
-    progress(20);
-
-    // 2. IV TOTAL /186
-    const totalCanvas = makeRegionCanvas(bitmap,{x:.500,y:.245,w:.285,h:.070},{
-      scale:6,threshold:105,padding:10
-    });
-    const totalText = await recognizeWithWorker(worker,totalCanvas,{
-      tessedit_char_whitelist:'0123456789/',
-      tessedit_pageseg_mode:'7'
-    });
+    progress(18);
+    const totalCanvas = makeRegionCanvas(bitmap,{x:.48,y:.265,w:.49,h:.10},{scale:4,threshold:null,padding:8});
+    const totalText = await recognizeWithWorker(worker,totalCanvas,{tessedit_char_whitelist:'0123456789/',tessedit_pageseg_mode:'6'});
     let ivTotal = parseIvTotalPrecise(totalText);
-    progress(34);
-
-    // 3. Os 6 IVs em uma única leitura, recortando só a fração XX/31.
-    const ivCanvasA = makeIvComposite(bitmap,105);
-    const ivTextA = await recognizeWithWorker(worker,ivCanvasA,{
-      tessedit_char_whitelist:'0123456789/',
-      tessedit_pageseg_mode:'6'
-    });
-    let ivsA = parseSixIvsFromText(ivTextA);
-
-    let ivs = ivsA;
-    if(ivsA.length !== 6 || (Number.isFinite(ivTotal) && ivsA.reduce((a,b)=>a+b,0)!==ivTotal)){
-      // Segunda leitura com limiar diferente; escolhe combinação que fecha o IV TOTAL.
-      const ivCanvasB = makeIvComposite(bitmap,135);
-      const ivTextB = await recognizeWithWorker(worker,ivCanvasB,{
-        tessedit_char_whitelist:'0123456789/',
-        tessedit_pageseg_mode:'6'
-      });
-      const ivsB = parseSixIvsFromText(ivTextB);
-      ivs = chooseIvsByTotal(ivsA,ivsB,ivTotal);
+    progress(30);
+    let ivs = await readBattleIvs(worker,bitmap,ivTotal);
+    if(!ivs?.every(Number.isFinite) || (Number.isFinite(ivTotal) && ivs.reduce((a,b)=>a+b,0)!==ivTotal)){
+      ivs = await readBattleIvsCellFallback(worker,bitmap,ivTotal);
     }
     progress(62);
-
-    // 4. Natureza + gênero. Área isolada da genética, sem os atributos.
-    const geneticsCanvas = makeRegionCanvas(bitmap,{x:.035,y:.646,w:.935,h:.120},{
-      scale:4,threshold:95,padding:10
-    });
-    const geneticsText = await recognizeWithWorker(worker,geneticsCanvas,{
-      tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÂÊÔÃÕÇáéíóúâêôãõç♀♂ ',
-      tessedit_pageseg_mode:'6'
-    });
-
+    const geneticsCanvas = makeRegionCanvas(bitmap,{x:.035,y:.646,w:.935,h:.120},{scale:4,threshold:95,padding:10});
+    const geneticsText = await recognizeWithWorker(worker,geneticsCanvas,{tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyzÁÉÍÓÚÂÊÔÃÕÇáéíóúâêôãõç♀♂ ',tessedit_pageseg_mode:'6'});
     let nature = bestNatureMatch(geneticsText);
     let gender = parseGender(geneticsText);
-    progress(76);
-
-    // 5. Assinatura, isolada no rodapé.
-    const signatureCanvas = makeRegionCanvas(bitmap,{x:.025,y:.817,w:.950,h:.055},{
-      scale:5,threshold:105,padding:10
-    });
-    const signatureText = await recognizeWithWorker(worker,signatureCanvas,{
-      tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-',
-      tessedit_pageseg_mode:'6'
-    });
+    progress(74);
+    const signatureCanvas = makeRegionCanvas(bitmap,{x:.025,y:.817,w:.950,h:.060},{scale:5,threshold:105,padding:10});
+    const signatureText = await recognizeWithWorker(worker,signatureCanvas,{tessedit_char_whitelist:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-',tessedit_pageseg_mode:'6'});
     let signature = parseSignature(`Assinatura ${signatureText}`);
-    progress(87);
-
-    // 6. Fallback: OCR geral apenas para campos que ainda faltarem.
-    const missingCore = !quality || !ivTotal || ivs.length!==6 || !nature || !gender || !signature;
-    let fallbackText = '';
-    if(missingCore){
-      const whole = makeRegionCanvas(bitmap,{x:0,y:0,w:1,h:1},{scale:2,threshold:null,padding:0});
-      fallbackText = await recognizeWithWorker(worker,whole,{
-        tessedit_char_whitelist:''
-      });
-
-      const fallback = parseTechnical(fallbackText);
-      if(!quality) quality = fallback.quality;
-      if(!ivTotal) ivTotal = fallback.ivTotal;
-      if(ivs.length!==6){
-        const fallbackIvs = [
-          fallback.hpIv,fallback.atkIv,fallback.spatkIv,
-          fallback.defIv,fallback.spdefIv,fallback.speedIv
-        ];
-        if(fallbackIvs.every(Number.isFinite)) ivs = fallbackIvs;
-      }
-      if(!nature) nature = fallback.nature;
-      if(!gender) gender = fallback.gender;
-      if(!signature) signature = fallback.signature;
+    progress(82);
+    const captureCanvas = makeRegionCanvas(bitmap,{x:.025,y:.775,w:.950,h:.090},{scale:4,threshold:90,padding:10});
+    const captureText = await recognizeWithWorker(worker,captureCanvas,{tessedit_char_whitelist:'',tessedit_pageseg_mode:'6'});
+    let captureAt = parseCaptureAt(captureText);
+    progress(88);
+    const needFallback = !quality || !ivTotal || !nature || !gender || (!signature && !captureAt);
+    if(needFallback){
+      const whole=makeRegionCanvas(bitmap,{x:0,y:0,w:1,h:1},{scale:2,threshold:null,padding:0});
+      const fallbackText=await recognizeWithWorker(worker,whole,{tessedit_char_whitelist:''});
+      const fallback=parseTechnical(fallbackText);
+      if(!quality) quality=fallback.quality;
+      if(!ivTotal) ivTotal=fallback.ivTotal;
+      if(!nature) nature=fallback.nature;
+      if(!gender) gender=fallback.gender;
+      if(!signature) signature=fallback.signature;
+      if(!captureAt) captureAt=fallback.captureAt || parseCaptureAt(fallbackText);
     }
-
+    if(Number.isFinite(ivTotal) && (!ivs || !ivs.every(Number.isFinite) || ivs.reduce((a,b)=>a+b,0)!==ivTotal)){
+      ivs = await readBattleIvs(worker,bitmap,ivTotal);
+      if(!ivs?.every(Number.isFinite) || ivs.reduce((a,b)=>a+b,0)!==ivTotal){
+        ivs = await readBattleIvsCellFallback(worker,bitmap,ivTotal);
+      }
+    }
     progress(96);
-
-    const parsed = {
-      quality,
-      ivTotal,
-      hpIv: ivs.length===6 ? ivs[0] : null,
-      atkIv: ivs.length===6 ? ivs[1] : null,
-      spatkIv: ivs.length===6 ? ivs[2] : null,
-      defIv: ivs.length===6 ? ivs[3] : null,
-      spdefIv: ivs.length===6 ? ivs[4] : null,
-      speedIv: ivs.length===6 ? ivs[5] : null,
-      nature,
-      gender,
-      signature
-    };
-
+    const parsed={quality,ivTotal,hpIv:ivs?.[0] ?? null,atkIv:ivs?.[1] ?? null,spatkIv:ivs?.[2] ?? null,defIv:ivs?.[3] ?? null,spdefIv:ivs?.[4] ?? null,speedIv:ivs?.[5] ?? null,nature,gender,signature,captureAt,detectedRarity:rarityFromQuality(quality)};
     return validateAndInferIvs(parsed);
   }finally{
     if(worker) await worker.terminate();
@@ -680,27 +1009,32 @@ analyzeBtn.addEventListener('click', async () => {
     setIf('nature', parsed.nature);
     setIf('gender', parsed.gender);
     setIf('signature', parsed.signature);
+    setIf('captureAt', parsed.captureAt);
+    if(parsed.detectedRarity && $('newRarity')) $('newRarity').value = parsed.detectedRarity;
 
+    $('species').value = speciesFromFormName();
     recomputeAutoScore();
+    updateIvValidationUI();
     suggestEpicPrice();
+    await checkDuplicateIdentity();
 
     const fields = [
       parsed.quality,parsed.ivTotal,
       parsed.hpIv,parsed.atkIv,parsed.defIv,
       parsed.spatkIv,parsed.spdefIv,parsed.speedIv,
-      parsed.nature,parsed.gender,parsed.signature
+      parsed.nature,parsed.gender,parsed.signature,parsed.captureAt
     ];
     const found = fields.filter(v=>v!==null && v!==undefined && v!=='').length;
 
     if(parsed.ivValidated){
       ocrProgress.textContent =
-        `✓ Análise precisa: ${found}/11 campos. IVs CONFIRMADOS pela soma ${parsed.ivSum}/${parsed.ivTotal}. Confira Natureza/Assinatura e publique.`;
+        `✓ LEITURA CRÍTICA CONFIRMADA: Q x${Number(parsed.quality||0).toFixed(2)} • IV ${parsed.ivTotal}/186 • HP ${parsed.hpIv} • ATK ${parsed.atkIv} • DEF ${parsed.defIv} • SP.ATK ${parsed.spatkIv} • SP.DEF ${parsed.spdefIv} • VEL ${parsed.speedIv}. Soma validada (${parsed.ivSum}/${parsed.ivTotal}).`;
     }else if(Number.isFinite(parsed.ivTotal) && Number.isFinite(parsed.ivSum)){
       ocrProgress.textContent =
         `⚠ Os IVs lidos somam ${parsed.ivSum}, mas o IV Total é ${parsed.ivTotal}. Não publique sem conferir os IVs destacados.`;
     }else{
       ocrProgress.textContent =
-        `Análise concluída: ${found}/11 campos. Os campos vazios precisam ser conferidos manualmente.`;
+        `Análise concluída: ${found}/12 campos. Os campos vazios precisam ser conferidos manualmente.`;
     }
   }catch(e){
     console.error(e);
@@ -916,17 +1250,29 @@ addProductForm.addEventListener('submit', async e => {
   }
 
   addProductBtn.disabled = true;
-  addProductBtn.textContent = 'PUBLICANDO...';
+  addProductBtn.textContent = 'VERIFICANDO...';
   addProductError.textContent = '';
 
   try{
+    const duplicateResult = await checkDuplicateIdentity();
+    if(duplicateResult?.duplicate || duplicateBlocked){
+      throw new Error('Este Pokémon já está cadastrado. A publicação foi bloqueada.');
+    }
+    if(!duplicateResult?.identityReady){
+      throw new Error('Faltam dados confiáveis para verificar duplicidade. Confira Assinatura ou data/hora de captura + IV Total + qualidade.');
+    }
+
+    addProductBtn.textContent = 'PUBLICANDO...';
+    $('species').value = speciesFromFormName();
+
     const form = new FormData(addProductForm);
     form.set('action','create');
 
     await adminFetch('/admin/api/catalog',{method:'POST',body:form});
 
     addProductForm.reset();
-    $('newPrice').value = '4';
+    $('newPrice').value = '7';
+    updateDiamondPricePreview();
     uploadPreview.hidden = true;
     uploadPreview.removeAttribute('src');
     uploadPlaceholder.hidden = false;
@@ -937,6 +1283,8 @@ addProductForm.addEventListener('submit', async e => {
     }
     $('autoScoreText').textContent = '--';
     ocrProgress.textContent = 'Aguardando imagem.';
+    duplicateBlocked = false;
+    setDuplicateStatus('waiting','⏳ ANALISE O PRINT PARA VERIFICAR SE JÁ ESTÁ CADASTRADO');
     flash('Pokémon publicado.');
     await render();
   }catch(e){

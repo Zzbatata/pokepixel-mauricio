@@ -1,0 +1,1821 @@
+{
+  "status": "EM_ANDAMENTO_NAO_PUBLICAR",
+  "part": "RAROS_PARTE_1",
+  "cardsProcessed": 82,
+  "speciesCount": 24,
+  "withSignature": 28,
+  "usingCaptureFallback": 54,
+  "duplicateLegacyKeys": [],
+  "notes": [
+    "Os raros ainda NÃO foram adicionados ao catálogo público porque o usuário enviará mais prints.",
+    "A imagem 163310 tinha um Pidgeotto ÉPICO sobreposto; ele foi ignorado. Foram aproveitados apenas Electabuzz, Togetic, Hitmontop e Growlithe visíveis sem sobreposição.",
+    "Alguns cards raros antigos não exibem a linha Assinatura. Nesses casos a identidade secundária usa espécie + data/hora de captura + qualidade + IV total.",
+    "Preços dos raros ainda estão pendentes até fechar o lote completo."
+  ],
+  "items": [
+    {
+      "draftId": "snorlax01-rare-draft",
+      "name": "Snorlax #01",
+      "species": "Snorlax",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 83,
+      "identity": {
+        "signature": "379978d9-9410-4c59-8511-dc1dad7ce1b9",
+        "captureAt": "22/08/2026 21:43",
+        "legacyKey": "snorlax|22/08/2026 21:43|1.35|83",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/snorlax01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "charmander01-rare-draft",
+      "name": "Charmander #01",
+      "species": "Charmander",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 117,
+      "identity": {
+        "signature": null,
+        "captureAt": "01/08/2026 15:16",
+        "legacyKey": "charmander|01/08/2026 15:16|1.34|117",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/charmander01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "snorlax02-rare-draft",
+      "name": "Snorlax #02",
+      "species": "Snorlax",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 101,
+      "identity": {
+        "signature": null,
+        "captureAt": "23/08/2026 03:00",
+        "legacyKey": "snorlax|23/08/2026 03:00|1.39|101",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/snorlax02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "arcanine01-rare-draft",
+      "name": "Arcanine #01",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 85,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 21:00",
+        "legacyKey": "arcanine|21/08/2026 21:00|1.38|85",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "arcanine02-rare-draft",
+      "name": "Arcanine #02",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 86,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 04:38",
+        "legacyKey": "arcanine|22/08/2026 04:38|1.39|86",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "arcanine03-rare-draft",
+      "name": "Arcanine #03",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 117,
+      "identity": {
+        "signature": "25baa459-8594-4494-9cd7-d63992242032",
+        "captureAt": "22/08/2026 03:01",
+        "legacyKey": "arcanine|22/08/2026 03:01|1.39|117",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 130449.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "arcanine04-rare-draft",
+      "name": "Arcanine #04",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 80,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 09:17",
+        "legacyKey": "arcanine|21/08/2026 09:17|1.37|80",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "gyarados02-rare-draft",
+      "name": "Gyarados #02",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 108,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 16:01",
+        "legacyKey": "gyarados|20/08/2026 16:01|1.36|108",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "arcanine05-rare-draft",
+      "name": "Arcanine #05",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 112,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 08:44",
+        "legacyKey": "arcanine|21/08/2026 08:44|1.35|112",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "gyarados03-rare-draft",
+      "name": "Gyarados #03",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 110,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 20:49",
+        "legacyKey": "gyarados|22/08/2026 20:49|1.38|110",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "primeape02-rare-draft",
+      "name": "Primeape #02",
+      "species": "Primeape",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 87,
+      "identity": {
+        "signature": null,
+        "captureAt": "09/08/2026 22:26",
+        "legacyKey": "primeape|09/08/2026 22:26|1.39|87",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/primeape02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "arcanine06-rare-draft",
+      "name": "Arcanine #06",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 98,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 00:26",
+        "legacyKey": "arcanine|22/08/2026 00:26|1.35|98",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine06-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131524.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "ponyta01-rare-draft",
+      "name": "Ponyta #01",
+      "species": "Ponyta",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 108,
+      "identity": {
+        "signature": "6b93f783-b665-45b6-8ec5-ff3a1fb861e3",
+        "captureAt": "06/08/2026 22:59",
+        "legacyKey": "ponyta|06/08/2026 22:59|1.39|108",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ponyta01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "tangela02-rare-draft",
+      "name": "Tangela #02",
+      "species": "Tangela",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 99,
+      "identity": {
+        "signature": "c1693cb7-fef5-4346-a750-83364ab9ebdb",
+        "captureAt": "19/08/2026 00:43",
+        "legacyKey": "tangela|19/08/2026 00:43|1.39|99",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/tangela02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "arcanine07-rare-draft",
+      "name": "Arcanine #07",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 109,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 00:07",
+        "legacyKey": "arcanine|22/08/2026 00:07|1.38|109",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine07-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "poliwhirl04-rare-draft",
+      "name": "Poliwhirl #04",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 115,
+      "identity": {
+        "signature": null,
+        "captureAt": "19/08/2026 06:02",
+        "legacyKey": "poliwhirl|19/08/2026 06:02|1.39|115",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "ninetales02-rare-draft",
+      "name": "Ninetales #02",
+      "species": "Ninetales",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 106,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 05:06",
+        "legacyKey": "ninetales|21/08/2026 05:06|1.39|106",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/ninetales02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "gyarados04-rare-draft",
+      "name": "Gyarados #04",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 113,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 20:52",
+        "legacyKey": "gyarados|22/08/2026 20:52|1.34|113",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 131812.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "hitmonlee01-rare-draft",
+      "name": "Hitmonlee #01",
+      "species": "Hitmonlee",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 107,
+      "identity": {
+        "signature": null,
+        "captureAt": "10/08/2026 02:09",
+        "legacyKey": "hitmonlee|10/08/2026 02:09|1.38|107",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/hitmonlee01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "arcanine08-rare-draft",
+      "name": "Arcanine #08",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 111,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 08:51",
+        "legacyKey": "arcanine|21/08/2026 08:51|1.34|111",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine08-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "arcanine09-rare-draft",
+      "name": "Arcanine #09",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 108,
+      "identity": {
+        "signature": "112cf13a-2cac-4878-af8d-294e9038a183",
+        "captureAt": "21/08/2026 19:44",
+        "legacyKey": "arcanine|21/08/2026 19:44|1.34|108",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine09-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "arcanine10-rare-draft",
+      "name": "Arcanine #10",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 103,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 01:01",
+        "legacyKey": "arcanine|22/08/2026 01:01|1.37|103",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine10-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "snorlax03-rare-draft",
+      "name": "Snorlax #03",
+      "species": "Snorlax",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 78,
+      "identity": {
+        "signature": "fd7fd2d7-f0f7-4dc3-8f12-1bddf05ed4c6",
+        "captureAt": "23/08/2026 02:35",
+        "legacyKey": "snorlax|23/08/2026 02:35|1.35|78",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/snorlax03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "gyarados05-rare-draft",
+      "name": "Gyarados #05",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.33,
+      "ivTotal": 107,
+      "identity": {
+        "signature": null,
+        "captureAt": "25/08/2026 23:57",
+        "legacyKey": "gyarados|25/08/2026 23:57|1.33|107",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132050.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "ponyta02-rare-draft",
+      "name": "Ponyta #02",
+      "species": "Ponyta",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 83,
+      "identity": {
+        "signature": "3e65edb8-ad3d-4714-bbf7-be58cf9069e3",
+        "captureAt": "06/08/2026 21:56",
+        "legacyKey": "ponyta|06/08/2026 21:56|1.39|83",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ponyta02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "ivysaur02-rare-draft",
+      "name": "Ivysaur #02",
+      "species": "Ivysaur",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 120,
+      "identity": {
+        "signature": null,
+        "captureAt": "17/08/2026 22:40",
+        "legacyKey": "ivysaur|17/08/2026 22:40|1.39|120",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/ivysaur02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "poliwhirl05-rare-draft",
+      "name": "Poliwhirl #05",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 95,
+      "identity": {
+        "signature": null,
+        "captureAt": "19/08/2026 09:23",
+        "legacyKey": "poliwhirl|19/08/2026 09:23|1.39|95",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "graveler02-rare-draft",
+      "name": "Graveler #02",
+      "species": "Graveler",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 106,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 04:01",
+        "legacyKey": "graveler|20/08/2026 04:01|1.38|106",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/graveler02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "gyarados06-rare-draft",
+      "name": "Gyarados #06",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 107,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 15:22",
+        "legacyKey": "gyarados|20/08/2026 15:22|1.37|107",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados06-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "arcanine11-rare-draft",
+      "name": "Arcanine #11",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 114,
+      "identity": {
+        "signature": "b2edc8b1-cc11-41e2-a719-576faf3f9202",
+        "captureAt": "21/08/2026 20:28",
+        "legacyKey": "arcanine|21/08/2026 20:28|1.36|114",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine11-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132307.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "arcanine12-rare-draft",
+      "name": "Arcanine #12",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.31,
+      "ivTotal": 107,
+      "identity": {
+        "signature": "c8738555-dc1c-34c9-b926-680469e3c7f9",
+        "captureAt": "22/08/2026 03:09",
+        "legacyKey": "arcanine|22/08/2026 03:09|1.31|107",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine12-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "arcanine13-rare-draft",
+      "name": "Arcanine #13",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 117,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 04:48",
+        "legacyKey": "arcanine|22/08/2026 04:48|1.35|117",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine13-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "snorlax04-rare-draft",
+      "name": "Snorlax #04",
+      "species": "Snorlax",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.29,
+      "ivTotal": 105,
+      "identity": {
+        "signature": "bf73f3a0-adf0-474b-bef5-38b34ddfa874",
+        "captureAt": "23/08/2026 00:51",
+        "legacyKey": "snorlax|23/08/2026 00:51|1.29|105",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/snorlax04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "hitmontop01-rare-draft",
+      "name": "Hitmontop #01",
+      "species": "Hitmontop",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 87,
+      "identity": {
+        "signature": "ae85f03d-9293-4919-8fe7-1facede579f3",
+        "captureAt": "28/08/2026 07:03",
+        "legacyKey": "hitmontop|28/08/2026 07:03|1.38|87",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/hitmontop01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "poliwhirl06-rare-draft",
+      "name": "Poliwhirl #06",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 113,
+      "identity": {
+        "signature": null,
+        "captureAt": "03/08/2026 21:10",
+        "legacyKey": "poliwhirl|03/08/2026 21:10|1.38|113",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl06-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "primeape03-rare-draft",
+      "name": "Primeape #03",
+      "species": "Primeape",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 102,
+      "identity": {
+        "signature": "87293a1c-d4a4-49eb-9f20-57c48667e394",
+        "captureAt": "09/08/2026 19:32",
+        "legacyKey": "primeape|09/08/2026 19:32|1.38|102",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/primeape03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132612.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "tangela03-rare-draft",
+      "name": "Tangela #03",
+      "species": "Tangela",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 117,
+      "identity": {
+        "signature": "ae557ce1-ad89-415f-8109-740315906f91",
+        "captureAt": "18/08/2026 23:36",
+        "legacyKey": "tangela|18/08/2026 23:36|1.37|117",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/tangela03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "arcanine14-rare-draft",
+      "name": "Arcanine #14",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 87,
+      "identity": {
+        "signature": "9bbbf395-981d-474c-8c71-757ca30f53c8",
+        "captureAt": "21/08/2026 07:15",
+        "legacyKey": "arcanine|21/08/2026 07:15|1.36|87",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine14-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "arcanine15-rare-draft",
+      "name": "Arcanine #15",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 92,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 21:17",
+        "legacyKey": "arcanine|21/08/2026 21:17|1.34|92",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine15-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "arcanine16-rare-draft",
+      "name": "Arcanine #16",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 101,
+      "identity": {
+        "signature": "e2681bb4-fd98-4f24-8e71-1b8ae2fefabe",
+        "captureAt": "22/08/2026 04:30",
+        "legacyKey": "arcanine|22/08/2026 04:30|1.35|101",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine16-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "electabuzz03-rare-draft",
+      "name": "Electabuzz #03",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 98,
+      "identity": {
+        "signature": null,
+        "captureAt": "24/08/2026 03:59",
+        "legacyKey": "electabuzz|24/08/2026 03:59|1.39|98",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "electabuzz04-rare-draft",
+      "name": "Electabuzz #04",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 107,
+      "identity": {
+        "signature": "8691b3e7-1561-4aaa-a1b4-eb38d139bbeb",
+        "captureAt": "24/08/2026 08:27",
+        "legacyKey": "electabuzz|24/08/2026 08:27|1.39|107",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 132742.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "electabuzz05-rare-draft",
+      "name": "Electabuzz #05",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 114,
+      "identity": {
+        "signature": null,
+        "captureAt": "24/08/2026 14:31",
+        "legacyKey": "electabuzz|24/08/2026 14:31|1.38|114",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "yanma02-rare-draft",
+      "name": "Yanma #02",
+      "species": "Yanma",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 100,
+      "identity": {
+        "signature": "196554e9-db76-4721-84ba-994421243e00",
+        "captureAt": "27/08/2026 01:04",
+        "legacyKey": "yanma|27/08/2026 01:04|1.38|100",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/yanma02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "yanma03-rare-draft",
+      "name": "Yanma #03",
+      "species": "Yanma",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 88,
+      "identity": {
+        "signature": null,
+        "captureAt": "27/08/2026 02:39",
+        "legacyKey": "yanma|27/08/2026 02:39|1.39|88",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/yanma03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "poliwhirl07-rare-draft",
+      "name": "Poliwhirl #07",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 90,
+      "identity": {
+        "signature": null,
+        "captureAt": "03/08/2026 21:12",
+        "legacyKey": "poliwhirl|03/08/2026 21:12|1.38|90",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl07-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "goldeen01-rare-draft",
+      "name": "Goldeen #01",
+      "species": "Goldeen",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 102,
+      "identity": {
+        "signature": null,
+        "captureAt": "04/08/2026 19:29",
+        "legacyKey": "goldeen|04/08/2026 19:29|1.39|102",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/goldeen01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "poliwhirl08-rare-draft",
+      "name": "Poliwhirl #08",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 89,
+      "identity": {
+        "signature": null,
+        "captureAt": "07/08/2026 08:06",
+        "legacyKey": "poliwhirl|07/08/2026 08:06|1.37|89",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl08-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161536.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "tangela04-rare-draft",
+      "name": "Tangela #04",
+      "species": "Tangela",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 108,
+      "identity": {
+        "signature": null,
+        "captureAt": "09/08/2026 03:13",
+        "legacyKey": "tangela|09/08/2026 03:13|1.38|108",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/tangela04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "victreebel01-rare-draft",
+      "name": "Victreebel #01",
+      "species": "Victreebel",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 83,
+      "identity": {
+        "signature": null,
+        "captureAt": "09/08/2026 12:13",
+        "legacyKey": "victreebel|09/08/2026 12:13|1.37|83",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/victreebel01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "primeape04-rare-draft",
+      "name": "Primeape #04",
+      "species": "Primeape",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 114,
+      "identity": {
+        "signature": null,
+        "captureAt": "10/08/2026 00:16",
+        "legacyKey": "primeape|10/08/2026 00:16|1.36|114",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/primeape04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "victreebel02-rare-draft",
+      "name": "Victreebel #02",
+      "species": "Victreebel",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 88,
+      "identity": {
+        "signature": null,
+        "captureAt": "18/08/2026 17:47",
+        "legacyKey": "victreebel|18/08/2026 17:47|1.37|88",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/victreebel02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "poliwhirl09-rare-draft",
+      "name": "Poliwhirl #09",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 119,
+      "identity": {
+        "signature": null,
+        "captureAt": "19/08/2026 10:09",
+        "legacyKey": "poliwhirl|19/08/2026 10:09|1.38|119",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl09-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "graveler03-rare-draft",
+      "name": "Graveler #03",
+      "species": "Graveler",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 96,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 03:32",
+        "legacyKey": "graveler|20/08/2026 03:32|1.37|96",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/graveler03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 161851.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "gyarados07-rare-draft",
+      "name": "Gyarados #07",
+      "species": "Gyarados",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.32,
+      "ivTotal": 98,
+      "identity": {
+        "signature": "6ac6f552-426d-48c5-87c9-c837e2beb7ea",
+        "captureAt": "20/08/2026 19:40",
+        "legacyKey": "gyarados|20/08/2026 19:40|1.32|98",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/gyarados07-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "ninetales03-rare-draft",
+      "name": "Ninetales #03",
+      "species": "Ninetales",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 86,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 07:04",
+        "legacyKey": "ninetales|21/08/2026 07:04|1.36|86",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/ninetales03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "arcanine17-rare-draft",
+      "name": "Arcanine #17",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 120,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 19:13",
+        "legacyKey": "arcanine|21/08/2026 19:13|1.39|120",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine17-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "electabuzz06-rare-draft",
+      "name": "Electabuzz #06",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 105,
+      "identity": {
+        "signature": null,
+        "captureAt": "24/08/2026 09:32",
+        "legacyKey": "electabuzz|24/08/2026 09:32|1.37|105",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz06-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "arcanine18-rare-draft",
+      "name": "Arcanine #18",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.33,
+      "ivTotal": 114,
+      "identity": {
+        "signature": null,
+        "captureAt": "21/08/2026 20:34",
+        "legacyKey": "arcanine|21/08/2026 20:34|1.33|114",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine18-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "arcanine19-rare-draft",
+      "name": "Arcanine #19",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.33,
+      "ivTotal": 88,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 03:38",
+        "legacyKey": "arcanine|22/08/2026 03:38|1.33|88",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine19-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162354.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "arcanine20-rare-draft",
+      "name": "Arcanine #20",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.37,
+      "ivTotal": 79,
+      "identity": {
+        "signature": null,
+        "captureAt": "22/08/2026 08:21",
+        "legacyKey": "arcanine|22/08/2026 08:21|1.37|79",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine20-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "electabuzz07-rare-draft",
+      "name": "Electabuzz #07",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 118,
+      "identity": {
+        "signature": null,
+        "captureAt": "24/08/2026 16:50",
+        "legacyKey": "electabuzz|24/08/2026 16:50|1.34|118",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz07-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "electabuzz08-rare-draft",
+      "name": "Electabuzz #08",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 96,
+      "identity": {
+        "signature": null,
+        "captureAt": "25/08/2026 07:23",
+        "legacyKey": "electabuzz|25/08/2026 07:23|1.38|96",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz08-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "cubone01-rare-draft",
+      "name": "Cubone #01",
+      "species": "Cubone",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 97,
+      "identity": {
+        "signature": null,
+        "captureAt": "02/08/2026 04:32",
+        "legacyKey": "cubone|02/08/2026 04:32|1.38|97",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/cubone01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "drowzee02-rare-draft",
+      "name": "Drowzee #02",
+      "species": "Drowzee",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 96,
+      "identity": {
+        "signature": null,
+        "captureAt": "05/08/2026 02:46",
+        "legacyKey": "drowzee|05/08/2026 02:46|1.38|96",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/drowzee02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "kadabra01-rare-draft",
+      "name": "Kadabra #01",
+      "species": "Kadabra",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 109,
+      "identity": {
+        "signature": "19423c25-ad6d-481e-2981-f8bc403f5fd6",
+        "captureAt": "06/08/2026 06:56",
+        "legacyKey": "kadabra|06/08/2026 06:56|1.38|109",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/kadabra01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162543.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "growlithe01-rare-draft",
+      "name": "Growlithe #01",
+      "species": "Growlithe",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 83,
+      "identity": {
+        "signature": null,
+        "captureAt": "06/08/2026 13:48",
+        "legacyKey": "growlithe|06/08/2026 13:48|1.39|83",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/growlithe01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "growlithe02-rare-draft",
+      "name": "Growlithe #02",
+      "species": "Growlithe",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 91,
+      "identity": {
+        "signature": null,
+        "captureAt": "06/08/2026 14:15",
+        "legacyKey": "growlithe|06/08/2026 14:15|1.39|91",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/growlithe02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "poliwhirl10-rare-draft",
+      "name": "Poliwhirl #10",
+      "species": "Poliwhirl",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 95,
+      "identity": {
+        "signature": "6c955594-4692-4c32-b6e9-bbc056fdbd55",
+        "captureAt": "07/08/2026 07:40",
+        "legacyKey": "poliwhirl|07/08/2026 07:40|1.39|95",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/poliwhirl10-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "primeape05-rare-draft",
+      "name": "Primeape #05",
+      "species": "Primeape",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.32,
+      "ivTotal": 96,
+      "identity": {
+        "signature": null,
+        "captureAt": "09/08/2026 22:44",
+        "legacyKey": "primeape|09/08/2026 22:44|1.32|96",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/primeape05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "ledian01-rare-draft",
+      "name": "Ledian #01",
+      "species": "Ledian",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 116,
+      "identity": {
+        "signature": "b4a26a21-383a-46ad-8081-38a9e07c963a",
+        "captureAt": "10/08/2026 07:43",
+        "legacyKey": "ledian|10/08/2026 07:43|1.38|116",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ledian01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "ivysaur03-rare-draft",
+      "name": "Ivysaur #03",
+      "species": "Ivysaur",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 89,
+      "identity": {
+        "signature": null,
+        "captureAt": "17/08/2026 04:18",
+        "legacyKey": "ivysaur|17/08/2026 04:18|1.39|89",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/ivysaur03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162813.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "ivysaur04-rare-draft",
+      "name": "Ivysaur #04",
+      "species": "Ivysaur",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 113,
+      "identity": {
+        "signature": "1ed677bd-35aa-4cee-a16a-2a5e57c45d15",
+        "captureAt": "17/08/2026 23:33",
+        "legacyKey": "ivysaur|17/08/2026 23:33|1.38|113",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ivysaur04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 1
+      }
+    },
+    {
+      "draftId": "graveler04-rare-draft",
+      "name": "Graveler #04",
+      "species": "Graveler",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.39,
+      "ivTotal": 89,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 02:19",
+        "legacyKey": "graveler|20/08/2026 02:19|1.39|89",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/graveler04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 2
+      }
+    },
+    {
+      "draftId": "lickitung01-rare-draft",
+      "name": "Lickitung #01",
+      "species": "Lickitung",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 81,
+      "identity": {
+        "signature": null,
+        "captureAt": "20/08/2026 11:11",
+        "legacyKey": "lickitung|20/08/2026 11:11|1.36|81",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/lickitung01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "ninetales04-rare-draft",
+      "name": "Ninetales #04",
+      "species": "Ninetales",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 78,
+      "identity": {
+        "signature": "6562ce04-4d03-4203-a212-06c265f9535d",
+        "captureAt": "21/08/2026 03:56",
+        "legacyKey": "ninetales|21/08/2026 03:56|1.34|78",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ninetales04-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "ninetales05-rare-draft",
+      "name": "Ninetales #05",
+      "species": "Ninetales",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.34,
+      "ivTotal": 106,
+      "identity": {
+        "signature": "165272a4-bd1d-41fb-a9fc-96823037cea1",
+        "captureAt": "27/08/2026 06:49",
+        "legacyKey": "ninetales|27/08/2026 06:49|1.34|106",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/ninetales05-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "arcanine21-rare-draft",
+      "name": "Arcanine #21",
+      "species": "Arcanine",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 81,
+      "identity": {
+        "signature": "6505eea5-fc8d-45c8-9538-20cf565eefac",
+        "captureAt": "21/08/2026 07:13",
+        "legacyKey": "arcanine|21/08/2026 07:13|1.36|81",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/arcanine21-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 162949.png",
+        "position": 6
+      }
+    },
+    {
+      "draftId": "electabuzz09-rare-draft",
+      "name": "Electabuzz #09",
+      "species": "Electabuzz",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.35,
+      "ivTotal": 114,
+      "identity": {
+        "signature": "58097cca-993d-4359-a51b-495426051344",
+        "captureAt": "24/08/2026 15:06",
+        "legacyKey": "electabuzz|24/08/2026 15:06|1.35|114",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/electabuzz09-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 163310.png",
+        "position": 3
+      }
+    },
+    {
+      "draftId": "togetic01-rare-draft",
+      "name": "Togetic #01",
+      "species": "Togetic",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 91,
+      "identity": {
+        "signature": null,
+        "captureAt": "25/08/2026 23:33",
+        "legacyKey": "togetic|25/08/2026 23:33|1.38|91",
+        "verification": "capture+iv+quality"
+      },
+      "imageFile": "incoming/rare-part1/images/togetic01-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 163310.png",
+        "position": 4
+      }
+    },
+    {
+      "draftId": "hitmontop02-rare-draft",
+      "name": "Hitmontop #02",
+      "species": "Hitmontop",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.38,
+      "ivTotal": 107,
+      "identity": {
+        "signature": "1961a855-fd17-44d6-9f8e-a2e829985358",
+        "captureAt": "27/08/2026 22:37",
+        "legacyKey": "hitmontop|27/08/2026 22:37|1.38|107",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/hitmontop02-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 163310.png",
+        "position": 5
+      }
+    },
+    {
+      "draftId": "growlithe03-rare-draft",
+      "name": "Growlithe #03",
+      "species": "Growlithe",
+      "rarity": "RARO",
+      "price": null,
+      "priceStatus": "PENDENTE_DEFINIR_FAIXA_RAROS",
+      "sold": false,
+      "quality": 1.36,
+      "ivTotal": 109,
+      "identity": {
+        "signature": "c1ce8aff-1795-4a17-89ad-38e16986a395",
+        "captureAt": "02/08/2026 14:13",
+        "legacyKey": "growlithe|02/08/2026 14:13|1.36|109",
+        "verification": "signature+capture"
+      },
+      "imageFile": "incoming/rare-part1/images/growlithe03-rare-draft.png",
+      "source": {
+        "screenshot": "Captura de tela 2026-08-28 163310.png",
+        "position": 6
+      }
+    }
+  ]
+}

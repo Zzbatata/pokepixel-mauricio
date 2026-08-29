@@ -1,0 +1,109 @@
+POKEPIXEL MARKET — REVISÃO V4.1
+Data da revisão: 29/08/2026
+
+STATUS: PRONTO PARA PUBLICAR APÓS SUA CONFERÊNCIA VISUAL
+
+1) PAGAMENTO EM DIAMANTES
+Conversão definida para a loja:
+1 💎 = R$ 0,40
+
+Tabela:
+R$ 4 = 💎 10
+R$ 5 = 💎 12
+R$ 6 = 💎 15
+R$ 7 = 💎 18
+R$ 8 = 💎 20
+R$ 9 = 💎 22
+R$ 10 = 💎 25
+R$ 11 = 💎 28
+R$ 12 = 💎 30
+
+A conversão é feita por Pokémon e o carrinho soma os Diamantes de cada item.
+O checkout agora permite escolher PIX ou DIAMANTES.
+No modo Diamantes, o WhatsApp recebe a lista de Pokémon e o total em 💎.
+
+2) ANALISADOR — REVISÃO PELO TYRANITAR
+Amostra de referência:
+Qualidade: ÉPICA x1,45
+IV TOTAL: 143/186
+HP IV: 12
+ATK IV: 17
+ATK SP IV: 31
+DEF IV: 30
+DEF SP IV: 22
+VEL IV: 31
+Soma: 12+17+31+30+22+31 = 143
+
+As regiões normalizadas usadas pelo analisador continuam alinhadas ao card atual.
+Regiões em pixels para a amostra 379x919:
+{
+  "qualidade": [
+    171,
+    312,
+    371,
+    432
+  ],
+  "iv_total": [
+    182,
+    244,
+    368,
+    335
+  ],
+  "ivs_esquerda": [
+    104,
+    489,
+    193,
+    588
+  ],
+  "ivs_direita": [
+    286,
+    489,
+    375,
+    588
+  ],
+  "genetica": [
+    13,
+    594,
+    368,
+    704
+  ],
+  "assinatura": [
+    9,
+    751,
+    370,
+    806
+  ]
+}
+
+Foi adicionado um segundo método de leitura dos IVs:
+- tentativa principal: duas colunas de números dourados;
+- fallback: leitura individual das 6 células douradas XX/31;
+- o preço automático só é liberado quando os 6 IVs somam exatamente o IV TOTAL;
+- ÉPICO exige qualidade x1,40–x1,54;
+- RARO exige qualidade x1,25–x1,39;
+- Worker repete a validação antes de publicar.
+
+3) REVISÃO DO JOGO / FONTES PÚBLICAS
+A página pública atual do Pokepixel continua apresentando 251 Pokémon e Mercado Global 24h.
+Não foi localizado um changelog público confirmando uma alteração entre 28 e 29/08/2026.
+O Namoratow informa sincronização horária dos dados, porém sua lista pública de mudanças mostra como última alteração registrada 18/08/2026.
+As páginas atuais do Namoratow continuam tratando Qualidade e IV Total como variáveis independentes e usando função do Pokémon/natureza na avaliação de desempenho.
+
+Por isso a V4.1 NÃO inventa mudança de fórmula do jogo sem confirmação.
+A calibração do analisador usa como referência principal os cards atuais enviados pelo usuário.
+
+4) PREÇO
+O analisador não cria preço se os IVs estiverem divergentes.
+O preço em Reais continua sendo a base comercial da loja.
+Diamantes são apenas uma segunda forma de pagamento calculada a R$ 0,40 cada.
+
+5) CHECKS TÉCNICOS
+- Sintaxe do Worker: verificada.
+- Sintaxe do admin.js: verificada.
+- Sintaxe do JavaScript público: verificada.
+- Carrinho: mantém múltiplos Pokémon.
+- PIX: mantido.
+- Diamantes: adicionado.
+- Anti-duplicação: mantido.
+- Raro lilás/roxo: mantido.
+- Épico dourado: mantido.

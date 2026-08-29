@@ -68,7 +68,7 @@ button{cursor:pointer}
 .catalog-heading h2{font-family:'Press Start 2P';font-size:17px;margin:9px 0 0}
 .catalog-heading>span{color:#9eabb3}
 .catalog-tools{
-  display:grid;grid-template-columns:minmax(220px,1.4fr) .75fr .75fr .9fr auto;gap:10px;
+  display:grid;grid-template-columns:minmax(220px,1.45fr) repeat(5,minmax(115px,.75fr)) auto;gap:10px;
   padding:13px;border:2px solid #43535d;background:#0b171f;box-shadow:0 5px 0 #030609
 }
 .catalog-tools label>span{display:block;margin-bottom:6px;color:var(--gold);font-family:'Press Start 2P';font-size:7px}
@@ -108,12 +108,16 @@ button{cursor:pointer}
   border-bottom-color:#725b16;
 }
 .rarity-badge.rarity-raro{
-  color:#78c8ff;
-  border-color:#2789c4;
-  background:linear-gradient(180deg,#123a54,#0b2232);
+  color:#d9a5ff;
+  border-color:#8a5bb3;
+  background:linear-gradient(180deg,#49335c,#261c31);
+  box-shadow:inset 0 0 0 1px #5f3f79,0 0 8px rgba(193,126,255,.14);
 }
 .poke-card.rarity-raro{
-  border-color:#277aa7;
+  border-color:#8a5bb3;
+}
+.poke-card.rarity-raro .card-head{
+  border-bottom-color:#6e488f;
 }
 .quick-stats{display:flex;flex-direction:column;gap:3px;text-align:right;font-size:16px;color:#9eabb3}
 .quick-stats b{color:#fff}
@@ -404,4 +408,180 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
   .quick-stats b{
     font-size:17px;
   }
+}
+
+/* V4 — filtros avançados e identidade visual de raridade */
+.catalog-tools select{min-width:0}
+.rarity-raro .card-price{color:#52ff67}
+@media(max-width:1400px) and (min-width:981px){
+  .catalog-tools{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+  }
+  .search-tool{grid-column:span 2}
+  .clear-filters{width:100%}
+}
+
+.cart-top #cartTopTotal{margin-left:5px;color:#5dff75;font-family:Arial,Helvetica,sans-serif;font-size:12px;font-weight:800}
+
+/* V4 FINAL — legenda de raridades */
+.epic-range b{color:#d9a5ff}
+.epic-range strong{color:#ffe17b}
+
+
+/* ==========================================================
+   V4.1 — PIX + DIAMANTES E REVISÃO DE LEGIBILIDADE
+   ========================================================== */
+.card-diamond{
+  margin-top:5px;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  font-weight:800;
+  color:#7ed7ff;
+  text-shadow:0 1px 1px #000;
+}
+.cart-item em{
+  display:block;
+  margin-top:2px;
+  font-style:normal;
+  color:#7ed7ff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  font-weight:800;
+}
+.cart-total-values{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:3px;
+}
+.cart-total-values b{
+  color:#7ed7ff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:16px;
+}
+.checkout-totals{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-wrap:wrap;
+  gap:16px;
+}
+.big-diamond{
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:32px;
+  font-weight:900;
+  color:#7ed7ff;
+}
+.diamond-rate{
+  display:block;
+  margin-top:5px;
+  color:#93a5af;
+}
+.payment-choice{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:8px;
+  margin:14px 0;
+}
+.payment-choice-btn{
+  padding:13px 10px;
+  border:2px solid #50616b;
+  background:#101c24;
+  color:#b8c5cc;
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+}
+.payment-choice-btn.active{
+  border-color:#e0ad1b;
+  background:#3a2c0b;
+  color:#ffe17b;
+}
+#payDiamondTab.active{
+  border-color:#55bde8;
+  background:#0c2d3d;
+  color:#9ee5ff;
+}
+.payment-panel{display:none}
+.payment-panel.active{display:block}
+.diamond-panel{
+  border-color:#397c98 !important;
+  background:linear-gradient(180deg,#0b2532,#0a1820) !important;
+}
+.diamond-box{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  padding:14px;
+  margin:14px 0;
+  border:2px solid #397c98;
+  background:#07151c;
+}
+.diamond-box span{
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  color:#9cb0ba;
+}
+.diamond-box strong{
+  color:#8ee3ff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:26px;
+}
+.diamond-note{
+  margin-top:12px;
+  padding:10px;
+  border:1px solid #315f73;
+  color:#b8ccd5;
+  background:#0b1c25;
+}
+.checkout-list em{
+  color:#7ed7ff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-style:normal;
+  font-weight:800;
+  white-space:nowrap;
+}
+.diamond-price-preview{
+  display:block;
+  margin-top:5px;
+  color:#7ed7ff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  font-weight:700;
+}
+@media(max-width:650px){
+  .payment-choice{grid-template-columns:1fr}
+  .checkout-totals{flex-direction:column;gap:3px}
+}
+
+
+/* V4.2 — distintivo claro PIX x DIAMANTES */
+.payment-method-badge{
+  display:inline-block;
+  margin-top:10px;
+  padding:8px 12px;
+  border:2px solid;
+  font-family:'Press Start 2P',monospace;
+  font-size:7px;
+  line-height:1.4;
+  letter-spacing:0;
+  box-shadow:0 3px 0 rgba(0,0,0,.45);
+}
+.payment-method-badge.pix{
+  color:#ffe17b;
+  border-color:#d6a51c;
+  background:#3a2c0b;
+}
+.payment-method-badge.diamonds{
+  color:#a9eaff;
+  border-color:#4ab7df;
+  background:#0b2b39;
+}
+.checkout-product-line{
+  align-items:center;
+}
+.checkout-product-line em{
+  min-width:112px;
+  text-align:right;
+  color:#8ee3ff;
 }
