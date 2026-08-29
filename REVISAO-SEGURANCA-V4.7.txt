@@ -1,0 +1,43 @@
+REVISÃO DE SEGURANÇA — POKEPIXEL MARKET V4.7
+
+STATUS DOS TESTES
+- Sintaxe do Worker: OK
+- Sintaxe do app.js público: OK
+- Sintaxe do admin.js: OK
+- Teste simulado de bloqueio após 5 senhas incorretas: OK
+- Retry-After após bloqueio: OK
+- Login válido com cookie __Secure-: OK
+- Cookie HttpOnly + Secure + SameSite=Strict: OK
+- Sessão autenticada: OK
+- POST administrativo cross-origin bloqueado: OK
+- CSP pública aplicada: OK
+- CSP administrativa aplicada: OK
+- JavaScript inline na loja pública: removido
+- Segredos ADMIN_PASSWORD / SESSION_SECRET hardcoded no projeto: não encontrados
+
+CATÁLOGO
+- Pokémon padrão: 171
+- Assinaturas duplicadas no DEFAULTS: 0
+- Identidades de captura duplicadas: 0
+- Nomes duplicados: 0
+
+PROTEÇÕES ADICIONADAS
+- 5 falhas de login / 15 min -> bloqueio de 15 min
+- Rate limit persistido em Workers KV usando hash do IP
+- Sessão Admin reduzida para 6 horas
+- Cookie __Secure-pp_admin
+- Verificação Origin + Sec-Fetch-Site em POSTs do Admin
+- CSP, nosniff, DENY iframe, HSTS, Permissions-Policy e Referrer-Policy
+- Admin e APIs administrativas sem cache
+- Escapamento de conteúdo dinâmico usado em HTML
+- Lista permitida de URLs de imagem
+- Validação adicional de raridade, IVs e qualidade
+- Link ADMIN oculto para visitantes não autenticados
+
+LIMITES IMPORTANTES
+- Nenhum código impede invasão de uma conta GitHub/Cloudflare cuja senha/2FA tenha sido comprometida.
+- Ativar 2FA no GitHub e na Cloudflare continua sendo obrigatório para uma boa proteção operacional.
+- A chave Pix é pública por natureza: compradores precisam recebê-la. A proteção importante é impedir alterações não autorizadas no site.
+
+ALTERAÇÃO VISUAL
+- Removido o símbolo 💎 da frase "Escolha PIX ou Diamantes no checkout".

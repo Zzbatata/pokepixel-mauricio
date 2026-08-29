@@ -1,0 +1,59 @@
+POKEPIXEL MARKET — V4.7 SEGURANÇA
+
+OBJETIVO
+Esta versão endurece a segurança antes da divulgação pública da loja,
+sem alterar catálogo, preços ou fluxo comercial.
+
+ALTERAÇÕES DE SEGURANÇA
+1. Login administrativo
+- Máximo de 5 tentativas incorretas por origem em 15 minutos.
+- Ao atingir o limite: bloqueio temporário de 15 minutos.
+- Controle armazenado no Workers KV usando hash do IP, sem salvar o IP puro.
+- Senhas/requisições anormalmente grandes são rejeitadas.
+
+2. Sessão do Admin
+- Cookie novo com prefixo __Secure-.
+- HttpOnly, Secure e SameSite=Strict.
+- Sessão reduzida de 12 horas para 6 horas.
+- A V4.7 passa a aceitar somente o novo cookie seguro; sessões antigas precisam fazer login novamente.
+
+3. Proteção contra requisições externas
+- Operações administrativas POST verificam Origin/Sec-Fetch-Site.
+- Ajuda a impedir chamadas administrativas iniciadas por outros sites.
+
+4. Cabeçalhos de segurança
+- Content-Security-Policy (CSP).
+- X-Content-Type-Options: nosniff.
+- X-Frame-Options: DENY.
+- frame-ancestors 'none'.
+- Referrer-Policy.
+- Permissions-Policy.
+- HSTS.
+- Admin/API sem cache.
+
+5. XSS / conteúdo malicioso
+- O JavaScript público saiu do HTML inline e virou /app.js.
+- Dados dinâmicos de Pokémon usados em HTML são escapados.
+- URLs de imagens aceitam somente /assets/ e /api/image/.
+- O Admin também deixa de inserir imageUrl diretamente via innerHTML.
+- cleanText do Worker remove caracteres de controle e < >.
+- Raridades recebidas pelo Admin usam lista permitida.
+- IVs/qualidade passam por validação numérica adicional.
+
+6. Área administrativa
+- O link ADMIN fica oculto para visitantes comuns.
+- Ele aparece na loja somente se o navegador já tiver uma sessão Admin válida.
+- /admin/ continua existindo normalmente para o proprietário.
+
+ALTERAÇÃO VISUAL SOLICITADA
+- "Escolha PIX ou 💎 Diamantes no checkout"
+  passou para:
+  "Escolha PIX ou Diamantes no checkout"
+
+OBSERVAÇÃO SOBRE O OCR
+O Admin usa Tesseract.js por CDN. A CSP da área administrativa permite
+somente os domínios necessários para essa função e os arquivos da própria loja.
+
+IMPORTANTE
+A proteção do GitHub e da Cloudflare continua dependendo também da conta.
+Ative autenticação em dois fatores (2FA) nas duas contas antes de divulgar a loja.

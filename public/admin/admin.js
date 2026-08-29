@@ -1,3 +1,11 @@
+
+function safeAdminImageUrl(value){
+  const url = String(value || '').trim();
+  if(/^\/assets\/[a-z0-9._/-]+$/i.test(url)) return url;
+  if(/^\/api\/image\/[a-z0-9-]+$/i.test(url)) return url;
+  return '';
+}
+
 const $ = id => document.getElementById(id);
 
 const addProductForm = $('addProductForm');
@@ -1170,9 +1178,8 @@ async function render(){
     const card = document.createElement('article');
     card.className = 'admin-card' + (sold ? ' sold-card' : '');
 
-    const thumb = item.imageUrl ? `<img class="admin-thumb" src="${item.imageUrl}" alt="">` : '';
     card.innerHTML = `
-      ${thumb}
+      <img class="admin-thumb" alt="" hidden>
       <div class="admin-card-content">
         <div class="admin-card-heading">
           <div><h2></h2><span class="admin-rarity"></span></div>
@@ -1192,6 +1199,13 @@ async function render(){
 
     card.querySelector('h2').textContent = item.name || id;
     card.querySelector('.admin-rarity').textContent = item.rarity || '';
+    const adminThumb = card.querySelector('.admin-thumb');
+    const adminThumbUrl = safeAdminImageUrl(item.imageUrl);
+    if(adminThumb && adminThumbUrl){
+      adminThumb.src = adminThumbUrl;
+      adminThumb.alt = `Print de ${item.name || 'Pokémon'}`;
+      adminThumb.hidden = false;
+    }
     const tech = item.technical || {};
     const bits = [];
     if(tech.ivTotal != null) bits.push(`IV ${tech.ivTotal}/186`);

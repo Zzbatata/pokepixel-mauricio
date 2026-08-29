@@ -8,7 +8,12 @@ function json(data, init={}) {
 }
 
 function cleanText(v, max=80) {
-  return String(v ?? '').trim().slice(0,max);
+  return String(v ?? '')
+    .replace(/[\u0000-\u001F\u007F]/g,' ')
+    .replace(/[<>]/g,'')
+    .replace(/\s+/g,' ')
+    .trim()
+    .slice(0,max);
 }
 
 function slugify(value) {
@@ -19,6 +24,16 @@ function slugify(value) {
     .replace(/^-+|-+$/g,'')
     .slice(0,40) || 'pokemon';
 }
+
+
+function safeCatalogImageUrl(value, fallback=''){
+  const url = String(value || '').trim();
+  if(/^\/assets\/[a-z0-9._/-]+$/i.test(url)) return url;
+  if(/^\/api\/image\/[a-z0-9-]+$/i.test(url)) return url;
+  return String(fallback || '');
+}
+
+const ALLOWED_RARITIES = new Set(['COMUM','INCOMUM','RARO','ÉPICO','LENDÁRIO']);
 
 function validPrice(v) {
   const n = Number(v);
@@ -111,6 +126,7 @@ function normalizeCatalogItem(item, fallback={}) {
   merged.technical = {...(fallback.technical || {}), ...(item.technical || {})};
   merged.identity = normalizeIdentity(merged, fallback);
   merged.signature = merged.identity.signature;
+  merged.imageUrl = safeCatalogImageUrl(merged.imageUrl, fallback.imageUrl);
   if(rarity === 'ÉPICO' && (!Number.isFinite(Number(merged.price)) || Number(merged.price) < 7 || Number(merged.price) > 12)){
     merged.price = Number(fallback.price || 7);
   }
@@ -296,7 +312,7 @@ function getCookie(request, name) {
 }
 
 async function createSession(env) {
-  const exp = Math.floor(Date.now()/1000) + 60*60*12;
+  const exp = Math.floor(Date.now()/1000) + 60*60*6;
   const nonce = crypto.randomUUID();
   const payload = `${exp}.${nonce}`;
   const sig = await hmacHex(env.SESSION_SECRET, payload);
@@ -305,7 +321,7 @@ async function createSession(env) {
 
 async function validSession(request, env) {
   if(!env.SESSION_SECRET) return false;
-  const token = getCookie(request, 'pp_admin');
+  const token = getCookie(request, '__Secure-pp_admin');
   if(!token) return false;
 
   const parts = token.split('.');
@@ -350,7 +366,8 @@ async function adminCatalog(request, env) {
   }
 
   if(request.method === 'GET') return json(await readCatalog(env));
-  if(request.method !== 'POST') return new Response('Method not allowed',{status:405});
+  if(request.method !== 'POST') return methodNotAllowed('GET, POST');
+  if(!sameOriginAdminRequest(request)) return new Response('Origem não permitida.',{status:403});
 
   const type = request.headers.get('content-type') || '';
 
@@ -363,6 +380,7 @@ async function adminCatalog(request, env) {
     const requestedName = cleanText(form.get('name'),80);
     const species = cleanText(form.get('species') || speciesFromName(requestedName),80);
     const rarity = cleanText(form.get('rarity') || 'ÉPICO',30).toUpperCase();
+    if(!ALLOWED_RARITIES.has(rarity)) return new Response('Raridade inválida.',{status:400});
     const price = Number(form.get('price'));
     const signature = normalizeSignature(form.get('signature'));
     const captureAt = normalizeCaptureAt(form.get('captureAt'));
@@ -396,6 +414,24 @@ async function adminCatalog(request, env) {
       gender: cleanText(form.get('gender'),20) || null,
       autoScore: form.get('autoScore') ? Number(form.get('autoScore')) : null
     };
+
+    const numericChecks = [
+      ['IV Total',technical.ivTotal,0,186],
+      ['HP IV',technical.hpIv,0,31],
+      ['ATK IV',technical.atkIv,0,31],
+      ['DEF IV',technical.defIv,0,31],
+      ['SP.ATK IV',technical.spatkIv,0,31],
+      ['SP.DEF IV',technical.spdefIv,0,31],
+      ['VEL IV',technical.speedIv,0,31]
+    ];
+    for(const [label,value,min,max] of numericChecks){
+      if(value !== null && (!Number.isFinite(value) || value < min || value > max)){
+        return new Response(`${label} inválido.`,{status:400});
+      }
+    }
+    if(technical.quality !== null && (!Number.isFinite(technical.quality) || technical.quality < 1 || technical.quality > 2)){
+      return new Response('Qualidade inválida.',{status:400});
+    }
 
     if(rarity === 'ÉPICO' && Number.isFinite(technical.quality) && (technical.quality < 1.40 || technical.quality > 1.54)){
       return new Response('Qualidade incompatível com ÉPICO. O Pokepixel usa a faixa x1,40–x1,54.',{status:400});
@@ -518,7 +554,11 @@ async function duplicateCheck(request, env) {
   if(!(await requireAdmin(request, env))) {
     return new Response('Acesso administrativo não autorizado.',{status:403});
   }
-  if(request.method !== 'POST') return new Response('Method not allowed',{status:405});
+  if(request.method !== 'POST') return methodNotAllowed('POST');
+  if(!sameOriginAdminRequest(request)) return new Response('Origem não permitida.',{status:403});
+
+  const length = Number(request.headers.get('Content-Length') || 0);
+  if(length > 16384) return new Response('Requisição inválida.',{status:413});
 
   const body = await request.json().catch(()=>({}));
   const species = cleanText(body.species || speciesFromName(body.name),80);
@@ -562,71 +602,243 @@ async function duplicateCheck(request, env) {
   });
 }
 
+
+const LOGIN_MAX_FAILURES = 5;
+const LOGIN_WINDOW_SECONDS = 15 * 60;
+const LOGIN_LOCK_SECONDS = 15 * 60;
+
+async function sha256Hex(value){
+  const bytes = await crypto.subtle.digest('SHA-256', textBytes(value));
+  return [...new Uint8Array(bytes)].map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function requestClientIp(request){
+  return (request.headers.get('CF-Connecting-IP')
+    || request.headers.get('X-Forwarded-For')
+    || 'unknown').split(',')[0].trim().slice(0,80);
+}
+
+async function loginRateKey(request){
+  return `_security:login:${await sha256Hex(requestClientIp(request))}`;
+}
+
+async function readLoginRate(request, env){
+  if(!env.STORE) return {count:0,firstAt:0,lockUntil:0};
+  const key = await loginRateKey(request);
+  const state = await env.STORE.get(key,'json').catch(()=>null);
+  return {
+    key,
+    count:Number(state?.count)||0,
+    firstAt:Number(state?.firstAt)||0,
+    lockUntil:Number(state?.lockUntil)||0
+  };
+}
+
+async function registerLoginFailure(request, env){
+  if(!env.STORE) return {locked:false,count:1,lockUntil:0};
+  const now = Math.floor(Date.now()/1000);
+  const current = await readLoginRate(request,env);
+  let count = current.count;
+  let firstAt = current.firstAt;
+
+  if(!firstAt || now - firstAt > LOGIN_WINDOW_SECONDS){
+    count = 0;
+    firstAt = now;
+  }
+
+  count += 1;
+  const lockUntil = count >= LOGIN_MAX_FAILURES ? now + LOGIN_LOCK_SECONDS : 0;
+
+  await env.STORE.put(current.key,JSON.stringify({count,firstAt,lockUntil}),{
+    expirationTtl: Math.max(LOGIN_WINDOW_SECONDS, LOGIN_LOCK_SECONDS) + 60
+  });
+
+  return {locked:lockUntil > now,count,lockUntil};
+}
+
+async function clearLoginFailures(request,env){
+  if(!env.STORE) return;
+  const key = await loginRateKey(request);
+  await env.STORE.delete(key).catch(()=>{});
+}
+
+function sameOriginAdminRequest(request){
+  const url = new URL(request.url);
+  const origin = request.headers.get('Origin');
+  if(origin && origin !== url.origin) return false;
+
+  const fetchSite = request.headers.get('Sec-Fetch-Site');
+  if(fetchSite && !['same-origin','none'].includes(fetchSite)) return false;
+
+  return true;
+}
+
+function methodNotAllowed(allow){
+  return new Response('Method not allowed',{status:405,headers:{'Allow':allow}});
+}
+
+function securityHeadersFor(request){
+  const url = new URL(request.url);
+  const isAdmin = url.pathname.startsWith('/admin');
+
+  const publicCsp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self'",
+    "style-src 'self' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob:",
+    "connect-src 'self'",
+    "worker-src 'none'",
+    "upgrade-insecure-requests"
+  ].join('; ');
+
+  const adminCsp = [
+    "default-src 'self'",
+    "base-uri 'self'",
+    "object-src 'none'",
+    "frame-ancestors 'none'",
+    "form-action 'self'",
+    "script-src 'self' https://cdn.jsdelivr.net 'wasm-unsafe-eval'",
+    "style-src 'self' https://fonts.googleapis.com",
+    "font-src 'self' https://fonts.gstatic.com",
+    "img-src 'self' data: blob:",
+    "connect-src 'self' https://cdn.jsdelivr.net https://tessdata.projectnaptha.com",
+    "worker-src 'self' blob: https://cdn.jsdelivr.net",
+    "child-src blob:",
+    "upgrade-insecure-requests"
+  ].join('; ');
+
+  return {
+    'Content-Security-Policy': isAdmin ? adminCsp : publicCsp,
+    'X-Content-Type-Options':'nosniff',
+    'X-Frame-Options':'DENY',
+    'Referrer-Policy':'strict-origin-when-cross-origin',
+    'Permissions-Policy':'camera=(), microphone=(), geolocation=(), payment=(), usb=(), serial=(), bluetooth=()',
+    'Cross-Origin-Opener-Policy':'same-origin-allow-popups',
+    'Strict-Transport-Security':'max-age=31536000'
+  };
+}
+
+function secureResponse(response,request){
+  const headers = new Headers(response.headers);
+  for(const [key,value] of Object.entries(securityHeadersFor(request))){
+    headers.set(key,value);
+  }
+
+  const url = new URL(request.url);
+  if(url.pathname.startsWith('/admin')){
+    headers.set('Cache-Control','no-store, max-age=0');
+    headers.set('Pragma','no-cache');
+  }
+
+  return new Response(response.body,{
+    status:response.status,
+    statusText:response.statusText,
+    headers
+  });
+}
+
 async function loginAdmin(request, env) {
-  if(request.method !== 'POST') return new Response('Method not allowed',{status:405});
-  if(!env.ADMIN_PASSWORD || !env.SESSION_SECRET){
-    return new Response('Segredos do admin ainda não configurados.',{status:503});
+  if(request.method !== 'POST') return methodNotAllowed('POST');
+  if(!sameOriginAdminRequest(request)) return new Response('Origem não permitida.',{status:403});
+  if(!env.ADMIN_PASSWORD || !env.SESSION_SECRET || !env.STORE){
+    return new Response('Segurança administrativa ainda não configurada.',{status:503});
+  }
+
+  const length = Number(request.headers.get('Content-Length') || 0);
+  if(length > 4096) return new Response('Requisição inválida.',{status:413});
+
+  const now = Math.floor(Date.now()/1000);
+  const rate = await readLoginRate(request,env);
+  if(rate.lockUntil > now){
+    const retry = Math.max(1,rate.lockUntil-now);
+    return new Response('Muitas tentativas. Aguarde alguns minutos e tente novamente.',{
+      status:429,
+      headers:{'Retry-After':String(retry)}
+    });
   }
 
   const body = await request.json().catch(()=>({}));
   const password = String(body.password || '');
-  if(password !== env.ADMIN_PASSWORD){
+  if(password.length < 1 || password.length > 256){
+    await registerLoginFailure(request,env);
     return new Response('Senha incorreta.',{status:401});
   }
+
+  if(password !== env.ADMIN_PASSWORD){
+    const result = await registerLoginFailure(request,env);
+    if(result.locked){
+      return new Response('Muitas tentativas incorretas. Login bloqueado temporariamente por 15 minutos.',{
+        status:429,
+        headers:{'Retry-After':String(LOGIN_LOCK_SECONDS)}
+      });
+    }
+    return new Response('Senha incorreta.',{status:401});
+  }
+
+  await clearLoginFailures(request,env);
 
   const token = await createSession(env);
   return json({ok:true},{
     headers:{
-      'Set-Cookie':`pp_admin=${token}; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=43200`
+      'Set-Cookie':`__Secure-pp_admin=${token}; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=21600; Priority=High`
     }
   });
 }
 
-async function logoutAdmin() {
+async function logoutAdmin(request) {
+  if(request.method !== 'POST') return methodNotAllowed('POST');
+  if(!sameOriginAdminRequest(request)) return new Response('Origem não permitida.',{status:403});
   return json({ok:true},{
     headers:{
-      'Set-Cookie':'pp_admin=; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=0'
+      'Set-Cookie':'__Secure-pp_admin=; Path=/admin; HttpOnly; Secure; SameSite=Strict; Max-Age=0'
     }
   });
 }
 
 async function sessionStatus(request, env) {
+  if(request.method !== 'GET') return methodNotAllowed('GET');
   return json({authenticated:await validSession(request, env)});
 }
 
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    let response;
 
-    if(url.pathname === '/api/catalog' && request.method === 'GET') {
-      return json(await readCatalog(env));
+    try{
+      if(url.pathname === '/api/catalog') {
+        response = request.method === 'GET'
+          ? json(await readCatalog(env))
+          : methodNotAllowed('GET');
+      } else if(url.pathname.startsWith('/api/image/')) {
+        if(request.method !== 'GET') response = methodNotAllowed('GET');
+        else {
+          const id = decodeURIComponent(url.pathname.slice('/api/image/'.length));
+          response = await serveImage(env, id);
+        }
+      } else if(url.pathname === '/admin/api/login') {
+        response = await loginAdmin(request, env);
+      } else if(url.pathname === '/admin/api/logout') {
+        response = await logoutAdmin(request);
+      } else if(url.pathname === '/admin/api/session') {
+        response = await sessionStatus(request, env);
+      } else if(url.pathname === '/admin/api/duplicate-check') {
+        response = await duplicateCheck(request, env);
+      } else if(url.pathname === '/admin/api/catalog') {
+        response = await adminCatalog(request, env);
+      } else {
+        response = await env.ASSETS.fetch(request);
+      }
+    }catch(error){
+      console.error('Worker error',error);
+      response = new Response('Erro interno.',{status:500});
     }
 
-    if(url.pathname.startsWith('/api/image/') && request.method === 'GET') {
-      const id = decodeURIComponent(url.pathname.slice('/api/image/'.length));
-      return serveImage(env, id);
-    }
-
-    if(url.pathname === '/admin/api/login') {
-      return loginAdmin(request, env);
-    }
-
-    if(url.pathname === '/admin/api/logout') {
-      return logoutAdmin();
-    }
-
-    if(url.pathname === '/admin/api/session') {
-      return sessionStatus(request, env);
-    }
-
-    if(url.pathname === '/admin/api/duplicate-check') {
-      return duplicateCheck(request, env);
-    }
-
-    if(url.pathname === '/admin/api/catalog') {
-      return adminCatalog(request, env);
-    }
-
-    return env.ASSETS.fetch(request);
+    return secureResponse(response,request);
   }
 };
