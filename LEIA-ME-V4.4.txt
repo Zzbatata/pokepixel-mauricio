@@ -1,0 +1,26 @@
+POKEPIXEL MARKET — V4.4
+
+Correções feitas a partir dos prints reais da V4.3:
+
+1. BOTÃO X DO CHECKOUT
+- Corrigido o identificador do modal.
+- O X agora fecha o checkout.
+- O clique no fundo escuro também fecha.
+- ESC continua fechando no computador.
+- X ficou um pouco maior e mais fácil de clicar.
+
+2. BOTÕES PIX / DIAMANTES
+- Aumentados.
+- Texto simplificado para "PIX" e "DIAMANTES".
+- Mais fáceis de enxergar e tocar.
+
+3. PREÇO NOS CARDS
+- R$ e Diamantes continuam claramente separados por "OU".
+- R$ 10,00 não deve mais sair da caixa.
+- Tamanho do preço em Reais foi levemente reduzido.
+- Área do PIX ganhou um pouco mais de largura.
+- Diamantes continuam com destaque equivalente.
+- Há ajustes extras para telas estreitas.
+
+Nenhuma alteração no catálogo, preços, analisador, raridades,
+anti-duplicação ou lógica de pagamento.

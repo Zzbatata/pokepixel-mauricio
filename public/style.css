@@ -756,3 +756,94 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
     grid-template-columns:1fr;
   }
 }
+
+
+/* ==========================================================
+   V4.4 — AJUSTES FINAIS DO CHECKOUT E PREÇOS DOS CARDS
+   ========================================================== */
+
+/* Botões PIX / DIAMANTES mais fáceis de tocar e enxergar */
+.payment-choice{
+  gap:12px !important;
+}
+.payment-choice-btn{
+  min-height:54px !important;
+  padding:14px 14px !important;
+  font-size:9px !important;
+  line-height:1.45 !important;
+  border-width:2px !important;
+  box-shadow:0 3px 0 rgba(0,0,0,.55);
+}
+.payment-choice-btn.active{
+  transform:translateY(-1px);
+}
+
+/* X do checkout mais evidente */
+.buy-box > .close,
+.viewer-box > .close{
+  width:42px !important;
+  height:42px !important;
+  display:grid !important;
+  place-items:center !important;
+  padding:0 !important;
+  font-size:27px !important;
+  line-height:1 !important;
+  cursor:pointer !important;
+  z-index:20 !important;
+}
+
+/* PIX e Diamantes precisam caber lado a lado sem vazar */
+.card-payment-options{
+  grid-template-columns:minmax(0,1.08fr) 24px minmax(0,.92fr) !important;
+  gap:5px !important;
+}
+.card-pay-option{
+  padding:8px 5px !important;
+  overflow:hidden;
+}
+.card-pay-option strong{
+  display:block;
+  max-width:100%;
+  overflow:hidden;
+  text-overflow:clip;
+  letter-spacing:-.35px;
+}
+.pix-option strong{
+  font-size:19px !important;
+}
+.diamond-option strong{
+  font-size:20px !important;
+}
+.card-pay-option span{
+  font-size:5.5px !important;
+}
+.card-pay-or{
+  font-size:5.5px !important;
+}
+
+/* Em cards mais estreitos, reduz mais um pouco sem quebrar o layout */
+@media(max-width:420px){
+  .card-payment-options{
+    grid-template-columns:minmax(0,1.06fr) 22px minmax(0,.94fr) !important;
+  }
+  .pix-option strong{
+    font-size:18px !important;
+  }
+  .diamond-option strong{
+    font-size:19px !important;
+  }
+  .payment-choice-btn{
+    min-height:58px !important;
+    font-size:9px !important;
+  }
+}
+
+/* Telas realmente pequenas: continua claro e sem transbordar */
+@media(max-width:330px){
+  .pix-option strong{
+    font-size:16.5px !important;
+  }
+  .diamond-option strong{
+    font-size:18px !important;
+  }
+}

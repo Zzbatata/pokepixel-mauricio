@@ -174,9 +174,9 @@
 </div>
 
 <div class="modal" id="buyModal">
-  <div class="overlay" data-close="buy"></div>
+  <div class="overlay" data-close="buyModal"></div>
   <div class="buy-box">
-    <button class="close" data-close="buy">×</button>
+    <button class="close" data-close="buyModal">×</button>
     <div class="payment-head">
       <span class="eyebrow">FINALIZAR COMPRA</span>
       <h3 id="buyName">Seu carrinho</h3>
@@ -191,8 +191,8 @@
     <div class="checkout-list" id="checkoutList"></div>
 
     <div class="payment-choice" role="tablist" aria-label="Forma de pagamento">
-      <button type="button" id="payPixTab" class="payment-choice-btn active">⚡ PAGAR VIA PIX</button>
-      <button type="button" id="payDiamondTab" class="payment-choice-btn">💎 PAGAR COM DIAMANTES</button>
+      <button type="button" id="payPixTab" class="payment-choice-btn active">⚡ PIX</button>
+      <button type="button" id="payDiamondTab" class="payment-choice-btn">💎 DIAMANTES</button>
     </div>
 
     <div class="payment-grid">
@@ -267,7 +267,10 @@ function openViewer(item){
   $('viewer').classList.add('on');
 }
 
-function closeModal(id){ $(id)?.classList.remove('on'); }
+function closeModal(id){
+  const targetId = id === 'buy' ? 'buyModal' : id;
+  $(targetId)?.classList.remove('on');
+}
 
 function toggleCart(id){
   const item = catalog[id];
