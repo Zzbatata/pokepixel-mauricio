@@ -1608,3 +1608,87 @@ footer{display:flex;justify-content:space-between;gap:18px;padding:20px 28px;bor
     font-size:7px;
   }
 }
+
+
+/* ==========================================================
+   V4.8 — SISTEMA DE PROMOÇÃO GERAL
+   ========================================================== */
+.promotion-banner{
+  position:relative;
+  z-index:90;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+  padding:11px 20px;
+  background:linear-gradient(90deg,#721414,#b62020,#721414);
+  border-bottom:2px solid #ffda45;
+  box-shadow:0 4px 15px rgba(0,0,0,.35);
+  text-align:center;
+}
+.promotion-banner[hidden]{display:none!important}
+.promotion-banner strong{
+  color:#fff3a5;
+  font-family:'Press Start 2P',monospace;
+  font-size:10px;
+  line-height:1.6;
+  text-shadow:2px 2px #5a0909;
+}
+.promotion-banner span{
+  color:#fff;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:14px;
+  font-weight:800;
+}
+
+.promotion-active .card-pay-option{
+  position:relative;
+}
+.card-pay-option del{
+  display:block;
+  min-height:14px;
+  color:#89959b;
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  line-height:1.1;
+  font-weight:700;
+  text-decoration-thickness:2px;
+}
+.card-pay-option small{
+  display:inline-block;
+  align-self:center;
+  margin-top:2px;
+  padding:2px 4px;
+  background:#7f1717;
+  border:1px solid #d44848;
+  color:#fff4a8;
+  font-family:'Press Start 2P',monospace;
+  font-size:5px;
+  line-height:1.25;
+}
+.promotion-active .pix-option strong,
+.promotion-active .diamond-option strong{
+  font-size:21px!important;
+}
+.cart-promo-tag{
+  display:inline-block!important;
+  width:auto!important;
+  margin:0!important;
+  padding:1px 4px!important;
+  border:1px solid #c84747;
+  background:#4b1515;
+  color:#ffd66b!important;
+  font-family:Arial,Helvetica,sans-serif!important;
+  font-size:10px!important;
+  font-weight:900;
+  line-height:1.25;
+}
+
+@media(max-width:600px){
+  .promotion-banner{gap:4px;padding:9px 10px}
+  .promotion-banner strong{width:100%;font-size:8px}
+  .promotion-banner span{font-size:12px}
+  .promotion-active .pix-option strong,
+  .promotion-active .diamond-option strong{font-size:18px!important}
+}

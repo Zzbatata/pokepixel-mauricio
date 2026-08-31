@@ -36,6 +36,11 @@ const loginForm = $('loginForm');
 const loginError = $('loginError');
 const adminPassword = $('adminPassword');
 const logoutBtn = $('logoutBtn');
+const promotionForm = $('promotionForm');
+const promotionEnabled = $('promotionEnabled');
+const promotionPercent = $('promotionPercent');
+const promotionSaveBtn = $('promotionSaveBtn');
+const promotionAdminStatus = $('promotionAdminStatus');
 
 function flash(msg){
   toastAdmin.textContent = msg;
@@ -1122,6 +1127,53 @@ async function adminFetch(url, options={}){
 }
 
 
+
+async function loadPromotionSettings(){
+  const res = await adminFetch('/admin/api/store-settings');
+  const data = await res.json();
+  const enabled = Boolean(data?.promotion?.enabled);
+  const percent = Math.max(0,Math.min(90,Math.round(Number(data?.promotion?.discountPercent || 0))));
+  promotionEnabled.checked = enabled;
+  promotionPercent.value = String(percent);
+  updatePromotionAdminStatus(enabled,percent);
+}
+
+function updatePromotionAdminStatus(enabled,percent){
+  if(!promotionAdminStatus) return;
+  promotionAdminStatus.className = `promotion-admin-status ${enabled && percent > 0 ? 'active' : 'inactive'}`;
+  promotionAdminStatus.textContent = enabled && percent > 0
+    ? `🔥 PROMOÇÃO ATIVA: ${percent}% OFF NO PIX E NOS DIAMANTES`
+    : 'Promoção desativada — a loja está usando os preços originais.';
+}
+
+promotionForm?.addEventListener('submit',async e=>{
+  e.preventDefault();
+  const percent = Math.round(Number(promotionPercent.value));
+  if(!Number.isFinite(percent) || percent < 0 || percent > 90){
+    alert('Use um desconto entre 0% e 90%.');
+    return;
+  }
+  promotionSaveBtn.disabled = true;
+  promotionSaveBtn.textContent = 'SALVANDO...';
+  try{
+    const res = await adminFetch('/admin/api/store-settings',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({promotion:{enabled:promotionEnabled.checked,discountPercent:percent}})
+    });
+    const data = await res.json();
+    updatePromotionAdminStatus(Boolean(data?.promotion?.enabled),Number(data?.promotion?.discountPercent || 0));
+    flash(data?.promotion?.enabled && Number(data?.promotion?.discountPercent)>0
+      ? `Promoção de ${data.promotion.discountPercent}% ativada.`
+      : 'Promoção desativada.');
+  }catch(error){
+    alert(error.message);
+  }finally{
+    promotionSaveBtn.disabled = false;
+    promotionSaveBtn.textContent = 'SALVAR PROMOÇÃO';
+  }
+});
+
 async function checkSession(){
   const res = await fetch('/admin/api/session',{cache:'no-store'});
   const data = await res.json();
@@ -1131,6 +1183,7 @@ async function checkSession(){
 async function showAdmin(){
   loginPanel.hidden = true;
   dashboard.hidden = false;
+  await loadPromotionSettings();
   await render();
 }
 

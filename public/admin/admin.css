@@ -239,3 +239,92 @@ body.zoom-open{overflow:hidden}
 .iv-validation.ok{color:#76ff8b;border-color:#2f9b4e;background:#0d2315}
 .iv-validation.bad{color:#ff8f8f;border-color:#a84545;background:#281111}
 .iv-validation.warn{color:#ffd86b;border-color:#9e7b20;background:#261f0d}
+
+
+/* V4.8 — controle da promoção geral */
+.promotion-admin-panel{
+  display:grid;
+  grid-template-columns:minmax(260px,1fr) minmax(340px,1fr);
+  gap:14px 22px;
+  align-items:center;
+  margin:18px 0 26px;
+  padding:18px;
+  background:linear-gradient(135deg,#21100d,#0b171f 55%);
+  border:2px solid #aa7220;
+  box-shadow:0 6px 0 #030507;
+}
+.promotion-admin-copy h2{
+  margin:8px 0;
+  color:#ffd31a;
+  font-family:'Press Start 2P';
+  font-size:12px;
+  line-height:1.5;
+}
+.promotion-admin-copy p{margin:0;color:#c2cbd0}
+.promotion-admin-kicker{
+  color:#ff8a61;
+  font-family:'Press Start 2P';
+  font-size:7px;
+}
+.promotion-admin-form{
+  display:grid;
+  grid-template-columns:minmax(140px,1fr) 130px auto;
+  gap:10px;
+  align-items:end;
+}
+.promotion-admin-form label{
+  margin:0;
+  color:#ffd98c;
+  font-family:'Press Start 2P';
+  font-size:7px;
+  line-height:1.5;
+}
+.promotion-admin-form input[type="number"]{
+  width:100%;
+  margin-top:6px;
+  padding:9px;
+  border:2px solid #735c28;
+  background:#071018;
+  color:#fff;
+  font-family:'VT323';
+  font-size:24px;
+}
+.promotion-toggle{
+  min-height:46px;
+  display:flex!important;
+  align-items:center;
+  gap:9px;
+  padding:8px 10px;
+  border:2px solid #735c28;
+  background:#0d171d;
+}
+.promotion-toggle input{width:20px;height:20px;accent-color:#30a64d}
+.promotion-admin-form button{
+  min-height:46px;
+  padding:9px 12px;
+  border:2px solid #c58c23;
+  background:#715112;
+  color:#fff7b8;
+  font-family:'Press Start 2P';
+  font-size:7px;
+  cursor:pointer;
+}
+.promotion-admin-form button:disabled{opacity:.6;cursor:wait}
+.promotion-admin-status{
+  grid-column:1/-1;
+  padding:10px 12px;
+  border:1px solid #53616a;
+  background:#101a21;
+  font-weight:800;
+}
+.promotion-admin-status.active{border-color:#d89826;background:#2a190b;color:#ffd86c}
+.promotion-admin-status.inactive{border-color:#53616a;color:#aeb9bf}
+@media(max-width:900px){
+  .promotion-admin-panel{grid-template-columns:1fr}
+  .promotion-admin-form{grid-template-columns:1fr 110px}
+  .promotion-admin-form button{grid-column:1/-1}
+}
+@media(max-width:520px){
+  .promotion-admin-form{grid-template-columns:1fr}
+  .promotion-admin-form button{grid-column:auto}
+}

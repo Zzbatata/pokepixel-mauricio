@@ -27,6 +27,10 @@ async function revealAdminShortcutIfAuthenticated(){
 const WHATSAPP = "5531987555415";
 const PIX = "fb154152-891c-4bee-96bf-9cce909bc1ac";
 const DIAMOND_BRL = 0.40;
+const DEFAULT_STORE_SETTINGS = {
+  promotion:{enabled:true,discountPercent:40}
+};
+let storeSettings = structuredClone(DEFAULT_STORE_SETTINGS);
 let catalog = {};
 let cart = JSON.parse(localStorage.getItem('pp_cart_v3') || '[]');
 let cartPayments = JSON.parse(localStorage.getItem('pp_cart_payments_v45') || '{}');
@@ -36,9 +40,44 @@ let checkoutItems = [];
 const $ = id => document.getElementById(id);
 const moneyBR = v => `R$ ${Number(v || 0).toFixed(2).replace('.',',')}`;
 const diamondsForPrice = v => Math.max(0, Math.round(Number(v || 0) / DIAMOND_BRL));
-const diamondsForItems = items => items.reduce((sum,item)=>sum + diamondsForPrice(item.price),0);
+const promoPercent = () => {
+  const n = Math.round(Number(storeSettings?.promotion?.discountPercent || 0));
+  return Math.max(0,Math.min(90,Number.isFinite(n) ? n : 0));
+};
+const promotionActive = () => Boolean(storeSettings?.promotion?.enabled) && promoPercent() > 0;
+const effectivePrice = v => {
+  const original = Math.max(0,Number(v || 0));
+  if(!promotionActive()) return original;
+  return Math.round(original * (1 - promoPercent()/100) * 100) / 100;
+};
+const effectiveDiamondsForItem = item => diamondsForPrice(effectivePrice(item?.price));
+const diamondsForItems = items => items.reduce((sum,item)=>sum + effectiveDiamondsForItem(item),0);
 const diamondsLabel = v => `💎 ${Number(v || 0)} ${Number(v || 0) === 1 ? 'diamante' : 'diamantes'}`;
 const normalizeText = v => String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+
+function applyPromotionUI(){
+  const banner = $('promotionBanner');
+  if(!banner) return;
+  const active = promotionActive();
+  banner.hidden = !active;
+  document.body.classList.toggle('promotion-active',active);
+  if(active){
+    $('promotionTitle').textContent = `🔥 ${promoPercent()}% OFF EM TODA A LOJA 🔥`;
+    $('promotionText').textContent = 'Desconto aplicado automaticamente no PIX e nos Diamantes.';
+  }
+}
+
+function pixPriceMarkup(item){
+  const finalPrice = effectivePrice(item.price);
+  if(!promotionActive()) return `<strong>${moneyBR(finalPrice)}</strong>`;
+  return `<del>${moneyBR(item.price)}</del><strong>${moneyBR(finalPrice)}</strong><small>${promoPercent()}% OFF</small>`;
+}
+
+function diamondPriceMarkup(item){
+  const finalDiamonds = effectiveDiamondsForItem(item);
+  if(!promotionActive()) return `<strong>💎 ${finalDiamonds}</strong>`;
+  return `<del>💎 ${diamondsForPrice(item.price)}</del><strong>💎 ${finalDiamonds}</strong><small>${promoPercent()}% OFF</small>`;
+}
 
 function saveCart(){
   localStorage.setItem('pp_cart_v3', JSON.stringify(cart));
@@ -117,8 +156,8 @@ function renderCards(){
   if(sort === 'iv-desc') items.sort((a,b)=>Number(b.technical?.ivTotal||0)-Number(a.technical?.ivTotal||0));
   if(sort === 'quality-desc') items.sort((a,b)=>Number(b.technical?.quality||0)-Number(a.technical?.quality||0));
   if(sort === 'name-asc') items.sort((a,b)=>a.name.localeCompare(b.name,'pt-BR',{sensitivity:'base'}));
-  if(sort === 'price-asc') items.sort((a,b)=>Number(a.price)-Number(b.price) || a.name.localeCompare(b.name,'pt-BR'));
-  if(sort === 'price-desc') items.sort((a,b)=>Number(b.price)-Number(a.price) || a.name.localeCompare(b.name,'pt-BR'));
+  if(sort === 'price-asc') items.sort((a,b)=>effectivePrice(a.price)-effectivePrice(b.price) || a.name.localeCompare(b.name,'pt-BR'));
+  if(sort === 'price-desc') items.sort((a,b)=>effectivePrice(b.price)-effectivePrice(a.price) || a.name.localeCompare(b.name,'pt-BR'));
 
   container.innerHTML = '';
   for(const item of items){
@@ -149,12 +188,12 @@ function renderCards(){
         <div class="card-payment-options" aria-label="Formas de pagamento">
           <div class="card-pay-option pix-option">
             <span>PIX</span>
-            <strong>${moneyBR(item.price)}</strong>
+            ${pixPriceMarkup(item)}
           </div>
           <div class="card-pay-or">OU</div>
           <div class="card-pay-option diamond-option">
             <span>DIAMANTES</span>
-            <strong>💎 ${diamondsForPrice(item.price)}</strong>
+            ${diamondPriceMarkup(item)}
           </div>
         </div>
 
@@ -219,8 +258,9 @@ function renderCart(){
           <strong></strong>
           <span>${escapeHTML(item.rarity)}</span>
           <div class="cart-item-values">
-            <b>${moneyBR(item.price)}</b>
-            <em>💎 ${diamondsForPrice(item.price)}</em>
+            <b>${moneyBR(effectivePrice(item.price))}</b>
+            <em>💎 ${effectiveDiamondsForItem(item)}</em>
+            ${promotionActive() ? `<small class="cart-promo-tag">-${promoPercent()}%</small>` : ''}
           </div>
         </div>
         <button class="cart-remove" title="Remover">×</button>
@@ -248,7 +288,7 @@ function renderCart(){
   const diamondItems = valid.filter(item => cartPayments[item.id] === 'diamonds');
   const unassigned = valid.filter(item => !cartPayments[item.id]);
 
-  const pixTotal = pixItems.reduce((s,item)=>s+Number(item.price||0),0);
+  const pixTotal = pixItems.reduce((s,item)=>s+effectivePrice(item.price),0);
   const diamondTotal = diamondsForItems(diamondItems);
 
   $('cartTotal').textContent = `PIX ${moneyBR(pixTotal)}`;
@@ -282,7 +322,7 @@ function checkoutStats(){
     pixItems,
     diamondItems,
     unassigned,
-    pixTotal: pixItems.reduce((s,item)=>s+Number(item.price||0),0),
+    pixTotal: pixItems.reduce((s,item)=>s+effectivePrice(item.price),0),
     diamondTotal: diamondsForItems(diamondItems)
   };
 }
@@ -314,14 +354,14 @@ function renderCheckout(){
 
   $('checkoutList').innerHTML = checkoutItems.map(item => {
     const method = checkoutPayments[item.id] || null;
-    const d = diamondsForPrice(item.price);
+    const d = effectiveDiamondsForItem(item);
 
     return `
       <div class="checkout-product-mixed">
         <div class="checkout-product-main">
           <span>${escapeHTML(item.name)}</span>
           <div class="checkout-product-prices">
-            <b>${moneyBR(item.price)}</b>
+            <b>${moneyBR(effectivePrice(item.price))}</b>
             <em>💎 ${d}</em>
           </div>
         </div>
@@ -370,19 +410,19 @@ function renderCheckout(){
 
   confirmBtn.onclick = () => {
     const pixLines = pixItems.map(item =>
-      `• ${item.name} — ${moneyBR(item.price)}`
+      `• ${item.name} — ${moneyBR(effectivePrice(item.price))}${promotionActive() ? ` (${promoPercent()}% OFF)` : ''}`
     ).join('\n');
 
     const diamondLines = diamondItems.map(item =>
-      `• ${item.name} — 💎 ${diamondsForPrice(item.price)} diamantes`
+      `• ${item.name} — 💎 ${effectiveDiamondsForItem(item)} diamantes${promotionActive() ? ` (${promoPercent()}% OFF)` : ''}`
     ).join('\n');
 
     let msg = '';
+    const promoLine = promotionActive() ? `\n🔥 PROMOÇÃO: ${promoPercent()}% OFF APLICADO\n` : '';
 
     if(pixItems.length && diamondItems.length){
       msg =
-`🔀 COMPRA MISTA — POKEPIXEL MARKET
-
+`🔀 COMPRA MISTA — POKEPIXEL MARKET${promoLine}
 ⚡ VIA PIX:
 ${pixLines}
 SUBTOTAL PIX: ${moneyBR(pixTotal)}
@@ -396,8 +436,7 @@ Estou enviando o comprovante da parte em PIX.
 A parte em Diamantes combinamos para transferência dentro do jogo.`;
     }else if(pixItems.length){
       msg =
-`⚡ COMPRA VIA PIX — POKEPIXEL MARKET
-
+`⚡ COMPRA VIA PIX — POKEPIXEL MARKET${promoLine}
 Pokémon:
 ${pixLines}
 
@@ -406,8 +445,7 @@ TOTAL VIA PIX: ${moneyBR(pixTotal)}
 Já realizei o pagamento via Pix e estou enviando o comprovante.`;
     }else{
       msg =
-`💎 COMPRA VIA DIAMANTES — POKEPIXEL MARKET
-
+`💎 COMPRA VIA DIAMANTES — POKEPIXEL MARKET${promoLine}
 Pokémon:
 ${diamondLines}
 
@@ -525,6 +563,21 @@ function sanitizePublicCatalog(raw){
   return Object.fromEntries(kept.map(item=>[item.id,item]));
 }
 
+async function loadStoreSettings(){
+  try{
+    const res = await fetch('/api/store-settings',{cache:'no-store'});
+    if(res.ok){
+      const data = await res.json();
+      const enabled = Boolean(data?.promotion?.enabled);
+      const discountPercent = Math.max(0,Math.min(90,Math.round(Number(data?.promotion?.discountPercent || 0))));
+      storeSettings = {promotion:{enabled,discountPercent}};
+    }
+  }catch(error){
+    console.warn('Não foi possível carregar a promoção; usando configuração padrão.',error);
+  }
+  applyPromotionUI();
+}
+
 async function loadCatalog(){
   const res = await fetch('/api/catalog',{cache:'no-store'});
   if(!res.ok) throw new Error('Catálogo indisponível');
@@ -533,6 +586,11 @@ async function loadCatalog(){
   renderCards();
   renderCart();
   $('catalogCount').textContent = `${Object.keys(catalog).length} Pokémon no catálogo`;
+}
+
+async function initStore(){
+  await loadStoreSettings();
+  await loadCatalog();
 }
 
 $('pokemonSearch').addEventListener('input',renderCards);
@@ -576,7 +634,7 @@ window.addEventListener('keydown',e=>{
 
 revealAdminShortcutIfAuthenticated();
 
-loadCatalog().catch(err=>{
+initStore().catch(err=>{
   console.error(err);
   $('catalogCount').textContent='Não foi possível carregar o catálogo.';
 });

@@ -1,0 +1,20 @@
+POKEPIXEL MARKET — V4.8 — SISTEMA DE PROMOÇÕES
+
+Principais mudanças:
+- Promoção geral ativada por padrão em 40% OFF.
+- O desconto vale para pagamento via PIX e via Diamantes.
+- Os preços originais continuam salvos no catálogo; o desconto é calculado na hora.
+- Cards mostram preço original riscado + preço promocional.
+- Carrinho, checkout, subtotais e mensagem do WhatsApp usam os valores com desconto.
+- Faixa promocional no topo da loja.
+- Novo controle no Admin para ativar/desativar a promoção e trocar a porcentagem (0% a 90%).
+- Configuração da promoção é persistida no mesmo Workers KV (STORE).
+- Nenhuma alteração nos preços-base dos Pokémon, imagens, assinaturas ou estados vendido/disponível.
+
+Deploy:
+- Substitua os arquivos do repositório local pelos desta versão.
+- Commit sugerido: Atualização V4.8 - promoção geral 40% OFF
+- Push origin.
+- O Cloudflare fará o deploy do Worker loja automaticamente.
+
+Endereço: https://loja.pokepixelmarket.workers.dev

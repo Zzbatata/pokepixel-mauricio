@@ -46,6 +46,25 @@
         Novo fluxo: escolher o print → analisar automaticamente → conferir os campos → publicar.
       </div>
 
+      <section class="promotion-admin-panel">
+        <div class="promotion-admin-copy">
+          <span class="promotion-admin-kicker">PROMOÇÃO GERAL</span>
+          <h2>DESCONTO DA LOJA</h2>
+          <p>Ative ou desative a promoção sem alterar os preços originais cadastrados dos Pokémon.</p>
+        </div>
+        <form id="promotionForm" class="promotion-admin-form">
+          <label class="promotion-toggle">
+            <input id="promotionEnabled" type="checkbox" checked>
+            <span>Promoção ativa</span>
+          </label>
+          <label>DESCONTO (%)
+            <input id="promotionPercent" type="number" min="0" max="90" step="1" value="40" required>
+          </label>
+          <button id="promotionSaveBtn" type="submit">SALVAR PROMOÇÃO</button>
+        </form>
+        <div id="promotionAdminStatus" class="promotion-admin-status">Carregando configuração...</div>
+      </section>
+
       <section class="add-product-panel">
         <div class="add-product-title">
           <h2>+ ADICIONAR / ANALISAR POKÉMON</h2>

@@ -261,6 +261,75 @@ function sanitizeSavedCatalog(baseCatalog,savedCatalog){
   return merged;
 }
 
+const DEFAULT_STORE_SETTINGS = {
+  promotion:{enabled:true,discountPercent:40}
+};
+
+function sanitizeStoreSettings(raw={}){
+  const promotion = raw && typeof raw === 'object' ? (raw.promotion || {}) : {};
+  const percentRaw = Math.round(Number(promotion.discountPercent));
+  const discountPercent = Number.isFinite(percentRaw) ? Math.max(0,Math.min(90,percentRaw)) : 40;
+  return {
+    promotion:{
+      enabled:typeof promotion.enabled === 'boolean' ? promotion.enabled : true,
+      discountPercent
+    }
+  };
+}
+
+async function readStoreSettings(env){
+  const fallback = sanitizeStoreSettings(DEFAULT_STORE_SETTINGS);
+  if(!env.STORE) return fallback;
+  try{
+    const saved = await env.STORE.get('_store_settings.json','json');
+    return saved ? sanitizeStoreSettings(saved) : fallback;
+  }catch{
+    return fallback;
+  }
+}
+
+async function saveStoreSettings(env, settings){
+  if(!env.STORE) throw new Error('KV não conectado ao Worker.');
+  const safe = sanitizeStoreSettings(settings);
+  await env.STORE.put('_store_settings.json',JSON.stringify(safe));
+  return safe;
+}
+
+async function publicStoreSettings(request,env){
+  if(request.method !== 'GET') return methodNotAllowed('GET');
+  return json(await readStoreSettings(env));
+}
+
+async function adminStoreSettings(request,env){
+  if(!(await requireAdmin(request,env))){
+    return new Response('Acesso administrativo não autorizado.',{status:403});
+  }
+  if(request.method === 'GET') return json(await readStoreSettings(env));
+  if(request.method !== 'POST') return methodNotAllowed('GET, POST');
+  if(!sameOriginAdminRequest(request)) return new Response('Origem não permitida.',{status:403});
+
+  const length = Number(request.headers.get('Content-Length') || 0);
+  if(length > 4096) return new Response('Requisição inválida.',{status:413});
+
+  const current = await readStoreSettings(env);
+  const body = await request.json().catch(()=>({}));
+  const incoming = body?.promotion || {};
+  const next = {
+    promotion:{
+      enabled:typeof incoming.enabled === 'boolean' ? incoming.enabled : current.promotion.enabled,
+      discountPercent:incoming.discountPercent === undefined
+        ? current.promotion.discountPercent
+        : Math.round(Number(incoming.discountPercent))
+    }
+  };
+
+  if(!Number.isFinite(next.promotion.discountPercent) || next.promotion.discountPercent < 0 || next.promotion.discountPercent > 90){
+    return new Response('O desconto deve ficar entre 0% e 90%.',{status:400});
+  }
+
+  return json(await saveStoreSettings(env,next));
+}
+
 async function readCatalog(env) {
   const base = structuredClone(DEFAULTS);
   if(!env.STORE) return base;
@@ -815,6 +884,8 @@ export default {
         response = request.method === 'GET'
           ? json(await readCatalog(env))
           : methodNotAllowed('GET');
+      } else if(url.pathname === '/api/store-settings') {
+        response = await publicStoreSettings(request,env);
       } else if(url.pathname.startsWith('/api/image/')) {
         if(request.method !== 'GET') response = methodNotAllowed('GET');
         else {
@@ -829,6 +900,8 @@ export default {
         response = await sessionStatus(request, env);
       } else if(url.pathname === '/admin/api/duplicate-check') {
         response = await duplicateCheck(request, env);
+      } else if(url.pathname === '/admin/api/store-settings') {
+        response = await adminStoreSettings(request,env);
       } else if(url.pathname === '/admin/api/catalog') {
         response = await adminCatalog(request, env);
       } else {
